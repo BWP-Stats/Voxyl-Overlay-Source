@@ -1,0 +1,34 @@
+package com.voxyl.overlay.ui.common.elements
+
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import com.voxyl.overlay.ui.theme.*
+
+
+@Composable
+fun MyCheckbox(
+    checked: Boolean,
+    onCheckedChange: ((Boolean) -> Unit)?,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    colors: CheckboxColors = CheckboxDefaults.colors(
+        checkedColor = MainPurple,
+        uncheckedColor = MainWhite,
+        checkmarkColor = MainWhite,
+        disabledColor = MainWhiteLessOpaque,
+        disabledIndeterminateColor = MaterialTheme.colors.secondary.copy(alpha = ContentAlpha.disabled)
+    )
+) {
+    Checkbox(
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        modifier = modifier,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        colors = colors
+    )
+}

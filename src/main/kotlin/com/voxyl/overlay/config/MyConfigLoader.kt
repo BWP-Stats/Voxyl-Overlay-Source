@@ -16,15 +16,15 @@ object Config {
     }
 
     enum class Keys(var key: String, var defaultValue: String) {
-        HypixelApiKey("hypixel_api_key", ""),
-        BwpApiKey("bwp_api_key", ""),
-        LogFilePath("log_file_path", ""),
-        PlayerName("player_name", ""),
+        HYPIXEL_API_KEY("hypixel_api_key", ""),
+        BWP_API_KEY("bwp_api_key", ""),
+        LOG_FILE_PATH("log_file_path", ""),
+        PLAYER_NAME("player_name", ""),
 
-        PinYourselfToTop("pin_yourself_to_top", "false"),
-        AddYourselfToOverlay("add_yourself_to_overlay", "true"),
-        AutoShowAndHide("auto_show_and_hide", "false"),
-        AutoShowAndHideDelay("auto_show_and_hide_delay", "5"),
+        ADD_YOURSELF_TO_OVERLAY("add_yourself_to_overlay", "true"),
+        PIN_YOURSELF_TO_TOP("pin_yourself_to_top", "false"),
+        AUTO_SHOW_AND_HIDE("auto_show_and_hide", "false"),
+        AUTO_SHOW_AND_HIDE_DELAY("auto_show_and_hide_delay", "5"),
     }
 
     private val home = System.getProperty("user.home");

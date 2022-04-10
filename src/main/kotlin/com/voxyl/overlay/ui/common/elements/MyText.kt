@@ -1,4 +1,4 @@
-package com.voxyl.overlay.viewelements
+package com.voxyl.overlay.ui.common.elements
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

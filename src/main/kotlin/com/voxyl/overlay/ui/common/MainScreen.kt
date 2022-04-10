@@ -38,7 +38,8 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
 
     val lazyListState = rememberLazyListState()
     val settingsMenu = remember { mutableStateOf(false) }
-    val statsToShow = mutableStateListOf("bwp.level", "name", "bwp.role", "bwp.wins", "bwp.kills", "bwp.finals")
+    val statsToShow =
+        remember { mutableStateOf(listOf("bwp.level", "name", "bwp.role", "bwp.wins", "bwp.kills", "bwp.finals")) }
 
     BackgroundBox()
     TitleBox()
@@ -56,21 +57,6 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
         StatsHeader(statsToShow)
         PlayerStats(statsToShow, lazyListState)
     }
-}
-
-@Composable
-fun PositionText(x: Int, y: Int) = Box(
-    modifier = Modifier.fillMaxSize(),
-) {
-    Text(
-        style = TextStyle(fontFamily = nunito()),
-        text = "$x $y",
-        modifier = Modifier
-            .align(Alignment.Center)
-            .padding(12.dp),
-        fontSize = 16.sp,
-        color = Color.White
-    )
 }
 
 @Composable

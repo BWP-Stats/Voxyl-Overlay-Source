@@ -4,9 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.*
 import com.voxyl.overlay.data.player.Status
 import com.voxyl.overlay.data.player.Player
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -15,7 +13,6 @@ object PlayerKindaButNotExactlyViewModel {
     private var state = mutableStateListOf<PlayerState>()
 
     fun add(name: String, cs: CoroutineScope) {
-
         Player.makePlayer(name).onEach {
             when (it) {
                 is Status.Loaded -> {
@@ -42,7 +39,7 @@ object PlayerKindaButNotExactlyViewModel {
     }
 
     fun clear() {
-        state.clear()
+        state = mutableStateListOf()
     }
 
     fun remove(name: String) {
@@ -51,7 +48,7 @@ object PlayerKindaButNotExactlyViewModel {
 
     fun getPlayers() = state
 
-    fun getPlayersCopy() = state.map{it.copy()}
+    fun getPlayersCopy() = state.filter { true }
 
     override fun toString(): String {
         var str = "";

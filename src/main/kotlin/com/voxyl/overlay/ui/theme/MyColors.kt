@@ -2,7 +2,7 @@ package com.voxyl.overlay.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val MainPurpleLessOpaque = Color(130, 32, 229, 240)
+val MainPurpleLessOpaque = Color(130, 32, 229, 110)
 val MainPurple = Color(130, 32, 229, 160)
 val MainPurpleMoreOpaque = Color(130, 32, 229, 240)
 

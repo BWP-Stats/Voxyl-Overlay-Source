@@ -2,7 +2,6 @@ package com.voxyl.overlay.ui.main.elements
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -22,10 +21,10 @@ import com.voxyl.overlay.middleman.PlayerState
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
-import com.voxyl.overlay.viewelements.MyText
+import com.voxyl.overlay.ui.common.elements.MyText
 
 @Composable
-fun StatsHeader(statsToShow: List<String>) = Column(
+fun StatsHeader(statsToShow: State<List<String>>) = Column(
     Modifier.fillMaxWidth()
 ) {
     Row(
@@ -36,7 +35,7 @@ fun StatsHeader(statsToShow: List<String>) = Column(
             .fillMaxWidth(.95f)
             .requestFocusOnClick()
     ) {
-        for (stat in statsToShow.toList()) {
+        for (stat in statsToShow.value.toList()) {
             MyText(
                 text = stat.substring(stat.lastIndexOf(".") + 1),
                 modifier = Modifier.weight(1f),
@@ -48,13 +47,13 @@ fun StatsHeader(statsToShow: List<String>) = Column(
 }
 
 @Composable
-fun PlayerStats(statsToShow: List<String>, lazyListState: LazyListState) {
+fun PlayerStats(statsToShow: State<List<String>>, lazyListState: LazyListState) {
     LazyColumn(
         state = lazyListState,
         modifier = Modifier.absoluteOffset(y = 90.dp).fillMaxSize().scrollbar(lazyListState).requestFocusOnClick(),
         contentPadding = PaddingValues(bottom = 50.dp)
     ) {
-        PlayerKindaButNotExactlyViewModel.getPlayersCopy().forEach {
+        PlayerKindaButNotExactlyViewModel.getPlayers().forEach {
             item {
                 PlayersStatsBar(player = it, statsToShow = statsToShow)
             }
@@ -66,18 +65,18 @@ fun PlayerStats(statsToShow: List<String>, lazyListState: LazyListState) {
 fun PlayersStatsBar(
     modifier: Modifier = Modifier,
     player: PlayerState,
-    statsToShow: List<String>
+    statsToShow: State<List<String>>
 ) {
     Column(
         modifier = modifier.fillMaxWidth().height(36.dp)
     ) {
-            Divider(
-                color = MainWhiteLessOpaque,
-                modifier = Modifier
-                    .fillMaxWidth(.9f)
-                    .height(1.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
+        Divider(
+            color = MainWhiteLessOpaque,
+            modifier = Modifier
+                .fillMaxWidth(.9f)
+                .height(1.dp)
+                .align(Alignment.CenterHorizontally)
+        )
         Row(
             modifier = Modifier
                 .height(34.dp)
@@ -85,9 +84,9 @@ fun PlayersStatsBar(
                 .align(Alignment.CenterHorizontally)
                 .requestFocusOnClick(!player.isLoading)
         ) {
-           for (stat in statsToShow.toList()) {
-               Cell(player = player, statToShow = stat)
-           }
+            for (stat in statsToShow.value.toList()) {
+                Cell(player = player, statToShow = stat)
+            }
         }
     }
 }
@@ -98,8 +97,9 @@ fun RowScope.Cell(
     player: PlayerState,
     statToShow: String,
 ) {
+    val text = if (statToShow == "name") player.name else player[statToShow] ?: "n/a"
     MyText(
-        text = if (statToShow == "name") player.name else player[statToShow] ?: "n/a",
+        text = text,
         modifier = modifier.weight(1f).offset(y = 5.dp),
         fontSize = 15.sp,
         color = MainWhite

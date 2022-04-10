@@ -13,13 +13,23 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.voxyl.overlay.config.Config
+import com.voxyl.overlay.config.Config.Keys.*
 import com.voxyl.overlay.ui.common.elements.MyTextField
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.main.elements.scrollbar
+import com.voxyl.overlay.ui.settings.elements.basic.BWPApiKeyTextField
+import com.voxyl.overlay.ui.settings.elements.basic.HypixelApiKeyTextField
+import com.voxyl.overlay.ui.settings.elements.basic.LogFilePathTextField
+import com.voxyl.overlay.ui.settings.elements.qol.AutoShowAndHideCheckBox
+import com.voxyl.overlay.ui.settings.elements.sources.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.theme.*
-import com.voxyl.overlay.viewelements.MyText
+import com.voxyl.overlay.ui.common.elements.MyText
+import com.voxyl.overlay.ui.settings.elements.basic.PlayerNameTextField
+import com.voxyl.overlay.ui.settings.elements.qol.AutoShowAndHideDelaySlider
+import com.voxyl.overlay.ui.settings.elements.sources.PinYourselfToTopCheckbox
 
 @Composable
 fun Settings(
@@ -40,13 +50,25 @@ fun SettingsList(
     LazyColumn(
         state = lazyListState,
         modifier = modifier.absoluteOffset(y = 60.dp).fillMaxSize().scrollbar(lazyListState).requestFocusOnClick(),
-        contentPadding = PaddingValues(bottom = 50.dp)
+        contentPadding = PaddingValues(bottom = 75.dp)
     ) {
         item {
+            val addYourself = remember {
+                mutableStateOf(Config.getOrNullIfBlank(ADD_YOURSELF_TO_OVERLAY.key)?.toBooleanStrictOrNull() ?: true)
+            }
+
+            val autoHide = remember {
+                mutableStateOf(Config.getOrNullIfBlank(AUTO_SHOW_AND_HIDE.key)?.toBooleanStrictOrNull() ?: true)
+            }
+
             BWPApiKeyTextField()
             HypixelApiKeyTextField()
             PlayerNameTextField()
             LogFilePathTextField()
+            PinYourselfToTopCheckbox(addYourself)
+            AddYourselfToOverlayCheckbox(addYourself)
+            AutoShowAndHideCheckBox(autoHide)
+            AutoShowAndHideDelaySlider(autoHide)
         }
     }
 }

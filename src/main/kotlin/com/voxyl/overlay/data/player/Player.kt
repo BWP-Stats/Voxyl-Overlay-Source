@@ -35,8 +35,6 @@ class Player private constructor(
                 "bwp.${it.key}" to it.value
             }
         }
-
-        println(stats)
     }
 
     private fun addStatsFromJsonToStatsMap(jsonObj: JsonObject, prevKey: String = "") {
@@ -57,9 +55,11 @@ class Player private constructor(
     companion object {
         fun makePlayer(
             name: String,
-            apiKey: String = Config[BwpApiKey.key] ?: "",
+            apiKey: String = Config[BWP_API_KEY.key] ?: "",
             bwpApi: BWPApi = ApiProvider.getBWPApi()
         ): Flow<Status<Player>> = flow {
+
+            println("Making player $name")
 
             try {
                 emit(Status.Loading(playerName = name))
@@ -108,15 +108,11 @@ class Player private constructor(
             lateinit var overallStatsJson: JsonObject
             lateinit var gameStatsJson: JsonObject
 
-            println("1")
-
             runBlocking {
                 launch(Dispatchers.IO) { playerInfoJson = bwpApi.getPlayerInfo(uuid, apiKey) }
                 launch(Dispatchers.IO) { overallStatsJson = bwpApi.getOverallStats(uuid, apiKey) }
                 launch(Dispatchers.IO) { gameStatsJson = bwpApi.getGameStats(uuid, apiKey) }
             }
-
-            println("2")
 
             return BWPStats(
                 OverallStatsJson(overallStatsJson),

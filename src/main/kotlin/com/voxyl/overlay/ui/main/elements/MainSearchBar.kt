@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.ui.common.elements.MyTextField
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
-import com.voxyl.overlay.viewelements.MyText
+import com.voxyl.overlay.ui.common.elements.MyText
 
 @Composable
 fun MainSearchBar(
@@ -37,9 +37,8 @@ fun MainSearchBar(
             .onEnterOrEsc(
                 focusManager,
                 doOnEnter,
-                value,
-                { isValid(it) }
-            ),
+                value
+            ) { isValid(it) },
         label = {
             MyText(
                 text = if (isValid(value)) "Search player(s)" else "Invalid characters and/or name(s) exceeds 16 chars",

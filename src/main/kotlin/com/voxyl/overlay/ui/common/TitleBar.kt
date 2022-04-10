@@ -6,6 +6,7 @@ package com.voxyl.overlay.ui.common
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
@@ -27,6 +28,8 @@ import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.common.elements.ShapeThatIdkTheNameOf
 import com.voxyl.overlay.ui.main.elements.MainSearchBar
 import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.data.logfilereader.*
+import com.voxyl.overlay.ui.theme.MainWhiteMoreOpaque
 import kotlinx.coroutines.Dispatchers
 import kotlin.system.exitProcess
 
@@ -50,41 +53,50 @@ fun TitleBar(settingsMenu: MutableState<Boolean>) {
         SettingsButton(settingsMenu = settingsMenu)
 
         MainSearchBar(Modifier.weight(1f), queriedName, { queriedName = it }) {
-            queriedName.text.split(" ").filterNot { it.isBlank() }.distinct().forEach {
+            queriedName.text.toPlayerList().forEach {
                 PlayerKindaButNotExactlyViewModel.add(it, cs)
             }
             queriedName = TextFieldValue()
         }
 
         CloseOverlayButton()
-        AlwaysOnTopButton()
+        MinimizeButton()
         AdditionalThingsButton(additionalSettingsEnabled = additionalSettingsEnabled) {
             additionalSettingsEnabled = !additionalSettingsEnabled
         }
     }
 
-    Box(
+    box@ Box(
         Modifier
             .absolutePadding(top = 19.dp)
             .height(animatedSize)
             .fillMaxWidth()
     ) {
-        if (animatedSize.value > 28) {
-            AdditionalSettings(Modifier.align(Alignment.CenterEnd).absolutePadding(right = 25.dp)) {
-                Column(
-                    Modifier.absolutePadding(top = 32.dp, left = 3.dp),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Icon(Icons.Filled.Clear, contentDescription = null, tint = MainWhite)
-                    Spacer(Modifier.height(3.dp))
-                    Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MainWhite)
-                    Spacer(Modifier.height(3.dp))
-                    Icon(Icons.Filled.Refresh, contentDescription = null, tint = MainWhite)
-                    Spacer(Modifier.height(3.dp))
-                    Icon(Icons.Filled.Star, contentDescription = null, tint = MainWhite)
-                    Spacer(Modifier.height(3.dp))
-                    Icon(Icons.Filled.Info, contentDescription = null, tint = MainWhite)
-                }
+        if (animatedSize.value < 28) return@Box
+
+        AdditionalSettings(Modifier.align(Alignment.CenterEnd).absolutePadding(right = 25.dp)) {
+            Column(
+                Modifier.absolutePadding(top = 32.dp, left = 3.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(Icons.Filled.Clear, contentDescription = null, tint = MainWhite)
+                Spacer(Modifier.height(3.dp))
+                Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MainWhite)
+                Spacer(Modifier.height(3.dp))
+                Icon(Icons.Filled.Refresh, contentDescription = null, tint = MainWhite)
+                Spacer(Modifier.height(3.dp))
+
+                var starTint by remember { mutableStateOf(MainWhite) }
+
+                Icon(Icons.Filled.Star, contentDescription = null, tint = starTint,
+                    modifier = Modifier.clickable {
+                        println("clicked")
+                        window.isAlwaysOnTop = !(window.isAlwaysOnTop)
+                        starTint = if (window.isAlwaysOnTop) MainWhite else MainWhiteMoreOpaque
+                    }
+                )
+                Spacer(Modifier.height(3.dp))
+                Icon(Icons.Filled.Info, contentDescription = null, tint = MainWhite)
             }
         }
     }
@@ -124,16 +136,12 @@ fun CloseOverlayButton(modifier: Modifier = Modifier) = TitleBarButton(
 )
 
 @Composable
-fun AlwaysOnTopButton(modifier: Modifier = Modifier) {
-
-    var alpha by rememberSaveable { mutableStateOf(160) }
-
+fun MinimizeButton(modifier: Modifier = Modifier) {
     TitleBarButton(
         modifier = modifier.absolutePadding(right = 10.dp),
-        bgColor = mutableStateOf(Color(251, 191, 36, alpha)),
+        bgColor = mutableStateOf(Color(251, 191, 36, 160)),
         doOnClick = {
-            window.isAlwaysOnTop = !(window.isAlwaysOnTop)
-            alpha = if (alpha == 160) 240 else 160
+            window.isMinimized = true
         }
     )
 }

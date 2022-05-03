@@ -1,25 +1,26 @@
 package com.voxyl.overlay.data.logfilereader
 
-import androidx.compose.ui.window.FrameWindowScope
+import com.voxyl.overlay.WINDOW
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.Config.Keys.*
+import com.voxyl.overlay.config.ConfigKeys.LOG_FILE_PATH
+import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE
+import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE_DELAY
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 
 //Voyx qoodles MaxFrostbite11 mrGuineapigze1 Jaded_Lord carburettor Speed1200 _lightninq ambmt lansraad anoninho
 object LogFileReader {
 
-    lateinit var window: FrameWindowScope
 
-    suspend fun start(cs: CoroutineScope, _window: FrameWindowScope) = withContext(Dispatchers.IO) {
-        window = _window
+    suspend fun start(cs: CoroutineScope) = withContext(Dispatchers.IO) {
 
-        val reader = Config[LOG_FILE_PATH.key]?.let {
+        val reader = Config.getOrNullIfBlank(LOG_FILE_PATH)?.let {
             try {
                 FileInputStream(it).bufferedReader(Charsets.UTF_8)
-            } catch (e: Exception) {
+            } catch (e: FileNotFoundException) {
                 return@withContext
             }
         } ?: return@withContext
@@ -51,20 +52,18 @@ object LogFileReader {
 
         PlayerKindaButNotExactlyViewModel.clear()
 
-        cs.launch {
-            line.substringAfterLast(":").toPlayerList().forEach {
-                PlayerKindaButNotExactlyViewModel.add(it, cs)
-            }
+        line.substringAfterLast(":").toPlayerList().forEach {
+            PlayerKindaButNotExactlyViewModel.add(it, cs)
         }
 
-        if (Config[AUTO_SHOW_AND_HIDE.key] == "true") {
+        if (Config[AUTO_SHOW_AND_HIDE] == "true") {
             cs.launch {
-                window.window.isAlwaysOnTop = true
-                delay(Config[AUTO_SHOW_AND_HIDE_DELAY.key]?.toLongOrNull() ?: 5000)
-                window.window.isMinimized = true
+                WINDOW.isAlwaysOnTop = true
+                delay(Config[AUTO_SHOW_AND_HIDE_DELAY].toLongOrNull() ?: 5000)
+                WINDOW.isMinimized = true
             }
         }
     }
-}
 
-fun String.toPlayerList() = split(" ").filterNot { it.isBlank() }.distinct()
+    private fun String.toPlayerList() = split(" ").filterNot { it.isBlank() }.distinct()
+}

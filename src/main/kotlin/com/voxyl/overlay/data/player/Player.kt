@@ -2,7 +2,7 @@ package com.voxyl.overlay.data.player
 
 import com.google.gson.JsonObject
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.Config.Keys.*
+import com.voxyl.overlay.config.ConfigKeys.BWP_API_KEY
 import com.voxyl.overlay.data.apis.ApiProvider
 import com.voxyl.overlay.data.apis.BWPApi
 import com.voxyl.overlay.data.apis.UUIDApi
@@ -31,7 +31,7 @@ class Player private constructor(
             addStatsFromJsonToStatsMap(playerInfoJson.json, "bwp")
             addStatsFromJsonToStatsMap(overallStatsJson.json, "bwp")
             addStatsFromJsonToStatsMap(gameStatsJson.json, "bwp")
-            stats +=  gameStatsJson.toOverallGameStats().map {
+            stats += gameStatsJson.toOverallGameStats().map {
                 "bwp.${it.key}" to it.value
             }
         }
@@ -55,7 +55,7 @@ class Player private constructor(
     companion object {
         fun makePlayer(
             name: String,
-            apiKey: String = Config[BWP_API_KEY.key] ?: "",
+            apiKey: String = Config[BWP_API_KEY] ?: "",
             bwpApi: BWPApi = ApiProvider.getBWPApi()
         ): Flow<Status<Player>> = flow {
 
@@ -71,7 +71,8 @@ class Player private constructor(
 
                 emit(
                     Status.Loaded(
-                        Player(name, uuid, getBWPStats(uuid = uuid, apiKey, bwpApi)), name
+                        Player(name, uuid, getBWPStats(uuid, apiKey, bwpApi)),
+                        playerName = name
                     )
                 )
             } catch (e: HttpException) {

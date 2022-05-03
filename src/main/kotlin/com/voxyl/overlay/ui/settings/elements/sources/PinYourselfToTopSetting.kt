@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.Config.Keys.*
+import com.voxyl.overlay.config.ConfigKeys.PIN_YOURSELF_TO_TOP
 import com.voxyl.overlay.ui.common.elements.MyCheckbox
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.common.elements.MyText
@@ -23,17 +23,17 @@ fun PinYourselfToTopCheckbox(addYourself: MutableState<Boolean>, modifier: Modif
     ) {
 
         var checked by remember {
-            mutableStateOf(Config.getOrNullIfBlank(PIN_YOURSELF_TO_TOP.key)?.toBooleanStrictOrNull() ?: false)
+            mutableStateOf(Config[PIN_YOURSELF_TO_TOP].toBooleanStrictOrNull() ?: false)
         }
 
         MyCheckbox(
             checked = checked && addYourself.value,
             onCheckedChange = {
                 if (it) {
-                    Config[PIN_YOURSELF_TO_TOP.key] = "true"
+                    Config[PIN_YOURSELF_TO_TOP] = "true"
                     checked = it
                 } else {
-                    Config[PIN_YOURSELF_TO_TOP.key] = "false"
+                    Config[PIN_YOURSELF_TO_TOP] = "false"
                     checked = it
                 }
             },

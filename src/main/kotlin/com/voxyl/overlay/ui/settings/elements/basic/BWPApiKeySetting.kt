@@ -13,7 +13,7 @@ import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.Config.Keys.*
+import com.voxyl.overlay.config.ConfigKeys.BWP_API_KEY
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.settings.elements.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
@@ -27,7 +27,7 @@ fun BWPApiKeyTextField() {
     val doOnEnter = doOnEnter@{
         if (!isValidBwpApiKey(apiKey)) return@doOnEnter
 
-        Config[BWP_API_KEY.key] = apiKey.text
+        Config[BWP_API_KEY] = apiKey.text
         apiKey = TextFieldValue()
     }
 
@@ -49,7 +49,7 @@ fun BWPApiKeyTextField() {
                         icon = PointerIconDefaults.Hand
                     )
                     .clickable {
-                        apiKey = TextFieldValue(Config.getOrNullIfBlank(BWP_API_KEY.key) ?: "No API key saved")
+                        apiKey = TextFieldValue(Config.getOrNullIfBlank(BWP_API_KEY) ?: "No API key saved")
                     },
                 tint = MainWhiteLessOpaque
             )
@@ -67,9 +67,9 @@ fun BWPApiKeyTextField() {
 fun getBwpApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
     if (apiKey.text.isNotBlank() && !isValid)
         "API key must be 32 chars and contain only letters & numbers"
-    else if (Config[BWP_API_KEY.key]?.isBlank() == true)
+    else if (Config[BWP_API_KEY].isBlank())
         "Enter your BWP API key"
     else
-        "Enter your BWP API key (${Config[BWP_API_KEY.key]?.substring(0, 11) + "*".repeat(22)})"
+        "Enter your BWP API key (${Config[BWP_API_KEY].substring(0, 11) + "*".repeat(22)})"
 
 fun isValidBwpApiKey(tfv: TextFieldValue) = tfv.text.matches(Regex("[a-zA-Z0-9]{32}"))

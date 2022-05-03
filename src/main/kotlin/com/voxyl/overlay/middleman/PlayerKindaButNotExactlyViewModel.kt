@@ -10,51 +10,47 @@ import kotlinx.coroutines.flow.onEach
 
 object PlayerKindaButNotExactlyViewModel {
 
-    private var state = mutableStateListOf<PlayerState>()
+    private var _players = mutableStateListOf<PlayerState>()
+
+    val players: SnapshotStateList<PlayerState>
+        get() = _players
 
     fun add(name: String, cs: CoroutineScope) {
         Player.makePlayer(name).onEach {
-            when (it) {
+            _players += when (it) {
                 is Status.Loaded -> {
-                    println("got 'loaded' for $name")
-                    state.remove(name)
-                    state += PlayerState(name, player = it.data)
+                    _players.remove(name)
+                    PlayerState(name, player = it.data)
                 }
                 is Status.Loading -> {
-                    println("got 'loading' for $name")
-                    state.remove(name)
-                    state += PlayerState(name, isLoading = true)
+                    _players.remove(name)
+                    PlayerState(name, isLoading = true)
                 }
                 is Status.Error -> {
-                    println("got 'error' for $name")
-                    state.remove(name)
-                    state += PlayerState(name, error = it.message ?: "An unexpected error has occurred")
+                    _players.remove(name)
+                    PlayerState(name, error = it.message ?: "An unexpected error has occurred")
                 }
             }
         }.launchIn(cs)
     }
 
     private fun <T> SnapshotStateList<T>.remove(name: String) {
-        state.remove(PlayerState(name))
+        _players.remove(PlayerState(name))
     }
 
     fun clear() {
-        state = mutableStateListOf()
+        _players.clear()
     }
 
     fun remove(name: String) {
-        state.remove(name)
+        _players.remove(name)
     }
-
-    fun getPlayers() = state
-
-    fun getPlayersCopy() = state.filter { true }
 
     override fun toString(): String {
         var str = "";
-        state.forEach {
+        _players.forEach {
             str += "hi $it"
         }
-        return str + " " + state.size
+        return str + " " + _players.size
     }
 }

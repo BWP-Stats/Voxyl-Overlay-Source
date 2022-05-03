@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.window.WindowDraggableArea
-import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
@@ -18,11 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.FrameWindowScope
-import com.voxyl.overlay.ui.theme.Fonts.nunito
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.main.elements.PlayerStats
 import com.voxyl.overlay.ui.main.elements.StatsHeader
@@ -38,6 +33,7 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
 
     val lazyListState = rememberLazyListState()
     val settingsMenu = remember { mutableStateOf(false) }
+    val additionalSettingsEnabled = remember { mutableStateOf(false) }
     val statsToShow =
         remember { mutableStateOf(listOf("bwp.level", "name", "bwp.role", "bwp.wins", "bwp.kills", "bwp.finals")) }
 
@@ -49,7 +45,7 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
         modifier = Modifier.fillMaxWidth().height(64.dp)
     )
 
-    TitleBar(settingsMenu)
+    TitleBar(settingsMenu, additionalSettingsEnabled)
 
     if (settingsMenu.value) {
         Settings()
@@ -57,6 +53,8 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
         StatsHeader(statsToShow)
         PlayerStats(statsToShow, lazyListState)
     }
+
+    AdditionalSettings(additionalSettingsEnabled)
 }
 
 @Composable

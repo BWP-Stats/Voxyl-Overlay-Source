@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.Config.Keys.AUTO_SHOW_AND_HIDE
-import com.voxyl.overlay.config.Config.Keys.AUTO_SHOW_AND_HIDE_DELAY
+import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE
+import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE_DELAY
 import com.voxyl.overlay.ui.common.elements.MyCheckbox
 import com.voxyl.overlay.ui.common.elements.MySlider
 import com.voxyl.overlay.ui.common.elements.MyText
@@ -28,10 +28,10 @@ fun AutoShowAndHideCheckBox(autoHide: MutableState<Boolean>, modifier: Modifier 
             checked = autoHide.value,
             onCheckedChange = {
                 if (it) {
-                    Config[AUTO_SHOW_AND_HIDE.key] = "true"
+                    Config[AUTO_SHOW_AND_HIDE] = "true"
                     autoHide.value = it
                 } else {
-                    Config[AUTO_SHOW_AND_HIDE.key] = "false"
+                    Config[AUTO_SHOW_AND_HIDE] = "false"
                     autoHide.value = it
                 }
             },
@@ -55,7 +55,7 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
     ) {
 
         var delay by remember {
-            mutableStateOf(Config.getOrNullIfBlank(AUTO_SHOW_AND_HIDE_DELAY.key)?.toFloatOrNull() ?: 5f)
+            mutableStateOf(Config[AUTO_SHOW_AND_HIDE_DELAY].toFloatOrNull() ?: 5f)
         }
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -74,14 +74,14 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
             valueRange = 3f..15f,
             steps = 12,
             onValueChangeFinished = {
-                Config[AUTO_SHOW_AND_HIDE_DELAY.key] = delay.toString()
+                Config[AUTO_SHOW_AND_HIDE_DELAY] = delay.toString()
             },
         )
     }
 }
 
 @Composable
-fun autoShowAndHideDelayText(delay: Float) = if (delay.toInt() < 10) {
+private fun autoShowAndHideDelayText(delay: Float) = if (delay.toInt() < 10) {
     MyText("Auto show and hide delay (${delay.toInt()} sec)", color = MainWhite, fontSize = 12.sp)
     Spacer(modifier = Modifier.width(17.dp))
 } else {

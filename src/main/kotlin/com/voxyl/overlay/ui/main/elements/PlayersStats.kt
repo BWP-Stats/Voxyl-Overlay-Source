@@ -53,7 +53,7 @@ fun PlayerStats(statsToShow: State<List<String>>, lazyListState: LazyListState) 
         modifier = Modifier.absoluteOffset(y = 90.dp).fillMaxSize().scrollbar(lazyListState).requestFocusOnClick(),
         contentPadding = PaddingValues(bottom = 50.dp)
     ) {
-        PlayerKindaButNotExactlyViewModel.getPlayers().forEach {
+        PlayerKindaButNotExactlyViewModel.players.forEach {
             item {
                 PlayersStatsBar(player = it, statsToShow = statsToShow)
             }

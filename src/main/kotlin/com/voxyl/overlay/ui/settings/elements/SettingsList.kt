@@ -14,7 +14,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.Config.Keys.*
+import com.voxyl.overlay.config.ConfigKeys.ADD_YOURSELF_TO_OVERLAY
+import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE
 import com.voxyl.overlay.ui.common.elements.MyTextField
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
@@ -54,11 +55,11 @@ fun SettingsList(
     ) {
         item {
             val addYourself = remember {
-                mutableStateOf(Config.getOrNullIfBlank(ADD_YOURSELF_TO_OVERLAY.key)?.toBooleanStrictOrNull() ?: true)
+                mutableStateOf(Config[ADD_YOURSELF_TO_OVERLAY].toBooleanStrictOrNull() ?: true)
             }
 
             val autoHide = remember {
-                mutableStateOf(Config.getOrNullIfBlank(AUTO_SHOW_AND_HIDE.key)?.toBooleanStrictOrNull() ?: true)
+                mutableStateOf(Config[AUTO_SHOW_AND_HIDE].toBooleanStrictOrNull() ?: true)
             }
 
             BWPApiKeyTextField()

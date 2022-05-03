@@ -13,7 +13,7 @@ import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.Config.Keys.*
+import com.voxyl.overlay.config.ConfigKeys.HYPIXEL_API_KEY
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.settings.elements.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
@@ -27,7 +27,7 @@ fun HypixelApiKeyTextField() {
     val doOnEnter = doOnEnter@{
         if (!isValidHypixelApiKey(apiKey)) return@doOnEnter
 
-        Config[HYPIXEL_API_KEY.key] = apiKey.text
+        Config[HYPIXEL_API_KEY] = apiKey.text
         apiKey = TextFieldValue()
     }
 
@@ -49,7 +49,7 @@ fun HypixelApiKeyTextField() {
                         icon = PointerIconDefaults.Hand
                     )
                     .clickable {
-                        apiKey = TextFieldValue(Config.getOrNullIfBlank(HYPIXEL_API_KEY.key) ?: "No API key saved")
+                        apiKey = TextFieldValue(Config.getOrNullIfBlank(HYPIXEL_API_KEY) ?: "No API key saved")
                     },
                 tint = MainWhiteLessOpaque
             )
@@ -64,13 +64,13 @@ fun HypixelApiKeyTextField() {
     )
 }
 
-fun getHypixelApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
+private fun getHypixelApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
     if (apiKey.text.isNotBlank() && !isValid)
         "Please enter a valid API key"
-    else if (Config[HYPIXEL_API_KEY.key]?.isBlank() == true)
+    else if (Config[HYPIXEL_API_KEY].isBlank())
         "Enter your Hypixel API key"
     else
-        "Enter your Hypixel API key (${Config[HYPIXEL_API_KEY.key]?.substring(0, 11) + "*".repeat(22)})"
+        "Enter your Hypixel API key (${Config[HYPIXEL_API_KEY].substring(0, 11) + "*".repeat(22)})"
 
-fun isValidHypixelApiKey(tfv: TextFieldValue) =
+private fun isValidHypixelApiKey(tfv: TextFieldValue) =
     tfv.text.matches(Regex("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))

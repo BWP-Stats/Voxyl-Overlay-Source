@@ -14,7 +14,7 @@ import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.Config.Keys.LOG_FILE_PATH as logFilePathKey
+import com.voxyl.overlay.config.ConfigKeys.LOG_FILE_PATH
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.settings.elements.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
@@ -28,7 +28,7 @@ fun LogFilePathTextField() {
     val doOnEnter = doOnEnter@{
         if (!isValidLogFilePath(logFilePath)) return@doOnEnter
 
-        Config[logFilePathKey.key] = logFilePath.text
+        Config[LOG_FILE_PATH] = logFilePath.text
         logFilePath = TextFieldValue()
     }
 
@@ -61,7 +61,7 @@ fun LogFilePathTextField() {
                         icon = PointerIconDefaults.Hand
                     )
                     .clickable {
-                        logFilePath = TextFieldValue(Config.getOrNullIfBlank(logFilePathKey.key) ?: "No LogFilePath saved")
+                        logFilePath = TextFieldValue(Config.getOrNullIfBlank(LOG_FILE_PATH) ?: "No LogFilePath saved")
                     },
                 tint = MainWhiteLessOpaque
             )
@@ -89,9 +89,9 @@ fun autofillLogFilePath(logFilePath: TextFieldValue, autoFillLogPath: (String) -
 fun getLogFilePathLabel(LogFilePath: TextFieldValue, isValid: Boolean) =
     if (LogFilePath.text.isNotBlank() && !isValid)
         "Please enter a valid log file path"
-    else if (Config[logFilePathKey.key]?.isBlank() == true)
+    else if (Config[LOG_FILE_PATH].isBlank())
         "Enter your log file path"
     else
-        "Enter your log file path (${Config[logFilePathKey.key]})"
+        "Enter your log file path (${Config[LOG_FILE_PATH]})"
 
 fun isValidLogFilePath(tfv: TextFieldValue) = tfv.text.contains(".log")

@@ -1,6 +1,3 @@
-@file:Suppress("FunctionName", "ObjectPropertyName")
-@file:OptIn(ExperimentalComposeUiApi::class)
-
 package com.voxyl.overlay
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
@@ -23,7 +20,7 @@ import com.voxyl.overlay.ui.common.MainScreen
 import kotlinx.coroutines.Dispatchers
 import java.awt.Dimension
 
-lateinit var WINDOW: ComposeWindow
+lateinit var Window: ComposeWindow
     private set
 
 @ExperimentalComposeUiApi
@@ -37,14 +34,15 @@ fun main() = application {
         },
         undecorated = true,
         transparent = true,
-        title = "VoxylOverlay",
+        title = "Voxyl Overlay",
         icon = painterResource("VoxylLogoIcon.ico"),
+        alwaysOnTop = SavedWindowState[IsAlwaysOnTop].toBooleanStrictOrNull() ?: false,
         state = rememberWindowState(
             size = getPreferredWindowSize(),
             position = getPreferredWindowPosition()
         )
     ) {
-        WINDOW = window
+        Window = window
         window.minimumSize = Dimension(400, 200)
 
         val cs = rememberCoroutineScope { Dispatchers.IO }
@@ -57,22 +55,16 @@ fun main() = application {
     }
 }
 
-//TODO: Return window position from previous usage
 fun getPreferredWindowPosition(): WindowPosition {
-    val x = SavedWindowState[SAVED_X].toFloatOrNull() ?: return WindowPosition.PlatformDefault
-    val y = SavedWindowState[SAVED_Y].toFloatOrNull() ?: return WindowPosition.PlatformDefault
-
-    println("x: $x, y: $y v1")
+    val x = SavedWindowState[X].toFloatOrNull() ?: return WindowPosition.PlatformDefault
+    val y = SavedWindowState[Y].toFloatOrNull() ?: return WindowPosition.PlatformDefault
 
     return WindowPosition(x.dp, y.dp)
 }
 
-//TODO: Return window size from previous usage
 fun getPreferredWindowSize(): DpSize {
-    val w = SavedWindowState[SAVED_WIDTH].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
-    val h = SavedWindowState[SAVED_HEIGHT].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
-
-    println("w: $w, h: $h v2")
+    val w = SavedWindowState[Width].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
+    val h = SavedWindowState[Height].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
 
     return DpSize(w.dp, h.dp)
 }

@@ -1,6 +1,6 @@
 package com.voxyl.overlay.config
 
-import com.voxyl.overlay.WINDOW
+import com.voxyl.overlay.Window
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -68,11 +68,11 @@ object SavedWindowState {
     }
 
     private fun updateSavedWindowState() {
-        SavedWindowState[SAVED_X] = WINDOW.x.toString()
-        SavedWindowState[SAVED_Y] = WINDOW.y.toString()
-        SavedWindowState[SAVED_WIDTH] = WINDOW.width.toString()
-        SavedWindowState[SAVED_HEIGHT] = WINDOW.height.toString()
-        SavedWindowState[IS_ALWAYS_ON_TOP] = WINDOW.isAlwaysOnTop.toString()
+        SavedWindowState[X] = Window.x.toString()
+        SavedWindowState[Y] = Window.y.toString()
+        SavedWindowState[Width] = Window.width.toString()
+        SavedWindowState[Height] = Window.height.toString()
+        SavedWindowState[IsAlwaysOnTop] = Window.isAlwaysOnTop.toString()
     }
 
     operator fun contains(key: String): Boolean {

@@ -10,10 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerIconDefaults
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.HYPIXEL_API_KEY
+import com.voxyl.overlay.config.ConfigKeys.HypixelApiKey
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.settings.elements.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
@@ -27,7 +28,7 @@ fun HypixelApiKeyTextField() {
     val doOnEnter = doOnEnter@{
         if (!isValidHypixelApiKey(apiKey)) return@doOnEnter
 
-        Config[HYPIXEL_API_KEY] = apiKey.text
+        Config[HypixelApiKey] = apiKey.text
         apiKey = TextFieldValue()
     }
 
@@ -40,7 +41,7 @@ fun HypixelApiKeyTextField() {
         isValid = { apiKey.text.isBlank() || isValidHypixelApiKey(it) },
         trailingIcon = {
             Icon(
-                bitmap = loadImageBitmap(File("src/main/resources/icons/eye.png").inputStream()),
+                painter = painterResource("icons/eye.png"),
                 contentDescription = null,
                 modifier = Modifier
                     .offset(x = (-4).dp, y = 5.dp)
@@ -49,7 +50,7 @@ fun HypixelApiKeyTextField() {
                         icon = PointerIconDefaults.Hand
                     )
                     .clickable {
-                        apiKey = TextFieldValue(Config.getOrNullIfBlank(HYPIXEL_API_KEY) ?: "No API key saved")
+                        apiKey = TextFieldValue(Config.getOrNullIfBlank(HypixelApiKey) ?: "No API key saved")
                     },
                 tint = MainWhiteLessOpaque
             )
@@ -67,10 +68,10 @@ fun HypixelApiKeyTextField() {
 private fun getHypixelApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
     if (apiKey.text.isNotBlank() && !isValid)
         "Please enter a valid API key"
-    else if (Config[HYPIXEL_API_KEY].isBlank())
+    else if (Config[HypixelApiKey].isBlank())
         "Enter your Hypixel API key"
     else
-        "Enter your Hypixel API key (${Config[HYPIXEL_API_KEY].substring(0, 11) + "*".repeat(22)})"
+        "Enter your Hypixel API key (${Config[HypixelApiKey].substring(0, 11) + "*".repeat(22)})"
 
 private fun isValidHypixelApiKey(tfv: TextFieldValue) =
     tfv.text.matches(Regex("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))

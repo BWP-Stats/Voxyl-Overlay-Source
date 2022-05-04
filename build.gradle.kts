@@ -1,7 +1,6 @@
 import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
     kotlin("jvm") version "1.6.10"
@@ -18,13 +17,12 @@ repositories {
 }
 
 dependencies {
-
     //no clue
     testImplementation(kotlin("test"))
     implementation(compose.desktop.currentOs)
 
     //coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
     //api stuff
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -39,17 +37,27 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "15"
+    kotlinOptions.jvmTarget = "17"
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
 }
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "com.voxyl.overlay.MainKt"
+
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "VoxylOverlayWithCompose"
-            packageVersion = "1.0.0"
+            targetFormats(TargetFormat.Exe, TargetFormat.Msi)
+            packageName = "Voxyl Overlay"
+            packageVersion = "0.0.1"
+
+            modules("java.sql")
+
+            windows {
+                menu = true
+                upgradeUuid = "bdc7677a-1f35-467c-908e-00e0f4d572cf".toUpperCase()
+                iconFile.set(project.file("src/main/resources/VoxylLogoIcon.ico"))
+                perUserInstall = true
+            }
         }
     }
 }

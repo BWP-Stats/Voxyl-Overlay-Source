@@ -11,7 +11,6 @@ import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -23,15 +22,11 @@ import com.voxyl.overlay.ui.main.elements.PlayerStats
 import com.voxyl.overlay.ui.main.elements.StatsHeader
 import com.voxyl.overlay.ui.settings.elements.Settings
 
-lateinit var window: ComposeWindow
-
 @ExperimentalComposeUiApi
 @Composable
 fun MainScreen(frameWindowScope: FrameWindowScope) {
 
-    window = frameWindowScope.window
-
-    val lazyListState = rememberLazyListState()
+    val playerStatsLazyListState = rememberLazyListState()
     val settingsMenu = remember { mutableStateOf(false) }
     val additionalSettingsEnabled = remember { mutableStateOf(false) }
     val statsToShow =
@@ -39,19 +34,18 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
 
     BackgroundBox()
     TitleBox()
+
     VoxylLogoForTitleBar()
 
-    frameWindowScope.WindowDraggableArea(
-        modifier = Modifier.fillMaxWidth().height(64.dp)
-    )
+    frameWindowScope.WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
 
-    TitleBar(settingsMenu, additionalSettingsEnabled)
+    TitleBarButtonsAndFields(settingsMenu, additionalSettingsEnabled)
 
     if (settingsMenu.value) {
         Settings()
     } else {
         StatsHeader(statsToShow)
-        PlayerStats(statsToShow, lazyListState)
+        PlayerStats(statsToShow, playerStatsLazyListState)
     }
 
     AdditionalSettings(additionalSettingsEnabled)

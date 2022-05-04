@@ -2,7 +2,7 @@ package com.voxyl.overlay.data.player
 
 import com.google.gson.JsonObject
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.BWP_API_KEY
+import com.voxyl.overlay.config.ConfigKeys.BwpApiKey
 import com.voxyl.overlay.data.apis.ApiProvider
 import com.voxyl.overlay.data.apis.BWPApi
 import com.voxyl.overlay.data.apis.UUIDApi
@@ -28,12 +28,16 @@ class Player private constructor(
         with(bwpStats) {
             stats["name"] = name
             stats["uuid"] = uuid
+
             addStatsFromJsonToStatsMap(playerInfoJson.json, "bwp")
             addStatsFromJsonToStatsMap(overallStatsJson.json, "bwp")
             addStatsFromJsonToStatsMap(gameStatsJson.json, "bwp")
+
             stats += gameStatsJson.toOverallGameStats().map {
                 "bwp.${it.key}" to it.value
             }
+
+            stats["bwp.role"] = stats["bwp.role"]?.replace("\"", "") ?: "None"
         }
     }
 
@@ -55,7 +59,7 @@ class Player private constructor(
     companion object {
         fun makePlayer(
             name: String,
-            apiKey: String = Config[BWP_API_KEY] ?: "",
+            apiKey: String = Config[BwpApiKey],
             bwpApi: BWPApi = ApiProvider.getBWPApi()
         ): Flow<Status<Player>> = flow {
 
@@ -95,31 +99,29 @@ class Player private constructor(
         }
 
         private suspend fun getUUID(name: String, uuidApi: UUIDApi = ApiProvider.getUUIDApi()): String {
-            val uuid = uuidApi.getUUID(name)
+            return withContext(Dispatchers.IO) {
+                val uuid = uuidApi.getUUID(name)
 
-            if (!uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".toRegex())) {
-                throw IOException("'$name' doesn't exist or UUID api is down")
+                if (!uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".toRegex())) {
+                    throw IOException("'$name' doesn't exist or UUID api is down")
+                }
+
+                return@withContext uuid
             }
-
-            return uuid
         }
 
         private suspend fun getBWPStats(uuid: String, apiKey: String, bwpApi: BWPApi): BWPStats {
-            lateinit var playerInfoJson: JsonObject
-            lateinit var overallStatsJson: JsonObject
-            lateinit var gameStatsJson: JsonObject
+            return withContext(Dispatchers.IO) {
+                val playerInfoJson = async { bwpApi.getPlayerInfo(uuid, apiKey) }
+                val overallStatsJson = async { bwpApi.getOverallStats(uuid, apiKey) }
+                val gameStatsJson = async { bwpApi.getGameStats(uuid, apiKey) }
 
-            runBlocking {
-                launch(Dispatchers.IO) { playerInfoJson = bwpApi.getPlayerInfo(uuid, apiKey) }
-                launch(Dispatchers.IO) { overallStatsJson = bwpApi.getOverallStats(uuid, apiKey) }
-                launch(Dispatchers.IO) { gameStatsJson = bwpApi.getGameStats(uuid, apiKey) }
+                return@withContext BWPStats(
+                    OverallStatsJson(overallStatsJson.await()),
+                    PlayerInfoJson(playerInfoJson.await()),
+                    GameStatsJson(gameStatsJson.await())
+                )
             }
-
-            return BWPStats(
-                OverallStatsJson(overallStatsJson),
-                PlayerInfoJson(playerInfoJson),
-                GameStatsJson(gameStatsJson)
-            )
         }
     }
 }

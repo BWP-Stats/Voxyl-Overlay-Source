@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE
-import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE_DELAY
+import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHideDelay
 import com.voxyl.overlay.ui.common.elements.MyCheckbox
 import com.voxyl.overlay.ui.common.elements.MySlider
 import com.voxyl.overlay.ui.common.elements.MyText
@@ -28,10 +28,10 @@ fun AutoShowAndHideCheckBox(autoHide: MutableState<Boolean>, modifier: Modifier 
             checked = autoHide.value,
             onCheckedChange = {
                 if (it) {
-                    Config[AUTO_SHOW_AND_HIDE] = "true"
+                    Config[AutoShowAndHide] = "true"
                     autoHide.value = it
                 } else {
-                    Config[AUTO_SHOW_AND_HIDE] = "false"
+                    Config[AutoShowAndHide] = "false"
                     autoHide.value = it
                 }
             },
@@ -55,7 +55,7 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
     ) {
 
         var delay by remember {
-            mutableStateOf(Config[AUTO_SHOW_AND_HIDE_DELAY].toFloatOrNull() ?: 5f)
+            mutableStateOf(Config[AutoShowAndHideDelay].toFloatOrNull() ?: 5f)
         }
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -74,7 +74,7 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
             valueRange = 3f..15f,
             steps = 12,
             onValueChangeFinished = {
-                Config[AUTO_SHOW_AND_HIDE_DELAY] = delay.toString()
+                Config[AutoShowAndHideDelay] = delay.toString()
             },
         )
     }

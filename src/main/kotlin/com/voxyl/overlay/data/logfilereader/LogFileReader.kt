@@ -1,10 +1,10 @@
 package com.voxyl.overlay.data.logfilereader
 
-import com.voxyl.overlay.WINDOW
+import com.voxyl.overlay.Window
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.LOG_FILE_PATH
-import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE
-import com.voxyl.overlay.config.ConfigKeys.AUTO_SHOW_AND_HIDE_DELAY
+import com.voxyl.overlay.config.ConfigKeys.LogFilePath
+import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHideDelay
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import kotlinx.coroutines.*
 import java.io.BufferedReader
@@ -17,7 +17,7 @@ object LogFileReader {
 
     suspend fun start(cs: CoroutineScope) = withContext(Dispatchers.IO) {
 
-        val reader = Config.getOrNullIfBlank(LOG_FILE_PATH)?.let {
+        val reader = Config.getOrNullIfBlank(LogFilePath)?.let {
             try {
                 FileInputStream(it).bufferedReader(Charsets.UTF_8)
             } catch (e: FileNotFoundException) {
@@ -56,11 +56,11 @@ object LogFileReader {
             PlayerKindaButNotExactlyViewModel.add(it, cs)
         }
 
-        if (Config[AUTO_SHOW_AND_HIDE] == "true") {
+        if (Config[AutoShowAndHide] == "true") {
             cs.launch {
-                WINDOW.isAlwaysOnTop = true
-                delay(Config[AUTO_SHOW_AND_HIDE_DELAY].toLongOrNull() ?: 5000)
-                WINDOW.isMinimized = true
+                Window.isAlwaysOnTop = true
+                delay(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
+                Window.isMinimized = true
             }
         }
     }

@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.ADD_YOURSELF_TO_OVERLAY
+import com.voxyl.overlay.config.ConfigKeys.AddYourselfToOverlay
 import com.voxyl.overlay.ui.common.elements.MyCheckbox
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.common.elements.MyText
@@ -25,10 +25,10 @@ fun AddYourselfToOverlayCheckbox(addYourself: MutableState<Boolean>, modifier: M
             checked = addYourself.value,
             onCheckedChange = {
                 if (it) {
-                    Config[ADD_YOURSELF_TO_OVERLAY] = "true"
+                    Config[AddYourselfToOverlay] = "true"
                     addYourself.value = it
                 } else {
-                    Config[ADD_YOURSELF_TO_OVERLAY] = "false"
+                    Config[AddYourselfToOverlay] = "false"
                     addYourself.value = it
                 }
             },

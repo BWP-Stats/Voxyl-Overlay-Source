@@ -10,10 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerIconDefaults
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.PLAYER_NAME
+import com.voxyl.overlay.config.ConfigKeys.PlayerName
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.settings.elements.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
@@ -27,7 +28,7 @@ fun PlayerNameTextField() {
     val doOnEnter = doOnEnter@{
         if (!isValidName(name)) return@doOnEnter
 
-        Config[PLAYER_NAME] = name.text
+        Config[PlayerName] = name.text
         name = TextFieldValue()
     }
 
@@ -39,7 +40,7 @@ fun PlayerNameTextField() {
         isValid = { name.text.isBlank() || isValidName(it) },
         trailingIcon = {
             Icon(
-                bitmap = loadImageBitmap(File("src/main/resources/icons/eye.png").inputStream()),
+                painter = painterResource("icons/eye.png"),
                 contentDescription = null,
                 modifier = Modifier
                     .offset(x = (-4).dp, y = 5.dp)
@@ -48,7 +49,7 @@ fun PlayerNameTextField() {
                         icon = PointerIconDefaults.Hand
                     )
                     .clickable {
-                        name = TextFieldValue(Config.getOrNullIfBlank(PLAYER_NAME) ?: "No name saved")
+                        name = TextFieldValue(Config.getOrNullIfBlank(PlayerName) ?: "No name saved")
                     },
                 tint = MainWhiteLessOpaque
             )
@@ -66,9 +67,9 @@ fun PlayerNameTextField() {
 private fun getNameLabel(name: TextFieldValue, isValid: Boolean) =
     if (name.text.isNotBlank() && !isValid)
         "Please enter a valid name"
-    else if (Config[PLAYER_NAME.key]?.isBlank() == true)
+    else if (Config[PlayerName.key]?.isBlank() == true)
         "Enter your MC username"
     else
-        "Enter your MC username (${Config[PLAYER_NAME.key]})"
+        "Enter your MC username (${Config[PlayerName.key]})"
 
 private fun isValidName(tfv: TextFieldValue) = tfv.text.matches(Regex("\\w{1,16}"))

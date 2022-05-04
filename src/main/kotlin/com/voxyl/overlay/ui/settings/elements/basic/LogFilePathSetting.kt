@@ -11,10 +11,12 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.PointerIconDefaults
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.LOG_FILE_PATH
+import com.voxyl.overlay.config.ConfigKeys.LogFilePath
+import com.voxyl.overlay.config.LogFiles
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.settings.elements.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
@@ -28,7 +30,7 @@ fun LogFilePathTextField() {
     val doOnEnter = doOnEnter@{
         if (!isValidLogFilePath(logFilePath)) return@doOnEnter
 
-        Config[LOG_FILE_PATH] = logFilePath.text
+        Config[LogFilePath] = logFilePath.text
         logFilePath = TextFieldValue()
     }
 
@@ -49,10 +51,10 @@ fun LogFilePathTextField() {
         onValueChange = { logFilePath = it },
         doOnEnter = doOnEnter,
         isValid = { logFilePath.text.isBlank() || isValidLogFilePath(it) },
-        placeholder = "Type in 'badlion', 'lunar', or 'forge/pvplounge/vanilla' then `tab` to autofill common log file paths",
+        placeholder = "Type in 'badlion', 'lunar', or 'forge/feather/vanilla' then `tab` to autofill common log file paths",
         trailingIcon = {
             Icon(
-                bitmap = loadImageBitmap(File("src/main/resources/icons/eye.png").inputStream()),
+                painter = painterResource("icons/eye.png"),
                 contentDescription = null,
                 modifier = Modifier
                     .offset(x = (-4).dp, y = 5.dp)
@@ -61,7 +63,7 @@ fun LogFilePathTextField() {
                         icon = PointerIconDefaults.Hand
                     )
                     .clickable {
-                        logFilePath = TextFieldValue(Config.getOrNullIfBlank(LOG_FILE_PATH) ?: "No LogFilePath saved")
+                        logFilePath = TextFieldValue(Config.getOrNullIfBlank(LogFilePath) ?: "No LogFilePath saved")
                     },
                 tint = MainWhiteLessOpaque
             )
@@ -78,20 +80,20 @@ fun LogFilePathTextField() {
 
 fun autofillLogFilePath(logFilePath: TextFieldValue, autoFillLogPath: (String) -> Unit) {
     val autofilledFilePath = when (logFilePath.text) {
-        "badlion" -> "badlion/logs/badlion.log"
-        "lunar" -> "lunar/logs/lunar.log"
-        "vanilla", "forge", "pvplounge" -> "vanilla/logs/vanilla.log"
+        "badlion" -> LogFiles.Badlion.path
+        "lunar" -> LogFiles.Lunar.path
+        "vanilla", "forge", "feather" -> LogFiles.Vanilla.path
         else -> logFilePath.text
     }
     autoFillLogPath(autofilledFilePath)
 }
 
-fun getLogFilePathLabel(LogFilePath: TextFieldValue, isValid: Boolean) =
-    if (LogFilePath.text.isNotBlank() && !isValid)
+fun getLogFilePathLabel(logFilePath: TextFieldValue, isValid: Boolean) =
+    if (logFilePath.text.isNotBlank() && !isValid)
         "Please enter a valid log file path"
-    else if (Config[LOG_FILE_PATH].isBlank())
+    else if (Config[LogFilePath].isBlank())
         "Enter your log file path"
     else
-        "Enter your log file path (${Config[LOG_FILE_PATH]})"
+        "Enter your log file path (${Config[LogFilePath]})"
 
 fun isValidLogFilePath(tfv: TextFieldValue) = tfv.text.contains(".log")

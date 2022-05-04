@@ -14,19 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.PointerIconDefaults
-import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.voxyl.overlay.Window
+import com.voxyl.overlay.config.SavedWindowState
+import com.voxyl.overlay.config.SavedWindowStateKeys.IsAlwaysOnTop
+import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.elements.ShapeThatIdkTheNameOf
+import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.theme.MainWhite
+import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 
 @ExperimentalComposeUiApi
 @Composable
 fun AdditionalSettings(
-    additionalSettingsEnabled: State<Boolean>,
+    additionalSettingsEnabled: MutableState<Boolean>
 ) {
     val animatedSize by animateDpAsState(
         targetValue = if (additionalSettingsEnabled.value) 170.dp else 0.dp
@@ -36,6 +37,16 @@ fun AdditionalSettings(
         Modifier
             .absolutePadding(top = 19.dp)
             .height(animatedSize)
+            .hoverable(
+                onEnter = { additionalSettingsEnabled.value = true; true },
+                onMove = {
+                    if (it.x < Window.size.width - 60) {
+                        additionalSettingsEnabled.value = false
+                    }
+                    false
+                },
+                onExit = { additionalSettingsEnabled.value = false; true }
+            )
             .fillMaxWidth()
     ) {
         if (animatedSize.value < 28) return@Box
@@ -45,28 +56,62 @@ fun AdditionalSettings(
                 Modifier.absolutePadding(top = 32.dp, left = 3.dp),
                 verticalArrangement = Arrangement.Center
             ) {
-                Icon(Icons.Filled.Clear, contentDescription = null, tint = MainWhite)
+                AlwaysOnTopButton()
+
                 Spacer(Modifier.height(3.dp))
+
+                ClearPlayersButton()
+
+                Spacer(Modifier.height(3.dp))
+
                 Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MainWhite)
-                Spacer(Modifier.height(3.dp))
-                Icon(Icons.Filled.Refresh, contentDescription = null, tint = MainWhite)
-                Spacer(Modifier.height(3.dp))
-
-                var starTint by remember { mutableStateOf(MainWhite) }
-
-                Icon(
-                    Icons.Filled.Star, contentDescription = null, tint = starTint,
-                    modifier = Modifier.clickable {
-                        window.isAlwaysOnTop = !(window.isAlwaysOnTop)
-                        starTint = if (window.isAlwaysOnTop) MainWhite.copy(alpha = .9f) else MainWhite
-                    }
-                )
 
                 Spacer(Modifier.height(3.dp))
+
+                RefreshAllButton()
+
+                Spacer(Modifier.height(3.dp))
+
                 Icon(Icons.Filled.Info, contentDescription = null, tint = MainWhite)
             }
         }
     }
+}
+
+@Composable
+fun AlwaysOnTopButton() {
+    var tint by remember { mutableStateOf(if (Window.isAlwaysOnTop) MainWhite.copy(alpha = .9f) else MainWhite) }
+
+    Icon(
+        Icons.Filled.Star, contentDescription = null, tint = tint,
+        modifier = Modifier.clickable {
+            Window.isAlwaysOnTop = !(Window.isAlwaysOnTop)
+            SavedWindowState[IsAlwaysOnTop] = Window.isAlwaysOnTop.toString()
+            tint = if (Window.isAlwaysOnTop) MainWhite.copy(alpha = .9f) else MainWhite
+        }
+    )
+}
+
+@Composable
+fun ClearPlayersButton() {
+    Icon(
+        Icons.Filled.Clear, contentDescription = null, tint = MainWhite,
+        modifier = Modifier.clickable {
+            PlayerKindaButNotExactlyViewModel.clear()
+        }
+    )
+}
+
+@Composable
+fun RefreshAllButton() {
+    val cs = rememberCoroutineScope()
+
+    Icon(
+        Icons.Filled.Refresh, contentDescription = null, tint = MainWhite,
+        modifier = Modifier.clickable {
+            PlayerKindaButNotExactlyViewModel.refreshAll(cs)
+        }
+    )
 }
 
 @Composable
@@ -80,6 +125,7 @@ fun AdditionalSettingsBox(modifier: Modifier = Modifier, content: @Composable Bo
                 clip = true
             }
             .background(color = Color(0, 0, 0, 164))
+            .requestFocusOnClick()
     ) {
         content()
     }

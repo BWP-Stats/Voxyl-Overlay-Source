@@ -1,6 +1,7 @@
 package com.voxyl.overlay.middleman
 
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.*
 import com.voxyl.overlay.data.player.Status
 import com.voxyl.overlay.data.player.Player
@@ -15,8 +16,10 @@ object PlayerKindaButNotExactlyViewModel {
     val players: SnapshotStateList<PlayerState>
         get() = _players
 
+    private var jobs = mutableStateListOf<Job>()
+
     fun add(name: String, cs: CoroutineScope) {
-        Player.makePlayer(name).onEach {
+        jobs += Player.makePlayer(name).onEach {
             _players += when (it) {
                 is Status.Loaded -> {
                     _players.remove(name)
@@ -40,6 +43,14 @@ object PlayerKindaButNotExactlyViewModel {
 
     fun clear() {
         _players.clear()
+        jobs.forEach { it.cancel() }
+        jobs.clear()
+    }
+
+    fun refreshAll(cs: CoroutineScope) {
+        val names = _players.map { it.name }
+        clear()
+        names.forEach { add(it, cs) }
     }
 
     fun remove(name: String) {

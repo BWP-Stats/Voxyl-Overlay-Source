@@ -17,6 +17,7 @@ import com.voxyl.overlay.ui.common.elements.MyTextField
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.common.elements.MyText
+import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
 import com.voxyl.overlay.ui.theme.tbsm
 import com.voxyl.overlay.ui.theme.titleBarSizeMulti
 import kotlinx.coroutines.launch
@@ -31,7 +32,6 @@ fun MainSearchBar(
     val focusManager = LocalFocusManager.current
 
     var focused by remember { mutableStateOf(false) }
-    var prevMulti by remember { mutableStateOf(0f) }
     val cs = rememberCoroutineScope()
 
     MyTextField(
@@ -55,14 +55,13 @@ fun MainSearchBar(
                 }
 
                 if (it.isFocused && !focused) {
-                    prevMulti = titleBarSizeMulti.value
                     cs.launch {
                         titleBarSizeMulti.animateTo(1f)
                     }
                     focused = true
                 } else if (!it.isFocused && focused) {
                     cs.launch {
-                        titleBarSizeMulti.animateTo(prevMulti)
+                        titleBarSizeMulti.animateTo(defaultTitleBarSizeMulti)
                     }
                     focused = false
                 }

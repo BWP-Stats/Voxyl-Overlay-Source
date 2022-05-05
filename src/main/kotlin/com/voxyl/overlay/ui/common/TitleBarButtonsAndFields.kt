@@ -100,7 +100,6 @@ fun GreenAdditionalSettingsButton(
             .hoverable(
                 onEnter = {
                     enabled.value = true
-                    prevMulti.value = titleBarSizeMulti.value
                     cs.launch {
                         titleBarSizeMulti.animateTo(1f)
                     }

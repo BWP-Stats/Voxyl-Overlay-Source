@@ -1,9 +1,13 @@
 package com.voxyl.overlay.ui.theme
 
 import androidx.compose.animation.core.Animatable
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.TitleBarSizeMulti
 
-//TODO add a default size variable to it can safely be animated without losing original value
-var titleBarSizeMulti = Animatable(.7f)
+var titleBarSizeMulti = Animatable(defaultTitleBarSizeMulti)
+
+val defaultTitleBarSizeMulti
+    get() = Config[TitleBarSizeMulti].toFloatOrNull() ?: .7f
 
 val Float.tbsm
     get() = (this * titleBarSizeMulti.value)

@@ -24,13 +24,11 @@ import com.voxyl.overlay.ui.common.elements.ShapeThatIdkTheNameOf
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
 import com.voxyl.overlay.ui.theme.titleBarSizeMulti
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
-
-//TODO: Extract prevMulti and additionalSettingsEnabled into a separate state
-val prevMulti = mutableStateOf(0f)
 
 @ExperimentalComposeUiApi
 @Composable
@@ -59,7 +57,7 @@ fun AdditionalSettings(
                     if (it.x < Window.size.width - 60 || it.y > 170) {
                         cs.launch {
                             delay(130)
-                            titleBarSizeMulti.animateTo(prevMulti.value)
+                            titleBarSizeMulti.animateTo(defaultTitleBarSizeMulti)
                         }
                         additionalSettingsEnabled.value = false
                     }

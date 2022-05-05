@@ -19,7 +19,7 @@ fun MyCheckbox(
         checkedColor = MainPurple,
         uncheckedColor = MainWhite,
         checkmarkColor = MainWhite,
-        disabledColor = MainWhiteLessOpaque,
+        disabledColor = MainWhite.copy(alpha = .313f).am,
         disabledIndeterminateColor = MaterialTheme.colors.secondary.copy(alpha = ContentAlpha.disabled)
     )
 ) {

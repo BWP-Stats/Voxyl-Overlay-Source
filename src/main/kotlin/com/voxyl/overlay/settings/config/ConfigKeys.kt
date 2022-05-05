@@ -1,4 +1,4 @@
-package com.voxyl.overlay.config
+package com.voxyl.overlay.settings.config
 
 enum class ConfigKeys(var key: String, var defaultValue: String) {
     HypixelApiKey("hypixel_api_key", ""),
@@ -11,4 +11,7 @@ enum class ConfigKeys(var key: String, var defaultValue: String) {
 
     AutoShowAndHide("auto_show_and_hide", "false"),
     AutoShowAndHideDelay("auto_show_and_hide_delay", "5"),
+
+    Opacity("opacity", "1"),
+    TitleBarSizeMulti("title_bar_size_multi", "1"),
 }

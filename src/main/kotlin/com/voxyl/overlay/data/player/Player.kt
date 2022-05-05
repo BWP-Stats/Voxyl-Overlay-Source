@@ -1,8 +1,8 @@
 package com.voxyl.overlay.data.player
 
 import com.google.gson.JsonObject
-import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.BwpApiKey
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.BwpApiKey
 import com.voxyl.overlay.data.apis.ApiProvider
 import com.voxyl.overlay.data.apis.BWPApi
 import com.voxyl.overlay.data.apis.UUIDApi

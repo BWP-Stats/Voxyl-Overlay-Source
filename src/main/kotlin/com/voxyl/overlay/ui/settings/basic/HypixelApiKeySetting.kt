@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.settings.elements.basic
+package com.voxyl.overlay.ui.settings.basic
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.offset
@@ -9,36 +9,36 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerIconDefaults
 import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.BwpApiKey
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.HypixelApiKey
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
-import com.voxyl.overlay.ui.settings.elements.SettingsTextField
-import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
-import java.io.File
+import com.voxyl.overlay.ui.settings.SettingsTextField
+import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.ui.theme.am
+
 
 @ExperimentalComposeUiApi
 @Composable
-fun BWPApiKeyTextField() {
+fun HypixelApiKeyTextField() {
     var apiKey by remember { mutableStateOf(TextFieldValue()) }
 
     val doOnEnter = doOnEnter@{
-        if (!isValidBwpApiKey(apiKey)) return@doOnEnter
+        if (!isValidHypixelApiKey(apiKey)) return@doOnEnter
 
-        Config[BwpApiKey] = apiKey.text
+        Config[HypixelApiKey] = apiKey.text
         apiKey = TextFieldValue()
     }
 
     SettingsTextField(
-        text = getBwpApiKeyLabel(apiKey, isValidBwpApiKey(apiKey)),
-        placeholder = "'/api new' or '/api get' in BWP",
+        text = getHypixelApiKeyLabel(apiKey, isValidHypixelApiKey(apiKey)),
+        placeholder = "'/api new' in Hypixel",
         value = apiKey,
         onValueChange = { apiKey = it },
         doOnEnter = doOnEnter,
-        isValid = { apiKey.text.isBlank() || isValidBwpApiKey(it) },
+        isValid = { apiKey.text.isBlank() || isValidHypixelApiKey(it) },
         trailingIcon = {
             Icon(
                 painter = painterResource("icons/eye.png"),
@@ -50,27 +50,28 @@ fun BWPApiKeyTextField() {
                         icon = PointerIconDefaults.Hand
                     )
                     .clickable {
-                        apiKey = TextFieldValue(Config.getOrNullIfBlank(BwpApiKey) ?: "No API key saved")
+                        apiKey = TextFieldValue(Config.getOrNullIfBlank(HypixelApiKey) ?: "No API key saved")
                     },
-                tint = MainWhiteLessOpaque
+                tint = MainWhite.copy(alpha = .313f).am
             )
             MyTrailingIcon(
                 modifier = Modifier
                     .offset(x = 10.dp, y = 5.dp)
                     .size(12.dp, 12.dp)
             ) {
-                if (isValidBwpApiKey(apiKey)) doOnEnter()
+                if (isValidHypixelApiKey(apiKey)) doOnEnter()
             }
         }
     )
 }
 
-fun getBwpApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
+private fun getHypixelApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
     if (apiKey.text.isNotBlank() && !isValid)
-        "API key must be 32 chars and contain only letters & numbers"
-    else if (Config[BwpApiKey].isBlank())
-        "Enter your BWP API key"
+        "Please enter a valid API key"
+    else if (Config[HypixelApiKey].isBlank())
+        "Enter your Hypixel API key"
     else
-        "Enter your BWP API key (${Config[BwpApiKey].substring(0, 11) + "*".repeat(22)})"
+        "Enter your Hypixel API key (${Config[HypixelApiKey].substring(0, 11) + "*".repeat(22)})"
 
-fun isValidBwpApiKey(tfv: TextFieldValue) = tfv.text.matches(Regex("[a-zA-Z0-9]{32}"))
+private fun isValidHypixelApiKey(tfv: TextFieldValue) =
+    tfv.text.matches(Regex("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))

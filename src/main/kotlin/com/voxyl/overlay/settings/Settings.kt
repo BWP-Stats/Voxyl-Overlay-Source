@@ -1,4 +1,7 @@
-package com.voxyl.overlay.config
+package com.voxyl.overlay.settings
+
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.window.SavedWindowState
 
 object Settings {
 

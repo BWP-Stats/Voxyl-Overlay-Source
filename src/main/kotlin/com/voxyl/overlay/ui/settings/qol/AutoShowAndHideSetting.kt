@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.settings.elements.qol
+package com.voxyl.overlay.ui.settings.qol
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -6,9 +6,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHide
-import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHideDelay
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
 import com.voxyl.overlay.ui.common.elements.MyCheckbox
 import com.voxyl.overlay.ui.common.elements.MySlider
 import com.voxyl.overlay.ui.common.elements.MyText
@@ -60,7 +60,7 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        autoShowAndHideDelayText(delay)
+        AutoShowAndHideDelayText(delay)
 
         Spacer(modifier = Modifier.width(10.dp))
 
@@ -81,7 +81,7 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
 }
 
 @Composable
-private fun autoShowAndHideDelayText(delay: Float) = if (delay.toInt() < 10) {
+private fun AutoShowAndHideDelayText(delay: Float) = if (delay.toInt() < 10) {
     MyText("Auto show and hide delay (${delay.toInt()} sec)", color = MainWhite, fontSize = 12.sp)
     Spacer(modifier = Modifier.width(17.dp))
 } else {

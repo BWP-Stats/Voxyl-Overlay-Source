@@ -1,4 +1,4 @@
-package com.voxyl.overlay.config
+package com.voxyl.overlay.settings.window
 
 enum class SavedWindowStateKeys(var key: String, var defaultValue: String) {
     Width("saved_width", "650"),

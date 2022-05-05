@@ -1,22 +1,23 @@
 package com.voxyl.overlay.ui.theme
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.Opacity
 
-val MainPurpleLessOpaque = Color(130, 32, 229, 110)
-val MainPurple = Color(130, 32, 229, 160)
-val MainPurpleMoreOpaque = Color(130, 32, 229, 240)
+var alphaMultiplier = mutableStateOf(Config[Opacity].toFloatOrNull() ?: 1f)
 
-val MainWhiteLessOpaque = Color(212, 212, 212, 80)
-val MainWhite = Color(230, 230, 230, 180)
-val MainWhiteMoreOpaque = Color(212, 212, 212, 240)
+val Color.am
+    get() = this.copy((this.alpha * alphaMultiplier.value).coerceIn(0f, 1f))
 
-val BackgroundColor = Color(0, 0, 0, 72)
-val SurfaceColor = Color(0, 0, 0, 51)
+val Float.amf
+    get() = (this * alphaMultiplier.value).coerceIn(0f, 1f)
 
-val ErrorColor = Color(191, 73, 73, 230)
+val MainPurple
+    get() = Color(130, 32, 229, 160).am
 
-val OnPrimaryWhite = Color(230, 230, 230, 230)
-val OnSecondaryPurple = Color(130, 32, 229, 230)
-val OnBackground = Color(230, 230, 230, 215)
-val OnSurface = Color(230, 230, 230, 215)
-val OnError = Color(230, 230, 230, 230)
+val MainWhite
+    get() = Color(230, 230, 230, 180).am
+
+val ErrorColor
+    get() = Color(191, 73, 73, 230).am

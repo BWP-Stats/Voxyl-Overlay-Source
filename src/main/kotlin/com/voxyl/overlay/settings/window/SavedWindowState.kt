@@ -1,11 +1,11 @@
-package com.voxyl.overlay.config
+package com.voxyl.overlay.settings.window
 
 import com.voxyl.overlay.Window
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
-import com.voxyl.overlay.config.SavedWindowStateKeys.*
+import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
 
 object SavedWindowState {
 
@@ -26,7 +26,7 @@ object SavedWindowState {
     }
 
     private fun addPropertiesIfNotPresent(
-        state: Properties = this.state,
+        state: Properties = SavedWindowState.state,
     ) {
         SavedWindowStateKeys.values().forEach {
             if (propertyIsntValid(it, state)) {
@@ -35,7 +35,7 @@ object SavedWindowState {
         }
     }
 
-    private fun propertyIsntValid(key: SavedWindowStateKeys, state: Properties = this.state) =
+    private fun propertyIsntValid(key: SavedWindowStateKeys, state: Properties = SavedWindowState.state) =
         !state.containsKey(key.key) || state[key.key] == null || state.getProperty(key.key).isBlank()
 
     operator fun get(key: String): String? {
@@ -62,7 +62,7 @@ object SavedWindowState {
         return state.getProperty(key.key)?.takeIf { it.isNotBlank() }
     }
 
-    fun store(path: String = "${defaultPath}/.voverlay/window-state.properties") {
+    fun store(path: String = "$defaultPath/.voverlay/window-state.properties") {
         updateSavedWindowState()
         state.store(FileOutputStream(path), null)
     }
@@ -79,7 +79,7 @@ object SavedWindowState {
         return state.getProperty(key) != null && state.getProperty(key) != ""
     }
 
-    private fun makeConfigFileIfNotPresent(path: String = "${defaultPath}/.voverlay/window-state.properties") {
+    private fun makeConfigFileIfNotPresent(path: String = "$defaultPath/.voverlay/window-state.properties") {
         val configFile = File(path)
 
         if (!configFile.exists()) {

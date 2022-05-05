@@ -1,4 +1,4 @@
-package com.voxyl.overlay.config
+package com.voxyl.overlay.settings.config
 
 import java.io.File
 import java.io.FileInputStream
@@ -24,7 +24,7 @@ object Config {
     }
 
     private fun addPropertiesIfNotPresent(
-        config: Properties = this.config,
+        config: Properties = Config.config,
     ) {
         ConfigKeys.values().forEach {
             if (propertyIsntValid(it, config)) {
@@ -33,7 +33,7 @@ object Config {
         }
     }
 
-    private fun propertyIsntValid(key: ConfigKeys, config: Properties = this.config) =
+    private fun propertyIsntValid(key: ConfigKeys, config: Properties = Config.config) =
         !config.containsKey(key.key) || config[key.key] == null || config.getProperty(key.key).isBlank()
 
     operator fun get(key: String): String? {

@@ -16,11 +16,15 @@ import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.Window
-import com.voxyl.overlay.config.Settings
+import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.main.elements.MainSearchBar
+import com.voxyl.overlay.ui.mainview.MainSearchBar
+import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.ui.theme.tbsm
+import com.voxyl.overlay.ui.theme.titleBarSizeMulti
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 @ExperimentalComposeUiApi
@@ -35,7 +39,7 @@ fun TitleBarButtonsAndFields(
 
     Row(
         Modifier
-            .absolutePadding(top = 20.dp)
+            .absolutePadding(top = 20.tbsm.dp)
             .fillMaxWidth()
     ) {
         PurpleSettingsButton(settingsMenu = settingsMenuToggled)
@@ -57,15 +61,15 @@ fun TitleBarButtonsAndFields(
 
 @Composable
 fun PurpleSettingsButton(modifier: Modifier = Modifier, settingsMenu: MutableState<Boolean>) = TitleBarButton(
-    modifier = modifier.absolutePadding(left = 52.dp),
-    bgColor = mutableStateOf(Color(130, 32, 229, 160)),
+    modifier = modifier.absolutePadding(left = 52.tbsm.dp),
+    bgColor = mutableStateOf(Color(130, 32, 229, 160).am),
     doOnClick = { settingsMenu.value = !settingsMenu.value },
 )
 
 @Composable
 fun RedCloseOverlayButton(modifier: Modifier = Modifier) = TitleBarButton(
-    modifier = modifier.absolutePadding(right = 10.dp),
-    bgColor = mutableStateOf(Color(190, 18, 60, 160)),
+    modifier = modifier.absolutePadding(right = 10.tbsm.dp),
+    bgColor = mutableStateOf(Color(190, 18, 60, 160).am),
     doOnClick = {
         Settings.storeAll()
         exitProcess(0)
@@ -74,8 +78,8 @@ fun RedCloseOverlayButton(modifier: Modifier = Modifier) = TitleBarButton(
 
 @Composable
 fun YellowMinimizeButton(modifier: Modifier = Modifier) = TitleBarButton(
-    modifier = modifier.absolutePadding(right = 10.dp),
-    bgColor = mutableStateOf(Color(251, 191, 36, 160)),
+    modifier = modifier.absolutePadding(right = 10.tbsm.dp),
+    bgColor = mutableStateOf(Color(251, 191, 36, 160).am),
     doOnClick = {
         Window.isMinimized = true
     }
@@ -86,15 +90,26 @@ fun GreenAdditionalSettingsButton(
     enabled: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
+    val cs = rememberCoroutineScope()
     val alpha = if (enabled.value) 235 else 160
 
     TitleBarButton(
-        bgColor = mutableStateOf(Color(34, 197, 94, alpha)),
+        bgColor = mutableStateOf(Color(34, 197, 94, alpha).am),
         doOnClick = { },
-        modifier = modifier.absolutePadding(right = 26.dp)
+        modifier = modifier.absolutePadding(right = 26.tbsm.dp)
             .hoverable(
-                onEnter = { enabled.value = true; true },
-                onExit = { enabled.value = false; true }
+                onEnter = {
+                    enabled.value = true
+                    prevMulti.value = titleBarSizeMulti.value
+                    cs.launch {
+                        titleBarSizeMulti.animateTo(1f)
+                    }
+                    true
+                },
+                onExit = {
+                    enabled.value = false
+                    true
+                }
             ),
     )
 }
@@ -107,14 +122,14 @@ fun TitleBarButton(
     content: @Composable RowScope.() -> Unit = { },
 ) = Button(
     modifier = modifier
-        .size(28.dp)
+        .size(28.tbsm.dp)
         .requestFocusOnClick(),
     colors = object : ButtonColors {
         @Composable
         override fun backgroundColor(enabled: Boolean) = bgColor
 
         @Composable
-        override fun contentColor(enabled: Boolean) = mutableStateOf(Color(220, 220, 220, 0))
+        override fun contentColor(enabled: Boolean) = mutableStateOf(Color(220, 220, 220, 0).am)
     },
     onClick = doOnClick,
     content = content,

@@ -30,11 +30,11 @@ fun MyTextField(
     modifier: Modifier = Modifier,
     label: @Composable() (() -> Unit)? = null,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(
-        unfocusedLabelColor = MainWhiteLessOpaque,
-        focusedLabelColor = MainPurpleMoreOpaque,
+        unfocusedLabelColor = MainWhite.copy(alpha = .313f).am,
+        focusedLabelColor = MainPurple.copy(alpha = .94f).am,
         unfocusedIndicatorColor = MainPurple,
-        focusedIndicatorColor = MainPurpleMoreOpaque,
-        textColor = MainWhiteMoreOpaque,
+        focusedIndicatorColor = MainPurple.copy(alpha = .94f).am,
+        textColor = MainWhite.copy(alpha = .94f).am,
         backgroundColor = Color.Transparent,
         errorLabelColor = ErrorColor,
         errorIndicatorColor = ErrorColor,
@@ -63,7 +63,7 @@ fun MyTextField(
 @Composable
 fun MyTrailingIcon(
     icon: ImageVector = Icons.Filled.Done,
-    tint: Color = MainWhiteLessOpaque,
+    tint: Color = MainWhite.copy(alpha = .313f).am,
     modifier: Modifier = Modifier,
     pointerIcon: PointerIcon = PointerIconDefaults.Hand,
     onClick: () -> Unit

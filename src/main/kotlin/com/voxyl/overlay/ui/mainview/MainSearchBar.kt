@@ -1,11 +1,15 @@
 @file:OptIn(ExperimentalComposeUiApi::class)
 
-package com.voxyl.overlay.ui.main.elements
+package com.voxyl.overlay.ui.mainview
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -13,6 +17,9 @@ import com.voxyl.overlay.ui.common.elements.MyTextField
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.common.elements.MyText
+import com.voxyl.overlay.ui.theme.tbsm
+import com.voxyl.overlay.ui.theme.titleBarSizeMulti
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainSearchBar(
@@ -23,22 +30,43 @@ fun MainSearchBar(
 ) {
     val focusManager = LocalFocusManager.current
 
+    var focused by remember { mutableStateOf(false) }
+    var prevMulti by remember { mutableStateOf(0f) }
+    val cs = rememberCoroutineScope()
+
     MyTextField(
         value = value,
         onValueChange = {
             doOnValueChange(it)
         },
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .absoluteOffset(y = (-16).dp)
-            .padding(horizontal = 10.dp)
-            .height(50.dp)
+            .padding(horizontal = 10.tbsm.dp)
+            .height(50f.tbsm.dp)
             .onEnterOrEsc(
                 focusManager,
                 doOnEnter,
                 value
-            ) { isValid(it) },
+            ) { isValid(it) }
+            .onFocusEvent {
+                if (50f.tbsm > 50f) {
+                    return@onFocusEvent
+                }
+
+                if (it.isFocused && !focused) {
+                    prevMulti = titleBarSizeMulti.value
+                    cs.launch {
+                        titleBarSizeMulti.animateTo(1f)
+                    }
+                    focused = true
+                } else if (!it.isFocused && focused) {
+                    cs.launch {
+                        titleBarSizeMulti.animateTo(prevMulti)
+                    }
+                    focused = false
+                }
+            },
         label = {
             MyText(
                 text = if (isValid(value)) "Search player(s)" else "Invalid characters and/or name(s) exceeds 16 chars",

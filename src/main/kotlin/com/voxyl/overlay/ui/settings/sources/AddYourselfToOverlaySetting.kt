@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.settings.elements.sources
+package com.voxyl.overlay.ui.settings.sources
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -6,8 +6,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.AddYourselfToOverlay
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.AddYourselfToOverlay
 import com.voxyl.overlay.ui.common.elements.MyCheckbox
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.common.elements.MyText

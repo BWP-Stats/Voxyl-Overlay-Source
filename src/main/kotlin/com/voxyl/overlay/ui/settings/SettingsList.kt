@@ -1,10 +1,11 @@
 @file:OptIn(ExperimentalComposeUiApi::class)
 
-package com.voxyl.overlay.ui.settings.elements
+package com.voxyl.overlay.ui.settings
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -13,24 +14,22 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.AddYourselfToOverlay
-import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHide
-import com.voxyl.overlay.ui.common.elements.MyTextField
-import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
-import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.AddYourselfToOverlay
+import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.ui.common.elements.*
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.main.elements.scrollbar
-import com.voxyl.overlay.ui.settings.elements.basic.BWPApiKeyTextField
-import com.voxyl.overlay.ui.settings.elements.basic.HypixelApiKeyTextField
-import com.voxyl.overlay.ui.settings.elements.basic.LogFilePathTextField
-import com.voxyl.overlay.ui.settings.elements.qol.AutoShowAndHideCheckBox
-import com.voxyl.overlay.ui.settings.elements.sources.AddYourselfToOverlayCheckbox
+import com.voxyl.overlay.ui.settings.basic.BWPApiKeyTextField
+import com.voxyl.overlay.ui.settings.basic.HypixelApiKeyTextField
+import com.voxyl.overlay.ui.settings.basic.LogFilePathTextField
+import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideCheckBox
+import com.voxyl.overlay.ui.settings.sources.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.theme.*
-import com.voxyl.overlay.ui.common.elements.MyText
-import com.voxyl.overlay.ui.settings.elements.basic.PlayerNameTextField
-import com.voxyl.overlay.ui.settings.elements.qol.AutoShowAndHideDelaySlider
-import com.voxyl.overlay.ui.settings.elements.sources.PinYourselfToTopCheckbox
+import com.voxyl.overlay.ui.settings.basic.PlayerNameTextField
+import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
+import com.voxyl.overlay.ui.settings.qol.OpacitySlider
+import com.voxyl.overlay.ui.settings.qol.TitleBarSizeSlider
+import com.voxyl.overlay.ui.settings.sources.PinYourselfToTopCheckbox
 
 @Composable
 fun Settings(
@@ -48,28 +47,36 @@ fun SettingsList(
     lazyListState: LazyListState,
     modifier: Modifier = Modifier
 ) {
+    val addYourself = remember {
+        mutableStateOf(Config[AddYourselfToOverlay].toBooleanStrictOrNull() ?: true)
+    }
+
+    val autoHide = remember {
+        mutableStateOf(Config[AutoShowAndHide].toBooleanStrictOrNull() ?: true)
+    }
+
+    val settings = remember {
+        mutableStateListOf<@Composable () -> Unit>(
+            { BWPApiKeyTextField() },
+            { HypixelApiKeyTextField() },
+            { PlayerNameTextField() },
+            { LogFilePathTextField() },
+            { PinYourselfToTopCheckbox(addYourself) },
+            { AddYourselfToOverlayCheckbox(addYourself) },
+            { AutoShowAndHideCheckBox(autoHide) },
+            { AutoShowAndHideDelaySlider(autoHide) },
+            { OpacitySlider() },
+            { TitleBarSizeSlider() },
+        )
+    }
+
     LazyColumn(
         state = lazyListState,
-        modifier = modifier.absoluteOffset(y = 60.dp).fillMaxSize().scrollbar(lazyListState).requestFocusOnClick(),
+        modifier = modifier.absoluteOffset(y = 60.tbsm.dp).fillMaxSize().scrollbar(lazyListState).requestFocusOnClick(),
         contentPadding = PaddingValues(bottom = 75.dp)
     ) {
-        item {
-            val addYourself = remember {
-                mutableStateOf(Config[AddYourselfToOverlay].toBooleanStrictOrNull() ?: true)
-            }
-
-            val autoHide = remember {
-                mutableStateOf(Config[AutoShowAndHide].toBooleanStrictOrNull() ?: true)
-            }
-
-            BWPApiKeyTextField()
-            HypixelApiKeyTextField()
-            PlayerNameTextField()
-            LogFilePathTextField()
-            PinYourselfToTopCheckbox(addYourself)
-            AddYourselfToOverlayCheckbox(addYourself)
-            AutoShowAndHideCheckBox(autoHide)
-            AutoShowAndHideDelaySlider(autoHide)
+        items(settings) {
+            it()
         }
     }
 }
@@ -106,7 +113,7 @@ fun SettingsTextField(
             )
         },
         placeholder = {
-            MyText(placeholder, fontSize = 12.sp, color = MainWhiteLessOpaque)
+            MyText(placeholder, fontSize = 12.sp, color = MainWhite.copy(alpha = .313f).am)
         },
         onValueChange = {
             onValueChange(it)

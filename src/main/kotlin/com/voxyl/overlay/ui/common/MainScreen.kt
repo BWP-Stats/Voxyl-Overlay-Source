@@ -18,9 +18,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.main.elements.PlayerStats
-import com.voxyl.overlay.ui.main.elements.StatsHeader
-import com.voxyl.overlay.ui.settings.elements.Settings
+import com.voxyl.overlay.ui.mainview.PlayerStats
+import com.voxyl.overlay.ui.mainview.StatsHeader
+import com.voxyl.overlay.ui.settings.Settings
+import com.voxyl.overlay.ui.theme.amf
+import com.voxyl.overlay.ui.theme.tbsm
 
 @ExperimentalComposeUiApi
 @Composable
@@ -55,11 +57,11 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
 fun VoxylLogoForTitleBar() {
     Image(
         modifier = Modifier
-            .size(60.dp)
+            .size(60.tbsm.dp)
             .requestFocusOnClick(),
         painter = painterResource("VoxylLogoForTitleBar.png"),
         contentDescription = null,
-        alpha = .8f
+        alpha = .8f.amf
     )
 }
 
@@ -77,9 +79,9 @@ fun BackgroundBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerSha
 fun TitleBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerShape(10.dp)) = Box(
 
     modifier = modifier
-        .absolutePadding(42.dp, 14.dp, 14.dp)
+        .absolutePadding(42.tbsm.dp, 14.tbsm.dp, 14.tbsm.dp)
         .fillMaxWidth()
-        .height(40.dp)
+        .height(40.tbsm.dp)
         .clip(shape)
         .background(Color(0f, 0f, 0f, .2f))
         .requestFocusOnClick()

@@ -21,16 +21,16 @@ fun MySlider(
     onValueChangeFinished: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     colors: SliderColors = SliderDefaults.colors(
-        thumbColor = MainPurpleMoreOpaque,
+        thumbColor = MainPurple.copy(alpha = .94f).am,
         disabledThumbColor = Color.Transparent,
         activeTrackColor = MainPurple,
-        inactiveTrackColor = MainPurpleLessOpaque,
-        disabledActiveTrackColor = MainWhite.copy(alpha = 0.1f),
-        disabledInactiveTrackColor = MainPurple.copy(alpha = 0.3f),
-        activeTickColor = MainWhite.copy(alpha = 0.6f),
-        inactiveTickColor = MainWhiteLessOpaque,
-        disabledActiveTickColor = MainWhiteLessOpaque,
-        disabledInactiveTickColor = MainWhite.copy(alpha = 0.3f)
+        inactiveTrackColor = MainPurple.copy(alpha = 0.43f).am,
+        disabledActiveTrackColor = MainWhite.copy(alpha = 0.1f).am,
+        disabledInactiveTrackColor = MainPurple.copy(alpha = 0.3f).am,
+        activeTickColor = MainWhite.copy(alpha = 0.6f).am,
+        inactiveTickColor = MainWhite.copy(alpha = .313f).am,
+        disabledActiveTickColor = MainWhite.copy(alpha = .313f).am,
+        disabledInactiveTickColor = MainWhite.copy(alpha = 0.3f).am
     )
 ) {
     Slider(

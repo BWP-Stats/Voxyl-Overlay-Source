@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.settings.elements.basic
+package com.voxyl.overlay.ui.settings.basic
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.offset
@@ -9,16 +9,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerIconDefaults
 import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.PlayerName
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.PlayerName
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
-import com.voxyl.overlay.ui.settings.elements.SettingsTextField
-import com.voxyl.overlay.ui.theme.MainWhiteLessOpaque
-import java.io.File
+import com.voxyl.overlay.ui.settings.SettingsTextField
+import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.ui.theme.am
 
 @ExperimentalComposeUiApi
 @Composable
@@ -51,7 +50,7 @@ fun PlayerNameTextField() {
                     .clickable {
                         name = TextFieldValue(Config.getOrNullIfBlank(PlayerName) ?: "No name saved")
                     },
-                tint = MainWhiteLessOpaque
+                tint = MainWhite.copy(alpha = .313f).am
             )
             MyTrailingIcon(
                 modifier = Modifier

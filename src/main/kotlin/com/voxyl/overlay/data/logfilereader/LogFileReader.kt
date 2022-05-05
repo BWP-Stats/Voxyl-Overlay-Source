@@ -1,10 +1,10 @@
 package com.voxyl.overlay.data.logfilereader
 
 import com.voxyl.overlay.Window
-import com.voxyl.overlay.config.Config
-import com.voxyl.overlay.config.ConfigKeys.LogFilePath
-import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHide
-import com.voxyl.overlay.config.ConfigKeys.AutoShowAndHideDelay
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
+import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import kotlinx.coroutines.*
 import java.io.BufferedReader

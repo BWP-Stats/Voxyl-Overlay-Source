@@ -12,13 +12,14 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.voxyl.overlay.config.SavedWindowState
-import com.voxyl.overlay.config.SavedWindowStateKeys.*
-import com.voxyl.overlay.config.Settings
 import com.voxyl.overlay.data.logfilereader.LogFileReader
+import com.voxyl.overlay.settings.Settings
+import com.voxyl.overlay.settings.window.SavedWindowState
+import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
 import com.voxyl.overlay.ui.common.MainScreen
 import kotlinx.coroutines.Dispatchers
 import java.awt.Dimension
+import java.util.*
 
 lateinit var Window: ComposeWindow
     private set

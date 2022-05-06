@@ -21,10 +21,12 @@ import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.MainSearchBar
 import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
 import com.voxyl.overlay.ui.theme.tbsm
 import com.voxyl.overlay.ui.theme.titleBarSizeMulti
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 import kotlin.system.exitProcess
 
 @ExperimentalComposeUiApi
@@ -103,10 +105,6 @@ fun GreenAdditionalSettingsButton(
                     cs.launch {
                         titleBarSizeMulti.animateTo(1f)
                     }
-                    true
-                },
-                onExit = {
-                    enabled.value = false
                     true
                 }
             ),

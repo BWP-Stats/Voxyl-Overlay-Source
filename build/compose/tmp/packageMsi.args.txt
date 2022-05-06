@@ -7,7 +7,7 @@
 --java-options
 "'-Dcompose.application.resources.dir=$APPDIR\\resources'"
 --main-jar
-"C:\\Users\\wanna\\Documents\\GitHub\\VoxylOverlayWithCompose\\build\\compose\\tmp\\packageMsi\\libs\\VoxylOverlayWithCompose-1.0-6b9e5296f261bf79cbf819717bc5d25.jar"
+"C:\\Users\\wanna\\Documents\\GitHub\\VoxylOverlayWithCompose\\build\\compose\\tmp\\packageMsi\\libs\\VoxylOverlayWithCompose-1.0-ddceeb94f5e359fe3ab5ce5931b2bb.jar"
 --main-class
 "com.voxyl.overlay.MainKt"
 --icon

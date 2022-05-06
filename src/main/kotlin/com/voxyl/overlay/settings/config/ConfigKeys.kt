@@ -14,4 +14,8 @@ enum class ConfigKeys(var key: String, var defaultValue: String) {
 
     Opacity("opacity", "1"),
     TitleBarSizeMulti("title_bar_size_multi", "1"),
+
+    CenterStats("center_stats", "false"),
+
+    ShowRankPrefix("show_rank_prefix", "false"),
 }

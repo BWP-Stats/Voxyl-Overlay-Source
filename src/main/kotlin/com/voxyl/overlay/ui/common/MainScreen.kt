@@ -32,7 +32,7 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
     val settingsMenu = remember { mutableStateOf(false) }
     val additionalSettingsEnabled = remember { mutableStateOf(false) }
     val statsToShow =
-        remember { mutableStateOf(listOf("bwp.level", "name", "bwp.role", "bwp.wins", "bwp.kills", "bwp.finals")) }
+        remember { mutableStateOf(listOf("bwp.level", "name", "bwp.wins", "bwp.kills", "bwp.finals")) }
 
     BackgroundBox()
     TitleBox()

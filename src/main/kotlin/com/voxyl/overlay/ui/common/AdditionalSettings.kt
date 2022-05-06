@@ -12,9 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.AlignmentLine
+import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.settings.window.SavedWindowState
@@ -22,55 +26,54 @@ import com.voxyl.overlay.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.elements.ShapeThatIdkTheNameOf
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.theme.MainWhite
-import com.voxyl.overlay.ui.theme.am
-import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
-import com.voxyl.overlay.ui.theme.titleBarSizeMulti
+import com.voxyl.overlay.ui.theme.*
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlin.math.abs
 import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 
 @ExperimentalComposeUiApi
 @Composable
 fun AdditionalSettings(
-    additionalSettingsEnabled: MutableState<Boolean>
+    additionalSettingsEnabled: MutableState<Boolean>,
+    modifier: Modifier = Modifier,
 ) {
-    //var prevMulti by remember { mutableStateOf(0f) }
     val cs = rememberCoroutineScope()
-    val animatedSize by animateDpAsState(
-        targetValue = if (additionalSettingsEnabled.value) 190.dp else 0.dp
-    )
+    val boxOffset = remember { Animatable(0f)}
+    val animatedSize = remember { Animatable(0f) }
+
+    LaunchedEffect(additionalSettingsEnabled.value) {
+        if (additionalSettingsEnabled.value) {
+            launch { boxOffset.animateTo(10f) }
+            animatedSize.animateTo(190f)
+        } else {
+            launch { boxOffset.animateTo(17.tbsm) }
+            animatedSize.animateTo(0f)
+        }
+    }
 
     Box(
-        Modifier
-            .absolutePadding(top = 19.dp)
-            .height(animatedSize)
-            .hoverable(
-                onEnter = {
-                    additionalSettingsEnabled.value = true
+        modifier
+            .padding(vertical = boxOffset.value.dp)
+            .height(animatedSize.value.dp)
+            .hoverable({
+                if (it.x < Window.size.width - 60 || it.y > 170) {
                     cs.launch {
-                        titleBarSizeMulti.animateTo(1f)
+                        titleBarSizeMulti.animateTo(defaultTitleBarSizeMulti)
                     }
-                    true
-                },
-                onMove = {
-                    if (it.x < Window.size.width - 60 || it.y > 170) {
-                        cs.launch {
-                            delay(130)
-                            titleBarSizeMulti.animateTo(defaultTitleBarSizeMulti)
-                        }
-                        additionalSettingsEnabled.value = false
-                    }
-                    false
+                    additionalSettingsEnabled.value = false
                 }
-            )
+                false
+            })
             .fillMaxWidth()
     ) {
-        if (animatedSize.value < 28) return@Box
+        if (animatedSize.value < 28.tbsm) return@Box
 
-        AdditionalSettingsBox(Modifier.align(Alignment.CenterEnd).absolutePadding(right = 25.dp)) {
+        AdditionalSettingsBox(Modifier.align(Alignment.CenterEnd).absolutePadding(right = 25.tbsm.dp)) {
             Column(
-                Modifier.absolutePadding(top = 32.dp, left = 3.dp),
+                Modifier.absolutePadding(top = 32.tbsm.dp, left = 3.tbsm.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 AlwaysOnTopButton()
@@ -109,14 +112,18 @@ fun AlwaysOnTopButton() {
         )
     )
 
+    var windowOnTop by remember { mutableStateOf(Window.isAlwaysOnTop) }
+
     Icon(
         Icons.Filled.Star, contentDescription = null, tint = tint,
         modifier = Modifier
-            .rotate(if (Window.isAlwaysOnTop) rotation else 0f)
+            .rotate(if (windowOnTop) rotation else 0f)
             .clickable {
                 Window.isAlwaysOnTop = !(Window.isAlwaysOnTop)
-                SavedWindowState[IsAlwaysOnTop] = Window.isAlwaysOnTop.toString()
-                tint = if (Window.isAlwaysOnTop) MainWhite.copy(alpha = .9f).am else MainWhite
+                SavedWindowState[IsAlwaysOnTop] = windowOnTop.toString()
+                windowOnTop = Window.isAlwaysOnTop
+
+                tint = if (windowOnTop) MainWhite.copy(alpha = .9f).am else MainWhite
             }
     )
 }
@@ -147,8 +154,8 @@ fun RefreshAllButton() {
 fun AdditionalSettingsBox(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
     Box(
         modifier = modifier
-            .width(30.dp)
-            .height(170.dp)
+            .width(30.tbsm.dp)
+            .height(170.tbsm.dp)
             .graphicsLayer {
                 shape = ShapeThatIdkTheNameOf(Size(30f, 108f))
                 clip = true

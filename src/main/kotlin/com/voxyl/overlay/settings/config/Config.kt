@@ -27,13 +27,13 @@ object Config {
         config: Properties = Config.config,
     ) {
         ConfigKeys.values().forEach {
-            if (propertyIsntValid(it, config)) {
+            if (propertyIsNotValid(it, config)) {
                 config.setProperty(it.key, it.defaultValue)
             }
         }
     }
 
-    private fun propertyIsntValid(key: ConfigKeys, config: Properties = Config.config) =
+    private fun propertyIsNotValid(key: ConfigKeys, config: Properties = Config.config) =
         !config.containsKey(key.key) || config[key.key] == null || config.getProperty(key.key).isBlank()
 
     operator fun get(key: String): String? {

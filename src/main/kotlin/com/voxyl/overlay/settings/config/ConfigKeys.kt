@@ -17,5 +17,9 @@ enum class ConfigKeys(var key: String, var defaultValue: String) {
 
     CenterStats("center_stats", "false"),
 
-    ShowRankPrefix("show_rank_prefix", "false"),
+    ShowRankPrefix("show_rank_prefix", "true"),
+
+    R("r", "130"),
+    G("g", "32"),
+    B("b", "229"),
 }

@@ -19,8 +19,7 @@ import com.voxyl.overlay.settings.config.ConfigKeys.AddYourselfToOverlay
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
 import com.voxyl.overlay.ui.common.elements.*
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.settings.appearances.CenterStatsCheckBox
-import com.voxyl.overlay.ui.settings.appearances.ShowRankPrefixSetting
+import com.voxyl.overlay.ui.settings.appearances.*
 import com.voxyl.overlay.ui.settings.basic.BWPApiKeyTextField
 import com.voxyl.overlay.ui.settings.basic.HypixelApiKeyTextField
 import com.voxyl.overlay.ui.settings.basic.LogFilePathTextField
@@ -29,8 +28,6 @@ import com.voxyl.overlay.ui.settings.qol.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.theme.*
 import com.voxyl.overlay.ui.settings.basic.PlayerNameTextField
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
-import com.voxyl.overlay.ui.settings.qol.OpacitySlider
-import com.voxyl.overlay.ui.settings.appearances.TitleBarSizeSlider
 import com.voxyl.overlay.ui.settings.sources.PinYourselfToTopCheckbox
 
 @Composable
@@ -71,6 +68,9 @@ fun SettingsList(
             { TitleBarSizeSlider() },
             { CenterStatsCheckBox() },
             { ShowRankPrefixSetting() },
+            { RSlider() },
+            { GSlider() },
+            { BSlider() },
         )
     }
 

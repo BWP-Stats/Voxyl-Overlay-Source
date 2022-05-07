@@ -7,7 +7,7 @@
 --java-options
 "'-Dcompose.application.resources.dir=$APPDIR\\resources'"
 --main-jar
-"C:\\Users\\wanna\\Documents\\GitHub\\VoxylOverlayWithCompose\\build\\compose\\tmp\\createDistributable\\libs\\VoxylOverlayWithCompose-1.0-ddceeb94f5e359fe3ab5ce5931b2bb.jar"
+"C:\\Users\\wanna\\Documents\\GitHub\\VoxylOverlayWithCompose\\build\\compose\\tmp\\createDistributable\\libs\\VoxylOverlayWithCompose-1.0-bfc0c5b5efb2b115673c4495e2cc47.jar"
 --main-class
 "com.voxyl.overlay.MainKt"
 --icon
@@ -23,4 +23,4 @@
 --name
 "Voxyl Overlay"
 --app-version
-"0.0.1"
+"0.0.2"

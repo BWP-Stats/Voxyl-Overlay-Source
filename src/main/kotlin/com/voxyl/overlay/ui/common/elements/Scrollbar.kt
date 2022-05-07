@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.voxyl.overlay.ui.theme.MainColor
 import com.voxyl.overlay.ui.theme.am
 
 @Composable
@@ -47,7 +48,7 @@ fun Modifier.scrollbar(
             val scrollbarHeight = state.layoutInfo.visibleItemsInfo.size * elementHeight - 40
 
             drawRect(
-                color = Color(130, 32, 229, 255).am,
+                color = MainColor.value,
                 topLeft = Offset(this.size.width - width.toPx(), scrollbarOffsetY),
                 size = Size(width.toPx(), scrollbarHeight),
                 alpha = alpha

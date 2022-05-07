@@ -43,7 +43,6 @@ fun TitleBarSizeSlider(modifier: Modifier = Modifier) {
             },
             modifier = Modifier.fillMaxWidth(),
             valueRange = .7f..1.4f,
-            steps = 0,
             onValueChangeFinished = {
                 Config[TitleBarSizeMulti] = titleBarSizeMulti.value.toString()
             },

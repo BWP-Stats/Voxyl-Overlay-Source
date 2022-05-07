@@ -10,6 +10,7 @@ import com.voxyl.overlay.data.dto.BWPStats
 import com.voxyl.overlay.data.dto.GameStatsJson
 import com.voxyl.overlay.data.dto.OverallStatsJson
 import com.voxyl.overlay.data.dto.PlayerInfoJson
+import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,7 +27,7 @@ class Player private constructor(
 
     init {
         with(bwpStats) {
-            stats["name"] = name
+            stats["name"] = playerInfoJson.json["lastLoginName"].toString().trim('"')
             stats["uuid"] = uuid
 
             addStatsFromJsonToStatsMap(playerInfoJson.json, "bwp")
@@ -37,7 +38,7 @@ class Player private constructor(
                 "bwp.${it.key}" to it.value
             }
 
-            stats["bwp.role"] = stats["bwp.role"]?.replace("\"", "") ?: "None"
+            stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "None"
         }
     }
 
@@ -65,8 +66,21 @@ class Player private constructor(
 
             println("Making player $name")
 
+
+            if (HomemadeCache[name]?.player != null) {
+                val player = HomemadeCache[name]?.player ?: makePlayer(name)
+
+                println("Found player $name in cache maybe")
+
+                if (player is Player) {
+                    println("Player $name found in cache")
+                    emit(Status.Loaded(player, name = name))
+                }
+                return@flow
+            }
+
             try {
-                emit(Status.Loading(playerName = name))
+                emit(Status.Loading(name = name))
 
                 lateinit var uuid: String
                 runBlocking {
@@ -76,14 +90,14 @@ class Player private constructor(
                 emit(
                     Status.Loaded(
                         Player(name, uuid, getBWPStats(uuid, apiKey, bwpApi)),
-                        playerName = name
+                        name = name
                     )
                 )
             } catch (e: HttpException) {
                 emit(
                     Status.Error(
                         e.localizedMessage ?: "An unexpected error occurred trying to reach the BWP API for '$name'",
-                        playerName = name
+                        name = name
                     )
                 )
                 println(e.localizedMessage)
@@ -92,7 +106,7 @@ class Player private constructor(
                 emit(
                     Status.Error(
                         e.localizedMessage ?: "IOException for '$name'; either your wifi or the BWP API is down",
-                        playerName = name
+                        name = name
                     )
                 )
             }

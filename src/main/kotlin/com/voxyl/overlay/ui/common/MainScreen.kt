@@ -12,15 +12,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.mainview.PlayerStats
-import com.voxyl.overlay.ui.mainview.StatsHeader
+import com.voxyl.overlay.ui.mainview.playerstats.PlayerStats
+import com.voxyl.overlay.ui.mainview.playerstats.StatsHeader
 import com.voxyl.overlay.ui.settings.Settings
+import com.voxyl.overlay.ui.theme.MainColor
 import com.voxyl.overlay.ui.theme.amf
 import com.voxyl.overlay.ui.theme.tbsm
 
@@ -31,8 +34,7 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
     val playerStatsLazyListState = rememberLazyListState()
     val settingsMenu = remember { mutableStateOf(false) }
     val additionalSettingsEnabled = remember { mutableStateOf(false) }
-    val statsToShow =
-        remember { mutableStateOf(listOf("bwp.level", "name", "bwp.wins", "bwp.kills", "bwp.finals")) }
+    val statsToShow = remember { mutableStateListOf("bwp.level", "name", "bwp.wins", "bwp.kills", "bwp.finals") }
 
     BackgroundBox()
     TitleBox()
@@ -61,13 +63,13 @@ fun VoxylLogoForTitleBar() {
             .requestFocusOnClick(),
         painter = painterResource("VoxylLogoForTitleBar.png"),
         contentDescription = null,
-        alpha = .8f.amf
+        alpha = .8f.amf,
+        colorFilter = ColorFilter.tint(MainColor.value.copy(alpha = 1f), BlendMode.SrcIn)
     )
 }
 
 @Composable
 fun BackgroundBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerShape(10.dp)) = Box(
-
     modifier = modifier
         .fillMaxSize()
         .clip(shape)
@@ -77,7 +79,6 @@ fun BackgroundBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerSha
 
 @Composable
 fun TitleBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerShape(10.dp)) = Box(
-
     modifier = modifier
         .absolutePadding(42.tbsm.dp, 14.tbsm.dp, 14.tbsm.dp)
         .fillMaxWidth()

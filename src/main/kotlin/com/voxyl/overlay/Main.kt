@@ -12,6 +12,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.data.logfilereader.LogFileReader
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.settings.window.SavedWindowState
@@ -49,6 +50,7 @@ fun main()  = application {
         val cs = rememberCoroutineScope { Dispatchers.IO }
 
         LaunchedEffect(Unit) {
+            HomemadeCache.startAutoClear(cs, 5000L)
             LogFileReader.start(cs)
         }
 

@@ -41,7 +41,7 @@ fun MainSearchBar(
         },
         modifier = modifier
             .fillMaxWidth()
-            .absoluteOffset(y = (-16).dp)
+            .absoluteOffset(y = -16.dp)
             .padding(horizontal = 10.tbsm.dp)
             .height(50f.tbsm.dp)
             .onEnterOrEsc(

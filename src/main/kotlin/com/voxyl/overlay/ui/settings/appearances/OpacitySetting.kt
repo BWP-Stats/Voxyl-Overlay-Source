@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.settings.qol
+package com.voxyl.overlay.ui.settings.appearances
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -12,7 +12,6 @@ import com.voxyl.overlay.ui.common.elements.MySlider
 import com.voxyl.overlay.ui.common.elements.MyText
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.alphaMultiplier
-import kotlinx.coroutines.launch
 
 @Composable
 fun OpacitySlider(modifier: Modifier = Modifier) {
@@ -36,7 +35,6 @@ fun OpacitySlider(modifier: Modifier = Modifier) {
             },
             modifier = Modifier.fillMaxWidth(),
             valueRange = .3f..3f,
-            steps = 0,
             onValueChangeFinished = {
                 Config[Opacity] = alphaMultiplier.value.toString()
             },

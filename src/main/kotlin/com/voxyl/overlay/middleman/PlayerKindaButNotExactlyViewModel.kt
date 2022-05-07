@@ -3,6 +3,7 @@ package com.voxyl.overlay.middleman
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.*
+import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.data.player.Status
 import com.voxyl.overlay.data.player.Player
 import kotlinx.coroutines.*
@@ -23,7 +24,12 @@ object PlayerKindaButNotExactlyViewModel {
             _players += when (it) {
                 is Status.Loaded -> {
                     _players.remove(name)
-                    PlayerState(name, player = it.data)
+                    PlayerState(
+                        name = (it.data as Player)["name"] ?: name,
+                        player = it.data
+                    ).also { ps ->
+                        HomemadeCache.add(ps)
+                    }
                 }
                 is Status.Loading -> {
                     _players.remove(name)
@@ -31,7 +37,9 @@ object PlayerKindaButNotExactlyViewModel {
                 }
                 is Status.Error -> {
                     _players.remove(name)
-                    PlayerState(name, error = it.message ?: "An unexpected error has occurred")
+                    PlayerState(name, error = it.message ?: "An unexpected error has occurred").also { ps ->
+                        HomemadeCache.add(ps)
+                    }
                 }
             }
         }.launchIn(cs)

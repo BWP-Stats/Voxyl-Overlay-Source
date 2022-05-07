@@ -20,13 +20,12 @@ import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.MainSearchBar
+import com.voxyl.overlay.ui.theme.MainColor
 import com.voxyl.overlay.ui.theme.am
-import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
 import com.voxyl.overlay.ui.theme.tbsm
 import com.voxyl.overlay.ui.theme.titleBarSizeMulti
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 import kotlin.system.exitProcess
 
 @ExperimentalComposeUiApi
@@ -44,7 +43,7 @@ fun TitleBarButtonsAndFields(
             .absolutePadding(top = 20.tbsm.dp)
             .fillMaxWidth()
     ) {
-        PurpleSettingsButton(settingsMenu = settingsMenuToggled)
+        MainColorSettingsButton(settingsMenu = settingsMenuToggled)
 
         MainSearchBar(Modifier.weight(1f), queriedName, { queriedName = it }) {
             queriedName.text.split(" ").filterNot { it.isBlank() }.distinct().forEach {
@@ -62,9 +61,9 @@ fun TitleBarButtonsAndFields(
 }
 
 @Composable
-fun PurpleSettingsButton(modifier: Modifier = Modifier, settingsMenu: MutableState<Boolean>) = TitleBarButton(
+fun MainColorSettingsButton(modifier: Modifier = Modifier, settingsMenu: MutableState<Boolean>) = TitleBarButton(
     modifier = modifier.absolutePadding(left = 52.tbsm.dp),
-    bgColor = mutableStateOf(Color(130, 32, 229, 160).am),
+    bgColor = mutableStateOf(MainColor.value),
     doOnClick = { settingsMenu.value = !settingsMenu.value },
 )
 

@@ -16,7 +16,7 @@ fun MyCheckbox(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     colors: CheckboxColors = CheckboxDefaults.colors(
-        checkedColor = MainPurple,
+        checkedColor = MainColor.value,
         uncheckedColor = MainWhite,
         checkmarkColor = MainWhite,
         disabledColor = MainWhite.copy(alpha = .313f).am,

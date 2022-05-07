@@ -31,9 +31,10 @@ fun MyTextField(
     label: @Composable() (() -> Unit)? = null,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(
         unfocusedLabelColor = MainWhite.copy(alpha = .313f).am,
-        focusedLabelColor = MainPurple.copy(alpha = .94f).am,
-        unfocusedIndicatorColor = MainPurple,
-        focusedIndicatorColor = MainPurple.copy(alpha = .94f).am,
+        focusedLabelColor = MainColor.value.copy(alpha = .94f).am,
+        unfocusedIndicatorColor = MainColor.value,
+        focusedIndicatorColor = MainColor.value.copy(alpha = .94f).am,
+        cursorColor = MainColor.value.copy(alpha = .94f).am,
         textColor = MainWhite.copy(alpha = .94f).am,
         backgroundColor = Color.Transparent,
         errorLabelColor = ErrorColor,

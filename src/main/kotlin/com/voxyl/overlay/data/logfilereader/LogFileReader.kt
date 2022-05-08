@@ -14,29 +14,35 @@ import java.io.FileNotFoundException
 //Voyx qoodles MaxFrostbite11 mrGuineapigze1 Jaded_Lord carburettor Speed1200 _lightninq ambmt lansraad anoninho
 object LogFileReader {
 
+    var job: Job? = null
 
-    suspend fun start(cs: CoroutineScope) = withContext(Dispatchers.IO) {
+    fun start(cs: CoroutineScope) = cs.launch(Dispatchers.IO) {
+        job?.cancel()
 
         val reader = Config.getOrNullIfBlank(LogFilePath)?.let {
             try {
                 FileInputStream(it).bufferedReader(Charsets.UTF_8)
             } catch (e: FileNotFoundException) {
-                return@withContext
+                null
             }
-        } ?: return@withContext
+        } ?: return@launch
 
         read(reader, cs)
     }
 
-    private suspend fun read(reader: BufferedReader, cs: CoroutineScope) = withContext(Dispatchers.IO) {
-        skipToEndOfFile(reader)
+    private fun read(reader: BufferedReader, cs: CoroutineScope) {
+        job = cs.launch(Dispatchers.IO) {
+            skipToEndOfFile(reader)
 
-        while (true) {
-            val line = reader.readLine()
+            while (true) {
+                if (!isActive) return@launch
 
-            if (line != null) {
-                //println(line)
-                interpret(line, cs)
+                val line = reader.readLine()
+
+                if (line != null) {
+                    //println(line)
+                    interpret(line, cs)
+                }
             }
         }
     }

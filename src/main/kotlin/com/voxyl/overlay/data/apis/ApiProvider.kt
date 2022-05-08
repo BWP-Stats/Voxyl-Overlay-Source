@@ -3,6 +3,7 @@ package com.voxyl.overlay.data.apis
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import kotlin.system.measureTimeMillis
 
 object ApiProvider {
     fun getBWPApi(): BWPApi =
@@ -14,7 +15,7 @@ object ApiProvider {
 
     fun getUUIDApi(): UUIDApi =
         Retrofit.Builder()
-            .baseUrl("https://voxyl-api.herokuapp.com")
+            .baseUrl("https://api.mojang.com/users/profiles/minecraft/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
             .create(UUIDApi::class.java)

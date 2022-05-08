@@ -27,7 +27,7 @@ lateinit var Window: ComposeWindow
 
 @ExperimentalComposeUiApi
 @Preview
-fun main()  = application {
+fun main() = application {
 
     Window(
         onCloseRequest = {

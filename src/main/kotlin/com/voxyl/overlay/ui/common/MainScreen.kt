@@ -29,7 +29,7 @@ import com.voxyl.overlay.ui.theme.tbsm
 
 @ExperimentalComposeUiApi
 @Composable
-fun MainScreen(frameWindowScope: FrameWindowScope) {
+fun MainScreen(fws: FrameWindowScope) {
 
     val playerStatsLazyListState = rememberLazyListState()
     val settingsMenu = remember { mutableStateOf(false) }
@@ -41,7 +41,7 @@ fun MainScreen(frameWindowScope: FrameWindowScope) {
 
     VoxylLogoForTitleBar()
 
-    frameWindowScope.WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
+    fws.WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
 
     TitleBarButtonsAndFields(settingsMenu, additionalSettingsEnabled)
 
@@ -73,7 +73,7 @@ fun BackgroundBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerSha
     modifier = modifier
         .fillMaxSize()
         .clip(shape)
-        .background(Color(0f, 0f, 0f, .3f))
+        .background(Color(0f, 0f, 0f, .4f))
         .requestFocusOnClick()
 )
 

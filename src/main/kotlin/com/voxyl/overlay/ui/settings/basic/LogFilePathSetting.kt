@@ -13,6 +13,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.voxyl.overlay.data.logfilereader.LogFileReader
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
 import com.voxyl.overlay.settings.config.LogFiles
@@ -25,11 +26,13 @@ import com.voxyl.overlay.ui.theme.am
 @Composable
 fun LogFilePathTextField() {
     var logFilePath by remember { mutableStateOf(TextFieldValue()) }
+    val cs = rememberCoroutineScope()
 
     val doOnEnter = doOnEnter@{
         if (!isValidLogFilePath(logFilePath)) return@doOnEnter
 
         Config[LogFilePath] = logFilePath.text
+        LogFileReader.start(cs)
         logFilePath = TextFieldValue()
     }
 

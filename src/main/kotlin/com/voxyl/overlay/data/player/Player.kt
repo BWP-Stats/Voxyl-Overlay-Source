@@ -66,14 +66,10 @@ class Player private constructor(
 
             println("Making player $name")
 
-
             if (HomemadeCache[name]?.player != null) {
                 val player = HomemadeCache[name]?.player ?: makePlayer(name)
 
-                println("Found player $name in cache maybe")
-
                 if (player is Player) {
-                    println("Player $name found in cache")
                     emit(Status.Loaded(player, name = name))
                 }
                 return@flow
@@ -87,6 +83,8 @@ class Player private constructor(
                     uuid = getUUID(name)
                 }
 
+
+                println("Got uuid $uuid")
                 emit(
                     Status.Loaded(
                         Player(name, uuid, getBWPStats(uuid, apiKey, bwpApi)),
@@ -115,6 +113,11 @@ class Player private constructor(
         private suspend fun getUUID(name: String, uuidApi: UUIDApi = ApiProvider.getUUIDApi()): String {
             return withContext(Dispatchers.IO) {
                 val uuid = uuidApi.getUUID(name)
+                    .substringAfterLast(":")
+                    .trim('"', '}')
+                    .untrim()
+
+                println("Got uuid $uuid")
 
                 if (!uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".toRegex())) {
                     throw IOException("'$name' doesn't exist or UUID api is down")
@@ -124,11 +127,21 @@ class Player private constructor(
             }
         }
 
+        private fun String.untrim(): String {
+            return this.replaceRange(8, 8, "-")
+                .replaceRange(13, 13, "-")
+                .replaceRange(18, 18, "-")
+                .replaceRange(23, 23, "-")
+        }
+
         private suspend fun getBWPStats(uuid: String, apiKey: String, bwpApi: BWPApi): BWPStats {
             return withContext(Dispatchers.IO) {
                 val playerInfoJson = async { bwpApi.getPlayerInfo(uuid, apiKey) }
+                println("Got player info")
                 val overallStatsJson = async { bwpApi.getOverallStats(uuid, apiKey) }
+                println("Got overall stats")
                 val gameStatsJson = async { bwpApi.getGameStats(uuid, apiKey) }
+                println("Got game stats")
 
                 return@withContext BWPStats(
                     OverallStatsJson(overallStatsJson.await()),

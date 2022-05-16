@@ -1,6 +1,6 @@
 package com.voxyl.overlay.data.homemadesimplecache
 
-import com.voxyl.overlay.middleman.PlayerState
+import com.voxyl.overlay.data.player.PlayerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

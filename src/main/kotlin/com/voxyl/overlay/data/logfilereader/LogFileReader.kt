@@ -56,7 +56,7 @@ object LogFileReader {
     private fun checkForGameStart(line: String, cs: CoroutineScope) {
         if (" [CHAT] Players in this game: " !in line) return
 
-        PlayerKindaButNotExactlyViewModel.clear()
+        PlayerKindaButNotExactlyViewModel.removeAll()
 
         line.substringAfterLast(":").toPlayerList().forEach {
             PlayerKindaButNotExactlyViewModel.add(it, cs)

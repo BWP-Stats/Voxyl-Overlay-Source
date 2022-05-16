@@ -1,11 +1,11 @@
 package com.voxyl.overlay.middleman
 
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.*
 import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.data.player.Status
 import com.voxyl.overlay.data.player.Player
+import com.voxyl.overlay.data.player.PlayerState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -17,10 +17,10 @@ object PlayerKindaButNotExactlyViewModel {
     val players: SnapshotStateList<PlayerState>
         get() = _players
 
-    private var jobs = mutableStateListOf<Job>()
+    private var jobs = mutableMapOf<String, Job>()
 
     fun add(name: String, cs: CoroutineScope) {
-        jobs += Player.makePlayer(name).onEach {
+        jobs[name] = PlayerFactory.makePlayer(name).onEach {
             _players += when (it) {
                 is Status.Loaded -> {
                     _players.remove(name)
@@ -49,20 +49,29 @@ object PlayerKindaButNotExactlyViewModel {
         _players.remove(PlayerState(name))
     }
 
-    fun clear() {
-        _players.clear()
-        jobs.forEach { it.cancel() }
-        jobs.clear()
+    fun refresh(name: String, cs: CoroutineScope) {
+        remove(name)
+        add(name, cs)
     }
 
     fun refreshAll(cs: CoroutineScope) {
         val names = _players.map { it.name }
-        clear()
+        removeAll()
         names.forEach { add(it, cs) }
     }
 
     fun remove(name: String) {
         _players.remove(name)
+        jobs[name]?.cancel()
+        jobs.remove(name)
+        HomemadeCache.remove(name)
+    }
+
+    fun removeAll() {
+        _players.clear()
+        jobs.forEach { it.value.cancel() }
+        jobs.clear()
+        HomemadeCache.clear()
     }
 
     override fun toString(): String {

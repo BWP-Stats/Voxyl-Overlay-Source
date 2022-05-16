@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
+import com.voxyl.overlay.ui.mainview.playerstats.PlayerContextMenu
 import com.voxyl.overlay.ui.mainview.playerstats.PlayerStats
 import com.voxyl.overlay.ui.mainview.playerstats.StatsHeader
 import com.voxyl.overlay.ui.settings.Settings

@@ -1,25 +1,37 @@
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+
 package com.voxyl.overlay.ui.mainview.playerstats
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.mouseClickable
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.isSecondaryPressed
+import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.voxyl.overlay.data.player.PlayerState
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.middleman.PlayerState
 import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.ShowRankPrefix
 import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
+import com.voxyl.overlay.settings.config.ConfigKeys.ShowRankPrefix
 import com.voxyl.overlay.ui.common.elements.scrollbar
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.playerstats.LevelColors.coloredLevel
@@ -75,6 +87,8 @@ fun PlayerStats(statsToShow: SnapshotStateList<String>, lazyListState: LazyListS
             }
         }
     }
+
+    PlayerContextMenu()
 }
 
 @Composable
@@ -83,6 +97,8 @@ fun PlayersStatsBar(
     player: PlayerState,
     statsToShow: SnapshotStateList<String>
 ) {
+    var selected by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -101,6 +117,24 @@ fun PlayersStatsBar(
                 .fillMaxWidth(.95f)
                 .align(Alignment.CenterHorizontally)
                 .requestFocusOnClick(!player.isLoading)
+                .pointerMoveFilter(
+                    onEnter = {
+                        selected = true
+                        true
+                    },
+                    onExit = {
+                        selected = false
+                        true
+                    }
+                )
+                .also {
+                    if (PlayerContextMenuState.show && PlayerContextMenuState.player == player) {
+                        selected = true
+                    }
+                }
+                .background(
+                    if (selected) Color(200, 200, 200, 20).am else Color.Transparent
+                )
         ) {
             for (stat in statsToShow) {
                 Cell(player = player, statToShow = stat)
@@ -118,11 +152,21 @@ fun RowScope.Cell(
     val text = getStat(statToShow, player)
     Text(
         text = text,
-        modifier = modifier.weight(cellWeight(statToShow)).offset(y = 5.dp),
         fontSize = 17.sp,
         color = MainWhite,
         textAlign = if (Config[CenterStats].toBooleanStrictOrNull() != false) TextAlign.Center else null,
-        fontWeight = FontWeight.Medium
+        fontWeight = FontWeight.Medium,
+        modifier = modifier
+            .weight(cellWeight(statToShow))
+            .offset(y = 5.dp)
+            .mouseClickable(
+                onClick = {
+                    if (buttons.isSecondaryPressed) {
+                        PlayerContextMenuState.show = true
+                        PlayerContextMenuState.player = player
+                    }
+                }
+            ),
     )
 }
 

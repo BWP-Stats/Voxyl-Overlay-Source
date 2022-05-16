@@ -12,13 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.AlignmentLine
-import androidx.compose.ui.layout.FirstBaseline
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
@@ -28,11 +24,7 @@ import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.elements.ShapeThatIdkTheNameOf
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.theme.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlin.math.abs
 import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 
 @ExperimentalComposeUiApi
@@ -135,7 +127,7 @@ fun ClearPlayersButton() {
         Icons.Filled.Clear, contentDescription = null, tint = MainWhite,
         modifier = Modifier.clickable {
             HomemadeCache.clear()
-            PlayerKindaButNotExactlyViewModel.clear()
+            PlayerKindaButNotExactlyViewModel.removeAll()
         }
     )
 }

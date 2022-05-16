@@ -1,6 +1,4 @@
-package com.voxyl.overlay.middleman
-
-import com.voxyl.overlay.data.player.Player
+package com.voxyl.overlay.data.player
 
 data class PlayerState(
     val name: String,

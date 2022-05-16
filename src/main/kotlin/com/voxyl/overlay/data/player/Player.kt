@@ -17,10 +17,10 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-class Player private constructor(
+class Player(
     val name: String,
-    val uuid: String,
-    val bwpStats: BWPStats
+    uuid: String,
+    bwpStats: BWPStats
 ) {
 
     val stats = mutableMapOf<String, String>()
@@ -56,99 +56,4 @@ class Player private constructor(
 
     override fun equals(other: Any?) = name == other
     override fun hashCode() = name.hashCode()
-
-    companion object {
-        fun makePlayer(
-            name: String,
-            apiKey: String = Config[BwpApiKey],
-            bwpApi: BWPApi = ApiProvider.getBWPApi()
-        ): Flow<Status<Player>> = flow {
-
-            println("Making player $name")
-
-            if (HomemadeCache[name]?.player != null) {
-                val player = HomemadeCache[name]?.player ?: makePlayer(name)
-
-                if (player is Player) {
-                    emit(Status.Loaded(player, name = name))
-                }
-                return@flow
-            }
-
-            try {
-                emit(Status.Loading(name = name))
-
-                lateinit var uuid: String
-                runBlocking {
-                    uuid = getUUID(name)
-                }
-
-
-                println("Got uuid $uuid")
-                emit(
-                    Status.Loaded(
-                        Player(name, uuid, getBWPStats(uuid, apiKey, bwpApi)),
-                        name = name
-                    )
-                )
-            } catch (e: HttpException) {
-                emit(
-                    Status.Error(
-                        e.localizedMessage ?: "An unexpected error occurred trying to reach the BWP API for '$name'",
-                        name = name
-                    )
-                )
-                println(e.localizedMessage)
-            } catch (e: IOException) {
-                println("IOException: ${e.localizedMessage}")
-                emit(
-                    Status.Error(
-                        e.localizedMessage ?: "IOException for '$name'; either your wifi or the BWP API is down",
-                        name = name
-                    )
-                )
-            }
-        }
-
-        private suspend fun getUUID(name: String, uuidApi: UUIDApi = ApiProvider.getUUIDApi()): String {
-            return withContext(Dispatchers.IO) {
-                val uuid = uuidApi.getUUID(name)
-                    .substringAfterLast(":")
-                    .trim('"', '}')
-                    .untrim()
-
-                println("Got uuid $uuid")
-
-                if (!uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".toRegex())) {
-                    throw IOException("'$name' doesn't exist or UUID api is down")
-                }
-
-                return@withContext uuid
-            }
-        }
-
-        private fun String.untrim(): String {
-            return this.replaceRange(8, 8, "-")
-                .replaceRange(13, 13, "-")
-                .replaceRange(18, 18, "-")
-                .replaceRange(23, 23, "-")
-        }
-
-        private suspend fun getBWPStats(uuid: String, apiKey: String, bwpApi: BWPApi): BWPStats {
-            return withContext(Dispatchers.IO) {
-                val playerInfoJson = async { bwpApi.getPlayerInfo(uuid, apiKey) }
-                println("Got player info")
-                val overallStatsJson = async { bwpApi.getOverallStats(uuid, apiKey) }
-                println("Got overall stats")
-                val gameStatsJson = async { bwpApi.getGameStats(uuid, apiKey) }
-                println("Got game stats")
-
-                return@withContext BWPStats(
-                    OverallStatsJson(overallStatsJson.await()),
-                    PlayerInfoJson(playerInfoJson.await()),
-                    GameStatsJson(gameStatsJson.await())
-                )
-            }
-        }
-    }
 }

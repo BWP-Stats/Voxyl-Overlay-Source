@@ -15,7 +15,7 @@ object NativeUtil {
             .run {
                 this["modifiers"]?.let {
                     this["modifiers"]?.replace("+", " + ") + " + " + this["keyText"]
-                } ?: this["keyText"] ?: "Set a keybind"
+                } ?: this["keyText"] ?: this@toCleanKeyCodeString
             }
     }
 }

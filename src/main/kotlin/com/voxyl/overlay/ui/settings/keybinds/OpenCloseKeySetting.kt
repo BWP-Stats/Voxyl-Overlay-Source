@@ -28,14 +28,11 @@ fun OpenCloseKeySetting(modifier: Modifier = Modifier) {
 
         OpenCloseKeyText()
 
-        Spacer(modifier = Modifier.width(10.dp))
-
         VText(
             text = OpenCloseKeyListener.paramString.toCleanKeyCodeString(),
             modifier = Modifier
                 .background(Color(0f, 0f, 0f, .3f).am)
                 .clickable {
-                    OpenCloseKeyListener.paramString = "Press 'esc' to cancel"
                     OpenCloseKeyListener.paramString = KeyListenerForSettings.awaitParamString()
                 }
                 .padding(10.dp)
@@ -45,6 +42,7 @@ fun OpenCloseKeySetting(modifier: Modifier = Modifier) {
 
 @Composable
 private fun OpenCloseKeyText() {
-    VText("Keybind to minimize/maximize the overlay")
-    Spacer(modifier = Modifier.width(16.dp))
+    Box(Modifier.width(240.dp)) {
+        VText("Keybind to minimize/maximize the overlay")
+    }
 }

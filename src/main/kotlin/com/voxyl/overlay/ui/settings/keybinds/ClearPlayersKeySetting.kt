@@ -27,14 +27,11 @@ fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
 
         ClearPlayersKeyText()
 
-        Spacer(modifier = Modifier.width(10.dp))
-
         VText(
             text = ClearPlayersKeyListener.paramString.toCleanKeyCodeString(),
             modifier = Modifier
                 .background(Color(0f, 0f, 0f, .3f).am)
                 .clickable {
-                    ClearPlayersKeyListener.paramString = "Press 'esc' to cancel"
                     ClearPlayersKeyListener.paramString = KeyListenerForSettings.awaitParamString()
                 }
                 .padding(10.dp)
@@ -44,6 +41,7 @@ fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ClearPlayersKeyText() {
-    VText("Keybind to clear all players in overlay ")
-    Spacer(modifier = Modifier.width(16.dp))
+    Box(Modifier.width(240.dp)) {
+        VText("Keybind to clear all players in overlay ")
+    }
 }

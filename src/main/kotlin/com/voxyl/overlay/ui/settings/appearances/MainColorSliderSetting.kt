@@ -10,12 +10,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys
-import com.voxyl.overlay.settings.config.ConfigKeys.R
-import com.voxyl.overlay.settings.config.ConfigKeys.G
-import com.voxyl.overlay.settings.config.ConfigKeys.B
+import com.voxyl.overlay.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.common.elements.MySlider
-import com.voxyl.overlay.ui.common.elements.MyText
 import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.ui.theme.VText
 
 @Composable
 fun RSlider(modifier: Modifier = Modifier) {
@@ -68,6 +66,6 @@ fun MainColorSlider(
 
 @Composable
 private fun ColorText(key: ConfigKeys, color: MutableState<Float>) {
-    MyText("${key.name}: (${"${color.value.toInt()}".padStart(3, '0')}x)", color = MainWhite, fontSize = 12.sp)
+    VText("${key.name}: (${"${color.value.toInt()}".padStart(3, '0')}x)", color = MainWhite, fontSize = 12.sp)
     Spacer(modifier = Modifier.width(17.dp))
 }

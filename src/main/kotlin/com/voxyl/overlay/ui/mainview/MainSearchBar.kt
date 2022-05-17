@@ -2,10 +2,7 @@
 
 package com.voxyl.overlay.ui.mainview
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -13,10 +10,11 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.ui.common.elements.MyTextField
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
-import com.voxyl.overlay.ui.common.elements.MyText
+import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
 import com.voxyl.overlay.ui.theme.tbsm
 import com.voxyl.overlay.ui.theme.titleBarSizeMulti
@@ -67,9 +65,10 @@ fun MainSearchBar(
                 }
             },
         label = {
-            MyText(
+            VText(
                 text = if (isValid(value)) "Search player(s)" else "Invalid characters and/or name(s) exceeds 16 chars",
-                modifier = Modifier.absoluteOffset(y = 6.dp)
+                modifier = Modifier.absoluteOffset(y = 6.dp),
+                fontSize = 10.sp
             )
         },
         trailingIcon = {

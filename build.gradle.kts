@@ -46,11 +46,11 @@ compose.desktop {
         mainClass = "com.voxyl.overlay.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Exe, TargetFormat.Msi)
+            targetFormats(TargetFormat.Msi)
             packageName = "Voxyl Overlay"
-            packageVersion = "0.0.2"
+            packageVersion = "0.0.4"
 
-            modules("java.sql")
+            modules("java.sql", "java.instrument", "jdk.unsupported")
 
             windows {
                 menu = true

@@ -20,9 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.mainview.playerstats.PlayerContextMenu
-import com.voxyl.overlay.ui.mainview.playerstats.PlayerStats
-import com.voxyl.overlay.ui.mainview.playerstats.StatsHeader
+import com.voxyl.overlay.ui.mainview.playerstats.PlayerStatsView
+import com.voxyl.overlay.ui.mainview.playerstats.PlayerStatsViewHeader
 import com.voxyl.overlay.ui.settings.Settings
 import com.voxyl.overlay.ui.theme.MainColor
 import com.voxyl.overlay.ui.theme.amf
@@ -33,9 +32,9 @@ import com.voxyl.overlay.ui.theme.tbsm
 fun MainScreen(fws: FrameWindowScope) {
 
     val playerStatsLazyListState = rememberLazyListState()
-    val settingsMenu = remember { mutableStateOf(false) }
+    val showSettingsMenu = remember { mutableStateOf(false) }
     val additionalSettingsEnabled = remember { mutableStateOf(false) }
-    val statsToShow = remember { mutableStateListOf("bwp.level", "name", "bwp.wins", "bwp.kills", "bwp.finals") }
+    val statsToShow = remember { mutableStateListOf("tags", "bwp.level", "name", "bwp.wins", "bwp.kills", "bwp.finals") }
 
     BackgroundBox()
     TitleBox()
@@ -44,13 +43,13 @@ fun MainScreen(fws: FrameWindowScope) {
 
     fws.WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
 
-    TitleBarButtonsAndFields(settingsMenu, additionalSettingsEnabled)
+    TitleBarButtonsAndFields(showSettingsMenu, additionalSettingsEnabled)
 
-    if (settingsMenu.value) {
+    if (showSettingsMenu.value) {
         Settings()
     } else {
-        StatsHeader(statsToShow)
-        PlayerStats(statsToShow, playerStatsLazyListState)
+        PlayerStatsViewHeader(statsToShow)
+        PlayerStatsView(statsToShow, playerStatsLazyListState)
     }
 
     AdditionalSettings(additionalSettingsEnabled)

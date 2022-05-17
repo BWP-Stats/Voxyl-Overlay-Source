@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
-
 package com.voxyl.overlay.ui.mainview.playerstats
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -9,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.mouseClickable
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,22 +19,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.data.player.PlayerState
+import com.voxyl.overlay.data.player.Tags
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
 import com.voxyl.overlay.settings.config.ConfigKeys.ShowRankPrefix
 import com.voxyl.overlay.ui.common.elements.scrollbar
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.mainview.playerstats.LevelColors.coloredLevel
-import com.voxyl.overlay.ui.mainview.playerstats.RankColors.coloredName
-import com.voxyl.overlay.ui.mainview.playerstats.RankColors.coloredRank
+import com.voxyl.overlay.ui.mainview.playerstats.colors.ErrorString
+import com.voxyl.overlay.ui.mainview.playerstats.colors.LevelColors.coloredLevel
+import com.voxyl.overlay.ui.mainview.playerstats.colors.RankColors.coloredName
+import com.voxyl.overlay.ui.mainview.playerstats.colors.RankColors.coloredRank
 import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
 import com.voxyl.overlay.ui.theme.tbsm
 import java.util.*
@@ -45,7 +47,7 @@ import kotlin.math.max
 import kotlin.math.sqrt
 
 @Composable
-fun StatsHeader(statsToShow: SnapshotStateList<String>) = Column(
+fun PlayerStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
     Modifier.fillMaxWidth()
 ) {
     Row(
@@ -57,12 +59,11 @@ fun StatsHeader(statsToShow: SnapshotStateList<String>) = Column(
             .requestFocusOnClick()
     ) {
         for (stat in statsToShow.toList()) {
-            Text(
+            VText(
                 text = stat.substringAfterLast(".")
                     .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
                 modifier = Modifier.weight(cellWeight(stat)),
                 fontSize = 15.5.sp,
-                color = MainWhite,
                 textAlign = if (Config[CenterStats].toBooleanStrictOrNull() != false) TextAlign.Center else null,
                 fontWeight = FontWeight.Medium
             )
@@ -71,7 +72,7 @@ fun StatsHeader(statsToShow: SnapshotStateList<String>) = Column(
 }
 
 @Composable
-fun PlayerStats(statsToShow: SnapshotStateList<String>, lazyListState: LazyListState) {
+fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyListState) {
     LazyColumn(
         state = lazyListState,
         modifier = Modifier
@@ -81,10 +82,14 @@ fun PlayerStats(statsToShow: SnapshotStateList<String>, lazyListState: LazyListS
             .requestFocusOnClick(),
         contentPadding = PaddingValues(bottom = 50.dp)
     ) {
-        PlayerKindaButNotExactlyViewModel.players.forEach {
-            item {
-                PlayersStatsBar(player = it, statsToShow = statsToShow)
+        try {
+            PlayerKindaButNotExactlyViewModel.players.forEach {
+                item {
+                    PlayersStatsBar(player = it, statsToShow = statsToShow)
+                }
             }
+        } catch (_: Exception) {
+            return@LazyColumn
         }
     }
 
@@ -108,7 +113,6 @@ fun PlayersStatsBar(
             color = MainWhite.copy(alpha = .313f).am,
             modifier = Modifier
                 .fillMaxWidth(.9f)
-                .height(1.dp)
                 .align(Alignment.CenterHorizontally)
         )
         Row(
@@ -117,57 +121,77 @@ fun PlayersStatsBar(
                 .fillMaxWidth(.95f)
                 .align(Alignment.CenterHorizontally)
                 .requestFocusOnClick(!player.isLoading)
-                .pointerMoveFilter(
-                    onEnter = {
-                        selected = true
-                        true
-                    },
-                    onExit = {
-                        selected = false
-                        true
-                    }
-                )
                 .also {
-                    if (PlayerContextMenuState.show && PlayerContextMenuState.player == player) {
-                        selected = true
-                    }
+                    selected = PlayerContextMenuState.player == player
                 }
                 .background(
-                    if (selected) Color(200, 200, 200, 20).am else Color.Transparent
-                )
+                    if (selected) Color(200, 200, 200, 11).am else Color.Transparent
+                ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             for (stat in statsToShow) {
-                Cell(player = player, statToShow = stat)
+                StatCell(player = player, statToShow = stat)
             }
         }
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun RowScope.Cell(
+fun RowScope.StatCell(
     modifier: Modifier = Modifier,
     player: PlayerState,
     statToShow: String,
 ) {
+    if (statToShow == "tags") {
+        Row(
+            modifier = modifier
+                .weight(cellWeight(statToShow))
+                .align(Alignment.CenterVertically)
+                .requestFocusOnClick(),
+            horizontalArrangement = Arrangement.spacedBy(1.dp)
+        ) {
+            for (tag in player.tags) {
+                tag.icon(Modifier.size(24.dp))
+            }
+        }
+        return
+    }
+
     val text = getStat(statToShow, player)
-    Text(
-        text = text,
-        fontSize = 17.sp,
-        color = MainWhite,
-        textAlign = if (Config[CenterStats].toBooleanStrictOrNull() != false) TextAlign.Center else null,
-        fontWeight = FontWeight.Medium,
+    Box(
         modifier = modifier
             .weight(cellWeight(statToShow))
-            .offset(y = 5.dp)
+            .pointerMoveFilter(
+                onMove = {
+                    PlayerContextMenuState.player = player
+                    true
+                },
+                onExit = {
+                    if (!PlayerContextMenuState.show) {
+                        PlayerContextMenuState.player = PlayerState.empty
+                    }
+                    true
+                }
+            )
             .mouseClickable(
                 onClick = {
                     if (buttons.isSecondaryPressed) {
                         PlayerContextMenuState.show = true
-                        PlayerContextMenuState.player = player
                     }
                 }
             ),
-    )
+    ) {
+        VText(
+            text = text,
+            fontSize = 17.sp,
+            textAlign = if (Config[CenterStats].toBooleanStrictOrNull() != false) TextAlign.Center else null,
+            fontWeight = FontWeight.Medium,
+            modifier = modifier
+                .height(34.dp)
+                .offset(y = 5.dp)
+        )
+    }
 }
 
 @Composable
@@ -184,11 +208,15 @@ private fun getStat(statToShow: String, player: PlayerState) = when {
         coloredLevel(player["bwp.level"] ?: "0")
     }
 
-    player[statToShow] != null -> player[statToShow]?.toAnnotatedString() ?: "ERR".toAnnotatedString()
+    statToShow == "tags" -> {
+        player.tags.joinToString(", ").toAnnotatedString()
+    }
+
+    player[statToShow] != null -> player[statToShow]?.toAnnotatedString() ?: ErrorString.get()
 
     player.isLoading -> "...".toAnnotatedString()
 
-    else -> "ERR".toAnnotatedString()
+    else -> ErrorString.get()
 }
 
 fun playerIsNotNullSettingIsEnabledAndPlayerHasRank(player: PlayerState): Boolean {
@@ -201,17 +229,33 @@ private fun String.toAnnotatedString(): AnnotatedString {
     return buildAnnotatedString { append(this@toAnnotatedString) }
 }
 
-private fun cellWeight(stat: String): Float {
+private fun cellWeight(stat: String) = when (stat) {
+    "tags" -> calcTagCellWeight()
+    else -> calcRegularCellWeight(stat)
+}
+
+fun calcTagCellWeight(): Float {
+    val tagLengths = PlayerKindaButNotExactlyViewModel.players.map {
+        "--".repeat(it.tags.size)
+    }
+
+    val max = tagLengths.maxByOrNull { it.length } ?: ""
+
+    return max("tags".getCellWeight(), max.length.toFloat() / 3f)
+}
+
+fun calcRegularCellWeight(stat: String): Float {
     val stats = PlayerKindaButNotExactlyViewModel.players.map {
         it[stat] ?: ""
     }
 
-    val max = stats.maxByOrNull { it.substringAfterLast(".").length } ?: stat
+    val max = stats.maxByOrNull { it.substringAfterLast(".").length } ?: ""
 
     return max(stat.getCellWeight(), sqrt(max.length.toFloat()))
 }
 
 private fun String.getCellWeight() = when (this) {
     "name" -> 5f
+    "tags" -> 1f
     else -> 2f
 }

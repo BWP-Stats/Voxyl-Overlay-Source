@@ -3,28 +3,27 @@ package com.voxyl.overlay.ui.mainview.playerstats
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.data.player.PlayerState
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.alphaMultiplier
-import com.voxyl.overlay.ui.theme.am
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -59,29 +58,31 @@ fun PlayerContextMenu() {
                 },
                 modifier = Modifier.background(color = Color(.1f, .1f, .1f, 0.9f))
             ) {
-
                 DropdownMenuItem(
                     onClick = {},
                     enabled = false
                 ) {
-                    Text("Options for ${PlayerContextMenuState.player?.name}", color = MainWhite)
+                    VText("Options for ${PlayerContextMenuState.player?.name}", fontSize = TextUnit.Unspecified)
                 }
 
-                Divider(color = MainWhite.copy(.2f))
+                Divider(
+                    color = MainWhite.copy(.313f),
+                    modifier = Modifier.fillMaxWidth(.9f)
+                )
 
                 var refreshText by remember { mutableStateOf("Refresh") }
 
                 DropdownMenuItem(onClick = {
                     refreshText = "Ah you called my bluff... this doesn't really work"
                 }) {
-                    Text(refreshText, color = MainWhite)
+                    VText(refreshText, fontSize = TextUnit.Unspecified)
                 }
 
                 DropdownMenuItem(onClick = {
                     PlayerKindaButNotExactlyViewModel.remove(PlayerContextMenuState.player?.name ?: "")
                     PlayerContextMenuState.show = false
                 }) {
-                    Text("Remove", color = MainWhite)
+                    VText("Remove", fontSize = TextUnit.Unspecified)
                 }
             }
         }

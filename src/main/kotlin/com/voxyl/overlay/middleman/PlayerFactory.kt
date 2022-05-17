@@ -25,9 +25,6 @@ object PlayerFactory {
         apiKey: String = Config[ConfigKeys.BwpApiKey],
         bwpApi: BWPApi = ApiProvider.getBWPApi()
     ): Flow<Status<Player>> = flow {
-
-        println("Making player $name")
-
         if (HomemadeCache[name]?.player != null) {
             val player = HomemadeCache[name]?.player ?: makePlayer(name)
 
@@ -40,7 +37,6 @@ object PlayerFactory {
         try {
             emit(Status.Loading(name = name))
 
-            println("Getting UUID for $name")
             val uuid = getUUID(name)
 
             emit(

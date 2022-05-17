@@ -53,7 +53,6 @@ class Player(
     }
 
     operator fun get(key: String): String? = stats[key]
-
-    override fun equals(other: Any?) = name == other
-    override fun hashCode() = name.hashCode()
+    override fun equals(other: Any?) = name.equals(other as? String, true)
+    override fun hashCode() = name.lowercase().hashCode()
 }

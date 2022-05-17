@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.mainview.playerstats
+package com.voxyl.overlay.ui.mainview.playerstats.colors
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color

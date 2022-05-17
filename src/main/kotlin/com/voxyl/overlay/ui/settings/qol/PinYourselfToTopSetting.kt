@@ -1,17 +1,14 @@
-package com.voxyl.overlay.ui.settings.sources
+package com.voxyl.overlay.ui.settings.qol
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.PinYourselfToTop
 import com.voxyl.overlay.ui.common.elements.MyCheckbox
-import com.voxyl.overlay.ui.theme.MainWhite
-import com.voxyl.overlay.ui.common.elements.MyText
-import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.ui.theme.VText
 
 @Composable
 fun PinYourselfToTopCheckbox(addYourself: MutableState<Boolean>, modifier: Modifier = Modifier) {
@@ -51,8 +48,8 @@ fun PinYourselfToTopCheckbox(addYourself: MutableState<Boolean>, modifier: Modif
 @Composable
 private fun getPinYourselfText(addYourself: MutableState<Boolean>) {
     if (addYourself.value) {
-        MyText("Pin yourself to the top at all times", color = MainWhite, fontSize = 12.sp)
+        VText("Pin yourself to the top at all times")
     } else {
-        MyText("Pin yourself to the top at all times (Must have the 'add yourself' setting checked'", color = MainWhite.copy(alpha = 0.5f).am, fontSize = 12.sp)
+        VText("Pin yourself to the top at all times (Must have the 'add yourself' setting checked'", alpha = 0.5f)
     }
 }

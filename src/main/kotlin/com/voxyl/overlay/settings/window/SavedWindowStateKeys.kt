@@ -7,5 +7,5 @@ enum class SavedWindowStateKeys(var key: String, var defaultValue: String) {
     X("saved_x", "0"),
     Y("saved_y", "0"),
 
-    IsAlwaysOnTop("is_always_on_top", "false"),
+    IsAlwaysOnTop("is_always_on_top", "true"),
 }

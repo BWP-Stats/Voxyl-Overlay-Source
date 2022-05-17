@@ -16,6 +16,7 @@ import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.Window
+import com.voxyl.overlay.data.player.Tags
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
@@ -47,7 +48,7 @@ fun TitleBarButtonsAndFields(
 
         MainSearchBar(Modifier.weight(1f), queriedName, { queriedName = it }) {
             queriedName.text.split(" ").filterNot { it.isBlank() }.distinct().forEach {
-                PlayerKindaButNotExactlyViewModel.add(it, cs)
+                PlayerKindaButNotExactlyViewModel.add(it, cs, Tags.ManuallySearched)
             }
             queriedName = TextFieldValue()
         }

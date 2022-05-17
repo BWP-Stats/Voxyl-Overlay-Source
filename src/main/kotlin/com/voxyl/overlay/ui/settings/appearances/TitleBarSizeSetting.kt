@@ -8,12 +8,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.TitleBarSizeMulti
 import com.voxyl.overlay.ui.common.elements.MySlider
-import com.voxyl.overlay.ui.common.elements.MyText
-import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.titleBarSizeMulti
 import kotlinx.coroutines.launch
 
@@ -52,6 +50,6 @@ fun TitleBarSizeSlider(modifier: Modifier = Modifier) {
 
 @Composable
 private fun TitleBarSizeMultiText(opacity: Animatable<Float, AnimationVector1D>) {
-    MyText("Title bar size multi (${String.format("%.2f", opacity.value)}x)", color = MainWhite, fontSize = 12.sp)
+    VText("Title bar size multi (${String.format("%.2f", opacity.value)}x)")
     Spacer(modifier = Modifier.width(17.dp))
 }

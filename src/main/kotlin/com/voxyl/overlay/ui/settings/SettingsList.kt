@@ -28,7 +28,7 @@ import com.voxyl.overlay.ui.settings.qol.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.theme.*
 import com.voxyl.overlay.ui.settings.basic.PlayerNameTextField
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
-import com.voxyl.overlay.ui.settings.sources.PinYourselfToTopCheckbox
+import com.voxyl.overlay.ui.settings.qol.PinYourselfToTopCheckbox
 
 @Composable
 fun Settings(
@@ -111,13 +111,14 @@ fun SettingsTextField(
                 isValid
             ),
         label = {
-            MyText(
+            VText(
                 text = text,
-                modifier = Modifier.absoluteOffset(y = 6.dp)
+                modifier = Modifier.absoluteOffset(y = 6.dp),
+                fontSize = 10.sp
             )
         },
         placeholder = {
-            MyText(placeholder, fontSize = 12.sp, color = MainWhite.copy(alpha = .313f).am)
+            VText(placeholder, alpha = .313f)
         },
         onValueChange = {
             onValueChange(it)

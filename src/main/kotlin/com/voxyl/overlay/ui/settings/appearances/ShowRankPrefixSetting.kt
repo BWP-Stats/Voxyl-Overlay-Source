@@ -5,12 +5,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.ShowRankPrefix
 import com.voxyl.overlay.ui.common.elements.MyCheckbox
-import com.voxyl.overlay.ui.common.elements.MyText
-import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.ui.theme.VText
 
 @Composable
 fun ShowRankPrefixSetting(modifier: Modifier = Modifier) {
@@ -39,6 +37,6 @@ fun ShowRankPrefixSetting(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        MyText("Show a player's rank prefix", color = MainWhite, fontSize = 12.sp)
+        VText("Show a player's rank prefix")
     }
 }

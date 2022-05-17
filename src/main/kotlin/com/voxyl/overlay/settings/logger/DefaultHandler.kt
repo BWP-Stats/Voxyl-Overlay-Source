@@ -12,12 +12,10 @@ object DefaultHandler {
 
     private fun getPath(path: String = System.getProperty("user.home") + "/.voxyl/logs/voxyl.log"): String {
         val configFile = File(path)
-
         if (!configFile.exists()) {
             configFile.parentFile.mkdirs()
             configFile.createNewFile()
         }
-
         return configFile.absolutePath
     }
 }

@@ -12,8 +12,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.github.kwhat.jnativehook.GlobalScreen
 import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.data.logfilereader.LogFileReader
+import com.voxyl.overlay.nativelisteners.NativeListeners
+import com.voxyl.overlay.nativelisteners.OpenCloseKeyListener
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.settings.logger.DefaultHandler
 import com.voxyl.overlay.settings.window.SavedWindowState
@@ -53,11 +56,10 @@ fun main() = application {
 
         val cs = rememberCoroutineScope()
 
-        LaunchedEffect(Unit) {
-            HomemadeCache.startAutoClear(cs, 5000L)
-            LogFileReader.start(cs)
-            Napier.base(DebugAntilog(handler = listOf(DefaultHandler.`😳`)))
-        }
+        HomemadeCache.startAutoClear(cs, 5000L)
+        LogFileReader.start(cs)
+        Napier.base(DebugAntilog(handler = listOf(DefaultHandler.`😳`)))
+        NativeListeners.initialize()
 
         MainScreen(this)
     }

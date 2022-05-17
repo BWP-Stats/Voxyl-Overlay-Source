@@ -27,6 +27,8 @@ import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideCheckBox
 import com.voxyl.overlay.ui.settings.qol.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.theme.*
 import com.voxyl.overlay.ui.settings.basic.PlayerNameTextField
+import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting
+import com.voxyl.overlay.ui.settings.keybinds.OpenCloseKeySetting
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
 import com.voxyl.overlay.ui.settings.qol.PinYourselfToTopCheckbox
 
@@ -71,6 +73,8 @@ fun SettingsList(
             { RSlider() },
             { GSlider() },
             { BSlider() },
+            { OpenCloseKeySetting() },
+            { ClearPlayersKeySetting() },
         )
     }
 

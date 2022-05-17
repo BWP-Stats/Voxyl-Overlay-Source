@@ -33,6 +33,9 @@ dependencies {
 
     //logging
     implementation("io.github.aakira:napier:2.5.0")
+
+    //native stuff
+    implementation("com.github.kwhat:jnativehook:2.2.2")
 }
 
 tasks.test {

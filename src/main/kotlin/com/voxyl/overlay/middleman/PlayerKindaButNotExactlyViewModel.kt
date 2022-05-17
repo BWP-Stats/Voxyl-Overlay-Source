@@ -94,12 +94,4 @@ object PlayerKindaButNotExactlyViewModel {
         jobs.clear()
         HomemadeCache.clear()
     }
-
-    override fun toString(): String {
-        var str = "";
-        _players.forEach {
-            str += "hi $it"
-        }
-        return str + " " + _players.size
-    }
 }

@@ -19,10 +19,6 @@ object SavedWindowState {
         makeConfigFileIfNotPresent()
         it.load(FileInputStream(path))
         addPropertiesIfNotPresent(it)
-
-        /*it.stringPropertyNames()
-            .associateWith { it2 -> it.getProperty(it2) }
-            .forEach { it2 -> println(it2) }*/
     }
 
     private fun addPropertiesIfNotPresent(

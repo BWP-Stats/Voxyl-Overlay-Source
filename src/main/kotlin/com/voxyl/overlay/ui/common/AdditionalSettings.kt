@@ -1,10 +1,11 @@
 package com.voxyl.overlay.ui.common
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
@@ -15,9 +16,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
+import com.voxyl.overlay.data.player.Tags
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
@@ -27,18 +32,21 @@ import com.voxyl.overlay.ui.theme.*
 import kotlinx.coroutines.launch
 import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 
+object AdditionalSettingsState {
+    var enabled by mutableStateOf(false)
+}
+
 @ExperimentalComposeUiApi
 @Composable
 fun AdditionalSettings(
-    additionalSettingsEnabled: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
     val cs = rememberCoroutineScope()
-    val boxOffset = remember { Animatable(0f)}
+    val boxOffset = remember { Animatable(0f) }
     val animatedSize = remember { Animatable(0f) }
 
-    LaunchedEffect(additionalSettingsEnabled.value) {
-        if (additionalSettingsEnabled.value) {
+    LaunchedEffect(AdditionalSettingsState.enabled) {
+        if (AdditionalSettingsState.enabled) {
             launch { boxOffset.animateTo(10f) }
             animatedSize.animateTo(190f)
         } else {
@@ -56,7 +64,7 @@ fun AdditionalSettings(
                     cs.launch {
                         titleBarSizeMulti.animateTo(defaultTitleBarSizeMulti)
                     }
-                    additionalSettingsEnabled.value = false
+                    AdditionalSettingsState.enabled = false
                 }
                 false
             })
@@ -77,7 +85,11 @@ fun AdditionalSettings(
 
                 Spacer(Modifier.height(3.dp))
 
-                Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MainWhite)
+                Tooltip(
+                    "Does literally nothing"
+                ) {
+                    Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MainWhite)
+                }
 
                 Spacer(Modifier.height(3.dp))
 
@@ -85,7 +97,11 @@ fun AdditionalSettings(
 
                 Spacer(Modifier.height(3.dp))
 
-                Icon(Icons.Filled.Info, contentDescription = null, tint = MainWhite)
+                Tooltip(
+                    "Join the Discord for help: <insert link here>"
+                ) {
+                    Icon(Icons.Filled.Info, contentDescription = null, tint = MainWhite)
+                }
             }
         }
     }
@@ -106,43 +122,54 @@ fun AlwaysOnTopButton() {
     )
 
     var windowOnTop by remember { mutableStateOf(Window.isAlwaysOnTop) }
+    Tooltip(
+        "Toggles the overlay being always on top of all other windows"
+    ) {
+        Icon(
+            Icons.Filled.Star, contentDescription = null, tint = tint,
+            modifier = Modifier
+                .rotate(if (windowOnTop) rotation else 0f)
+                .clickable {
+                    Window.isAlwaysOnTop = !(Window.isAlwaysOnTop)
+                    SavedWindowState[IsAlwaysOnTop] = windowOnTop.toString()
+                    windowOnTop = Window.isAlwaysOnTop
 
-    Icon(
-        Icons.Filled.Star, contentDescription = null, tint = tint,
-        modifier = Modifier
-            .rotate(if (windowOnTop) rotation else 0f)
-            .clickable {
-                Window.isAlwaysOnTop = !(Window.isAlwaysOnTop)
-                SavedWindowState[IsAlwaysOnTop] = windowOnTop.toString()
-                windowOnTop = Window.isAlwaysOnTop
-
-                tint = if (windowOnTop) MainWhite.copy(alpha = .9f).am else MainWhite
-            }
-    )
+                    tint = if (windowOnTop) MainWhite.copy(alpha = .9f).am else MainWhite
+                }
+        )
+    }
 }
 
 @Composable
 fun ClearPlayersButton() {
-    Icon(
-        Icons.Filled.Clear, contentDescription = null, tint = MainWhite,
-        modifier = Modifier.clickable {
-            HomemadeCache.clear()
-            PlayerKindaButNotExactlyViewModel.removeAll()
-        }
-    )
+    Tooltip(
+        "Deletes all players"
+    ) {
+        Icon(
+            Icons.Filled.Clear, contentDescription = null, tint = MainWhite,
+            modifier = Modifier.clickable {
+                HomemadeCache.clear()
+                PlayerKindaButNotExactlyViewModel.removeAll()
+            }
+        )
+    }
 }
 
 @Composable
 fun RefreshAllButton() {
     val cs = rememberCoroutineScope()
 
-    Icon(
-        Icons.Filled.Refresh, contentDescription = null, tint = MainWhite,
-        modifier = Modifier.clickable {
-            HomemadeCache.clear()
-            PlayerKindaButNotExactlyViewModel.refreshAll(cs)
-        }
-    )
+    Tooltip(
+        "Refreshes all players"
+    ) {
+        Icon(
+            Icons.Filled.Refresh, contentDescription = null, tint = MainWhite,
+            modifier = Modifier.clickable {
+                HomemadeCache.clear()
+                PlayerKindaButNotExactlyViewModel.refreshAll(cs)
+            }
+        )
+    }
 }
 
 @Composable
@@ -159,5 +186,34 @@ fun AdditionalSettingsBox(modifier: Modifier = Modifier, content: @Composable Bo
             .requestFocusOnClick()
     ) {
         content()
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun Tooltip(
+    desc: String,
+    icon: @Composable () -> Unit
+) {
+    TooltipArea(
+        tooltip = {
+            Surface(
+                color = Color(60, 60, 60, 50).am,
+                shape = RoundedCornerShape(4.dp)
+            ) {
+                VText(
+                    text = desc,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+        },
+        delayMillis = 600,
+        tooltipPlacement = TooltipPlacement.CursorPoint(
+            alignment = Alignment.BottomEnd,
+            offset = DpOffset(10.dp, 12.dp)
+        )
+    ) {
+        icon()
     }
 }

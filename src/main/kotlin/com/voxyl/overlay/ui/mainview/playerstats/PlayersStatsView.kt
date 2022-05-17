@@ -42,34 +42,10 @@ import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
 import com.voxyl.overlay.ui.theme.tbsm
+import io.github.aakira.napier.Napier
 import java.util.*
 import kotlin.math.max
 import kotlin.math.sqrt
-
-@Composable
-fun PlayerStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
-    Modifier.fillMaxWidth()
-) {
-    Row(
-        modifier = Modifier
-            .absoluteOffset(y = 64.tbsm.dp)
-            .height(26.dp)
-            .align(Alignment.CenterHorizontally)
-            .fillMaxWidth(.95f)
-            .requestFocusOnClick()
-    ) {
-        for (stat in statsToShow.toList()) {
-            VText(
-                text = stat.substringAfterLast(".")
-                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
-                modifier = Modifier.weight(cellWeight(stat)),
-                fontSize = 15.5.sp,
-                textAlign = if (Config[CenterStats].toBooleanStrictOrNull() != false) TextAlign.Center else null,
-                fontWeight = FontWeight.Medium
-            )
-        }
-    }
-}
 
 @Composable
 fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyListState) {
@@ -88,7 +64,8 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyL
                     PlayersStatsBar(player = it, statsToShow = statsToShow)
                 }
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            Napier.e(e) { "Error with iterating over the players in PlayersStarsView" }
             return@LazyColumn
         }
     }
@@ -188,7 +165,7 @@ fun RowScope.StatCell(
             textAlign = if (Config[CenterStats].toBooleanStrictOrNull() != false) TextAlign.Center else null,
             fontWeight = FontWeight.Medium,
             modifier = modifier
-                .height(34.dp)
+                .fillMaxSize()
                 .offset(y = 5.dp)
         )
     }
@@ -229,7 +206,7 @@ private fun String.toAnnotatedString(): AnnotatedString {
     return buildAnnotatedString { append(this@toAnnotatedString) }
 }
 
-private fun cellWeight(stat: String) = when (stat) {
+fun cellWeight(stat: String) = when (stat) {
     "tags" -> calcTagCellWeight()
     else -> calcRegularCellWeight(stat)
 }

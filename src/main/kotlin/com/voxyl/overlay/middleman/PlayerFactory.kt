@@ -12,6 +12,7 @@ import com.voxyl.overlay.data.player.Player
 import com.voxyl.overlay.data.player.Status
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -21,7 +22,6 @@ import java.io.IOException
 object PlayerFactory {
     fun makePlayer(
         name: String,
-        tryAgainOnTimeout: Boolean = false,
         apiKey: String = Config[ConfigKeys.BwpApiKey],
         bwpApi: BWPApi = ApiProvider.getBWPApi()
     ): Flow<Status<Player>> = flow {
@@ -47,27 +47,21 @@ object PlayerFactory {
             )
 
         } catch (e: HttpException) {
+            Napier.e(e) { "HttpException for '$name'" }
             emit(
                 Status.Error(
                     e.localizedMessage ?: "An unexpected error occurred trying to reach an API for '$name'",
                     name = name
                 )
             )
-            println(e.localizedMessage)
         } catch (e: IOException) {
-            println("IOException: ${e.localizedMessage}")
+            Napier.e(e) { "IOException for '$name'" }
             emit(
                 Status.Error(
                     e.localizedMessage ?: "IOException for '$name'; either your wifi or an API is down",
                     name = name
                 )
             )
-        } catch (e: TimeoutCancellationException) {
-            println("TimeoutCancellationException: ${e.localizedMessage}")
-            if (tryAgainOnTimeout) {
-                PlayerKindaButNotExactlyViewModel.remove(name)
-                makePlayer(name, false, apiKey, bwpApi)
-            }
         }
     }
 
@@ -102,8 +96,6 @@ object PlayerFactory {
             val playerInfoJson = async { bwpApi.getPlayerInfo(uuid, apiKey) }
             val overallStatsJson = async { bwpApi.getOverallStats(uuid, apiKey) }
             val gameStatsJson = async { bwpApi.getGameStats(uuid, apiKey) }
-
-            println("Getting player info for $uuid")
 
             return@withContext BWPStats(
                 OverallStatsJson(overallStatsJson.await()),

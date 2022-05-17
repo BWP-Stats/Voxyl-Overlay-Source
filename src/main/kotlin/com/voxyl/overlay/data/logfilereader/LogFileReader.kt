@@ -63,7 +63,7 @@ object LogFileReader {
         }
 
         if (Config[AutoShowAndHide] == "true") {
-            cs.launch {
+            cs.launch(Dispatchers.Default) {
                 Window.isAlwaysOnTop = true
                 delay(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
                 Window.isMinimized = true

@@ -1,50 +1,52 @@
 @file:Suppress("FunctionName")
-@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalComposeUiApi::class)
 
 package com.voxyl.overlay.ui.common
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.data.player.Tags
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.MainSearchBar
-import com.voxyl.overlay.ui.theme.MainColor
-import com.voxyl.overlay.ui.theme.am
-import com.voxyl.overlay.ui.theme.tbsm
-import com.voxyl.overlay.ui.theme.titleBarSizeMulti
+import com.voxyl.overlay.ui.theme.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
-@ExperimentalComposeUiApi
 @Composable
-fun TitleBarButtonsAndFields(
-    settingsMenuToggled: MutableState<Boolean>,
-    additionalSettingsEnabled: MutableState<Boolean>
-) {
+fun TitleBar(fws: FrameWindowScope) {
 
     val cs = rememberCoroutineScope { Dispatchers.IO }
     var queriedName by remember { mutableStateOf(TextFieldValue()) }
+
+    VoxylLogoForTitleBar()
+
+    fws.WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
 
     Row(
         Modifier
             .absolutePadding(top = 20.tbsm.dp)
             .fillMaxWidth()
     ) {
-        MainColorSettingsButton(settingsMenu = settingsMenuToggled)
+        MainColorSettingsButton()
 
         MainSearchBar(Modifier.weight(1f), queriedName, { queriedName = it }) {
             queriedName.text.split(" ").filterNot { it.isBlank() }.distinct().forEach {
@@ -57,15 +59,30 @@ fun TitleBarButtonsAndFields(
 
         YellowMinimizeButton()
 
-        GreenAdditionalSettingsButton(additionalSettingsEnabled)
+        GreenAdditionalSettingsButton()
     }
 }
 
 @Composable
-fun MainColorSettingsButton(modifier: Modifier = Modifier, settingsMenu: MutableState<Boolean>) = TitleBarButton(
+fun VoxylLogoForTitleBar() {
+    Image(
+        modifier = Modifier
+            .size(60.tbsm.dp)
+            .requestFocusOnClick(),
+        painter = painterResource("VoxylLogoForTitleBar.png"),
+        contentDescription = null,
+        alpha = .8f.amf,
+        colorFilter = ColorFilter.tint(MainColor.value.copy(alpha = 1f), BlendMode.SrcIn)
+    )
+}
+
+@Composable
+fun MainColorSettingsButton(modifier: Modifier = Modifier) = TitleBarButton(
     modifier = modifier.absolutePadding(left = 52.tbsm.dp),
     bgColor = mutableStateOf(MainColor.value),
-    doOnClick = { settingsMenu.value = !settingsMenu.value },
+    doOnClick = {
+        ScreenShowing.screen = if (ScreenShowing.screen == "main") "settings" else "main"
+    },
 )
 
 @Composable
@@ -89,11 +106,10 @@ fun YellowMinimizeButton(modifier: Modifier = Modifier) = TitleBarButton(
 
 @Composable
 fun GreenAdditionalSettingsButton(
-    enabled: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
     val cs = rememberCoroutineScope()
-    val alpha = if (enabled.value) 235 else 160
+    val alpha = if (AdditionalSettingsState.enabled) 235 else 160
 
     TitleBarButton(
         bgColor = mutableStateOf(Color(34, 197, 94, alpha).am),
@@ -101,7 +117,7 @@ fun GreenAdditionalSettingsButton(
         modifier = modifier.absolutePadding(right = 26.tbsm.dp)
             .hoverable(
                 onEnter = {
-                    enabled.value = true
+                    AdditionalSettingsState.enabled = true
                     cs.launch {
                         titleBarSizeMulti.animateTo(1f)
                     }

@@ -22,4 +22,7 @@ enum class ConfigKeys(var key: String, var defaultValue: String) {
     R("r", "130"),
     G("g", "32"),
     B("b", "229"),
+
+    OpenAndCloseKeybind("open_and_close_keybind", "Set a key"),
+    ClearPlayersKeybind("clear_players_keybind", "Set a key"),
 }

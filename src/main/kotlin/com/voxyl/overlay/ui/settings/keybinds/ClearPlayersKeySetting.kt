@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.nativelisteners.ClearPlayersKeyListener
 import com.voxyl.overlay.nativelisteners.KeyListenerForSettings
 import com.voxyl.overlay.nativelisteners.NativeUtil.toCleanKeyCodeString
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.ClearPlayersKeybind
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
 
@@ -33,6 +35,7 @@ fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
                 .background(Color(0f, 0f, 0f, .3f).am)
                 .clickable {
                     ClearPlayersKeyListener.paramString = KeyListenerForSettings.awaitParamString()
+                    Config[ClearPlayersKeybind] = ClearPlayersKeyListener.paramString
                 }
                 .padding(10.dp)
         )

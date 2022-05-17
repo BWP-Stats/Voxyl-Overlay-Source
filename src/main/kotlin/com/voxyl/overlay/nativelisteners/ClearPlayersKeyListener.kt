@@ -6,11 +6,12 @@ import androidx.compose.runtime.setValue
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
-import kotlin.system.measureTimeMillis
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.ClearPlayersKeybind
 
 object ClearPlayersKeyListener : NativeKeyListener {
     var paramString by mutableStateOf(
-        "NATIVE_KEY_RELEASED,keyCode=27,keyText=Close Bracket,keyChar=Undefined,modifiers=Ctrl,keyLocation=KEY_LOCATION_STANDARD,rawCode=221"
+        Config[ClearPlayersKeybind]
     )
 
     override fun nativeKeyReleased(e: NativeKeyEvent) {

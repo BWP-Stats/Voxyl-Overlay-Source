@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -12,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.nativelisteners.KeyListenerForSettings
 import com.voxyl.overlay.nativelisteners.NativeUtil.toCleanKeyCodeString
 import com.voxyl.overlay.nativelisteners.OpenCloseKeyListener
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.OpenAndCloseKeybind
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
 
@@ -34,6 +35,7 @@ fun OpenCloseKeySetting(modifier: Modifier = Modifier) {
                 .background(Color(0f, 0f, 0f, .3f).am)
                 .clickable {
                     OpenCloseKeyListener.paramString = KeyListenerForSettings.awaitParamString()
+                    Config[OpenAndCloseKeybind] = OpenCloseKeyListener.paramString
                 }
                 .padding(10.dp)
         )

@@ -65,11 +65,12 @@ fun ColumnSettingsMenu() {
 
                 Divider(
                     color = MainWhite.copy(.313f),
-                    modifier = Modifier.fillMaxWidth(.9f)
+                    modifier = Modifier.fillMaxWidth(.9f).align(Alignment.CenterHorizontally)
                 )
 
                 DropdownMenuItem(onClick = {
-                    StatsToShow.stats.remove(ColumnSettingsMenuState.stat)
+                    StatsToShow.remove(ColumnSettingsMenuState.stat)
+                    ColumnSettingsMenuState.show = false
                 }) {
                     VText("Remove", fontSize = TextUnit.Unspecified)
                 }

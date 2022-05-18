@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
+import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow.clean
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.tbsm
@@ -54,8 +55,7 @@ fun PlayerStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
                 horizontalArrangement = if (Config[CenterStats].toBooleanStrictOrNull() != false) Arrangement.Center else Arrangement.Start
             ) {
                 VText(
-                    text = stat.substringAfterLast(".")
-                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+                    text = stat.clean(),
                     fontSize = 15.5.sp,
                     fontWeight = FontWeight.Medium,
                 )

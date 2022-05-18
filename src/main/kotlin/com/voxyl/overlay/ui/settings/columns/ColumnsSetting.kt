@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.Columns
-import com.voxyl.overlay.ui.mainview.playerstats.PlayerContextMenuState
 import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow
+import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow.clean
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
@@ -51,7 +51,7 @@ fun ColumnsSettings() {
             modifier = Modifier
                 .height(32.dp)
                 .fillMaxWidth()
-                .background(Color(.1f, .1f, .1f, .3f).am)
+                .background(Color(.2f, .2f, .2f, .3f).am)
                 .reorderable(
                     state,
                     { from, to -> stats.move(from.index, to.index) },
@@ -81,7 +81,7 @@ fun ColumnsSettings() {
                     contentAlignment = Alignment.Center
                 ) {
                     VText(
-                        text = it.getStatsTextCleaned(),
+                        text = it.clean(),
                         textAlign = TextAlign.Center,
                         fontSize = 16.sp
                     )
@@ -97,18 +97,18 @@ fun ColumnsSettings() {
         ) {
             Spacer(Modifier.weight(1f))
             VText(
-                "You can drag the columns to reorder them, or click on one to remove/modify it",
+                "You can drag the columns to reorder them, or click on one to remove/modify it (ᴮ = BWP, ᴴ = Hypixel)",
                 fontSize = 14.sp
             )
             Spacer(Modifier.weight(2f))
             Button(
                 onClick = {
-
+                    ColumnsListState.show = true
                 },
                 modifier = Modifier
                     .size(42.dp),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color(.1f, .1f, .1f, .3f).am
+                    backgroundColor = Color(.2f, .2f, .2f, .3f).am
                 ),
                 elevation = null,
                 shape = CircleShape
@@ -119,6 +119,7 @@ fun ColumnsSettings() {
                     contentDescription = "Add column",
                     modifier = Modifier.requiredSize(36.dp)
                 )
+                ColumnsList()
             }
             Spacer(Modifier.width(20.dp))
         }
@@ -132,13 +133,5 @@ fun ColumnsSettings() {
             .offset(y = -82.dp)
     ) {
         ColumnSettingsMenu()
-    }
-}
-
-private fun String.getStatsTextCleaned(): String {
-    return (if (contains("bwp.")) "(B) " else "") + substringAfterLast(".").replaceFirstChar {
-        if (it.isLowerCase()) it.titlecase(
-            Locale.getDefault()
-        ) else it.toString()
     }
 }

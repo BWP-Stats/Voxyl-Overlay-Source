@@ -1,10 +1,10 @@
 package com.voxyl.overlay.ui.settings.columns
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -19,6 +19,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.alphaMultiplier
@@ -30,6 +31,8 @@ fun ColumnsList() {
 
     var offset by remember { mutableStateOf(DpOffset.Zero) }
     var show by remember { mutableStateOf(false) }
+
+    val addableStats = StatsToShow.addableStats
 
     Box(
         modifier = Modifier
@@ -55,24 +58,41 @@ fun ColumnsList() {
                 },
                 modifier = Modifier.background(color = Color(.1f, .1f, .1f, 0.9f))
             ) {
-                DropdownMenuItem(
-                    onClick = {},
-                    enabled = false
-                ) {
+                DropdownMenuItem({}, enabled = false) {
                     VText("Addable columns", fontSize = TextUnit.Unspecified)
                 }
 
                 Divider(
                     color = MainWhite.copy(.313f),
-                    modifier = Modifier.fillMaxWidth(.9f)
+                    modifier = Modifier.fillMaxWidth(.9f).align(Alignment.CenterHorizontally)
                 )
 
-                DropdownMenuItem(onClick = {
+                Spacer(Modifier.height(8.dp))
 
-                }) {
-
+                DropdownMenuItem({}, enabled = false) {
+                    LazyColumn(
+                        modifier = Modifier.size(175.dp, 40.dp + (addableStats.size * 20).dp)
+                    ) {
+                        for (stat in addableStats) {
+                            stat(stat)
+                        }
+                    }
                 }
             }
+        }
+    }
+}
+
+fun LazyListScope.stat(item: StatsToShow.Stat) {
+    item {
+        Box(
+            modifier = Modifier.fillMaxSize()
+                .clickable {
+                    StatsToShow.add(item.raw)
+                }
+        ) {
+            Spacer(modifier = Modifier.height(2.dp))
+            VText(item.clean, fontSize = TextUnit.Unspecified)
         }
     }
 }

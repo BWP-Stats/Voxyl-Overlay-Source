@@ -67,7 +67,7 @@ fun PlayerContextMenu() {
 
                 Divider(
                     color = MainWhite.copy(.313f),
-                    modifier = Modifier.fillMaxWidth(.9f)
+                    modifier = Modifier.fillMaxWidth(.9f).align(Alignment.CenterHorizontally)
                 )
 
                 var refreshText by remember { mutableStateOf("Refresh") }

@@ -1,11 +1,13 @@
 package com.voxyl.overlay.ui.settings.columns
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.mouseClickable
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -15,11 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
+import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys.Columns
+import com.voxyl.overlay.ui.mainview.playerstats.PlayerContextMenuState
 import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
@@ -27,6 +32,7 @@ import com.voxyl.overlay.ui.theme.am
 import org.burnoutcrew.reorderable.*
 import java.util.*
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColumnsSettings() {
     val state = rememberReorderState()
@@ -49,7 +55,10 @@ fun ColumnsSettings() {
                 .reorderable(
                     state,
                     { from, to -> stats.move(from.index, to.index) },
-                    orientation = Orientation.Horizontal
+                    orientation = Orientation.Horizontal,
+                    onDragEnd = { _, _ ->
+                        Config[Columns] = stats.joinToString(",")
+                    }
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -62,7 +71,13 @@ fun ColumnsSettings() {
                             state.offsetByKey(it),
                             Orientation.Horizontal
                         )
-                        .detectReorder(state),
+                        .detectReorder(state)
+                        .mouseClickable {
+                            if (buttons.isSecondaryPressed) {
+                                ColumnSettingsMenuState.stat = it
+                                ColumnSettingsMenuState.show = true
+                            }
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     VText(
@@ -107,6 +122,16 @@ fun ColumnsSettings() {
             }
             Spacer(Modifier.width(20.dp))
         }
+    }
+
+    Column(
+        Modifier
+            .height(32.dp)
+            .fillMaxWidth()
+            .absolutePadding(right = 20.dp, left = 20.dp)
+            .offset(y = -82.dp)
+    ) {
+        ColumnSettingsMenu()
     }
 }
 

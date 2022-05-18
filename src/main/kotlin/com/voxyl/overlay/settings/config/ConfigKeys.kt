@@ -28,4 +28,6 @@ enum class ConfigKeys(var key: String, var defaultValue: String) {
 
     SortBy("sort_by", "name"),
     SortAsc("sort_asc", "false"),
+
+    Columns("columns", "tags,bwp.level,name,bwp.wins,bwp.kills,bwp.finals")
 }

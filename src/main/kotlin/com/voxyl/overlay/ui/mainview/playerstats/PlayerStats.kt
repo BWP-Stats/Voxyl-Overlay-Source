@@ -24,10 +24,6 @@ import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.tbsm
 import java.util.*
 
-object StatsToShow {
-    val stats = mutableStateListOf("tags", "bwp.level", "name", "bwp.wins", "bwp.kills", "bwp.finals")
-}
-
 @Composable
 fun PlayerStats() {
     val playerStatsLazyListState = rememberLazyListState()

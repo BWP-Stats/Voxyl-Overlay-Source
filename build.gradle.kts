@@ -36,6 +36,9 @@ dependencies {
 
     //native stuff
     implementation("com.github.kwhat:jnativehook:2.2.2")
+
+    //drag 'n' drop reordering
+    implementation("org.burnoutcrew.composereorderable:reorderable:0.7.4")
 }
 
 tasks.test {

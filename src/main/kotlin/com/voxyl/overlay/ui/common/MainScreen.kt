@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.playerstats.PlayerStats
+import com.voxyl.overlay.ui.navigation.ScreenShowing
 import com.voxyl.overlay.ui.settings.Settings
 import com.voxyl.overlay.ui.theme.bgam
 import com.voxyl.overlay.ui.theme.tbsm
@@ -34,10 +35,6 @@ fun MainScreen(fws: FrameWindowScope) {
     }
 
     AdditionalSettings()
-}
-
-object ScreenShowing {
-    var screen by mutableStateOf("main")
 }
 
 @Composable

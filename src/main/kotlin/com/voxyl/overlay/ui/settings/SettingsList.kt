@@ -26,6 +26,7 @@ import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideCheckBox
 import com.voxyl.overlay.ui.settings.qol.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.theme.*
 import com.voxyl.overlay.ui.settings.basic.PlayerNameTextField
+import com.voxyl.overlay.ui.settings.columns.ColumnsSettings
 import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.OpenCloseKeySetting
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
@@ -59,7 +60,7 @@ fun SettingsList(
         @Composable { BWPApiKeyTextField() } to "Basic BWPApiKeyTextField",
         @Composable { HypixelApiKeyTextField() } to "Basic HypixelApiKeyTextField",
         @Composable { PlayerNameTextField() } to "Basic PlayerNameTextField Username",
-        @Composable { LogFilePathTextField() } to "Basic LogFilePathTextField",
+        @Composable { LogFilePathTextField(); Spacer(Modifier.height(10.dp)) } to "Basic LogFilePathTextField",
 
         @Composable { header("QOL") } to "QOL PinYourselfToTopCheckbox AddYourselfToOverlayCheckbox AutoShowAndHideCheckBox AutoShowAndHideDelaySlider AutoHide",
         @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOL PinYourselfToTopCheckbox",
@@ -79,7 +80,10 @@ fun SettingsList(
 
         @Composable { header("Keybinds") } to "Keybinds OpenCloseKeySetting ClearPlayersKeySetting Hotkeys",
         @Composable { OpenCloseKeySetting() } to "Keybinds OpenCloseKeySetting Hotkeys",
-        @Composable { ClearPlayersKeySetting() } to "Keybinds ClearPlayersKeySetting Hotkeys"
+        @Composable { ClearPlayersKeySetting() } to "Keybinds ClearPlayersKeySetting Hotkeys",
+
+        @Composable { header("Columns") } to "Columns Stats Show",
+        @Composable { ColumnsSettings() } to "Columns Stats Show"
     ).filter {
         it.second.contains(queriedSetting.text, true)
     }

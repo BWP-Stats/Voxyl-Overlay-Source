@@ -1,2 +1,119 @@
 package com.voxyl.overlay.ui.settings.columns
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.voxyl.overlay.Window
+import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow
+import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.theme.am
+import org.burnoutcrew.reorderable.*
+import java.util.*
+
+@Composable
+fun ColumnsSettings() {
+    val state = rememberReorderState()
+    val stats = StatsToShow.stats
+
+    val width = (Window.width.dp - 40.dp) / stats.size
+
+    Column(
+        Modifier
+            .height(82.dp)
+            .fillMaxWidth()
+            .absolutePadding(right = 20.dp, left = 20.dp),
+    ) {
+        LazyRow(
+            state = state.listState,
+            modifier = Modifier
+                .height(32.dp)
+                .fillMaxWidth()
+                .background(Color(.1f, .1f, .1f, .3f).am)
+                .reorderable(
+                    state,
+                    { from, to -> stats.move(from.index, to.index) },
+                    orientation = Orientation.Horizontal
+                ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            items(items = stats, { it }) {
+                Box(
+                    Modifier
+                        .width(width)
+                        .fillMaxHeight()
+                        .draggedItem(
+                            state.offsetByKey(it),
+                            Orientation.Horizontal
+                        )
+                        .detectReorder(state),
+                    contentAlignment = Alignment.Center
+                ) {
+                    VText(
+                        text = it.getStatsTextCleaned(),
+                        textAlign = TextAlign.Center,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+        }
+        Row(
+            Modifier
+                .height(50.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Spacer(Modifier.weight(1f))
+            VText(
+                "You can drag the columns to reorder them, or click on one to remove/modify it",
+                fontSize = 14.sp
+            )
+            Spacer(Modifier.weight(2f))
+            Button(
+                onClick = {
+
+                },
+                modifier = Modifier
+                    .size(42.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(.1f, .1f, .1f, .3f).am
+                ),
+                elevation = null,
+                shape = CircleShape
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    tint = MainWhite,
+                    contentDescription = "Add column",
+                    modifier = Modifier.requiredSize(36.dp)
+                )
+            }
+            Spacer(Modifier.width(20.dp))
+        }
+    }
+}
+
+private fun String.getStatsTextCleaned(): String {
+    return (if (contains("bwp.")) "(B) " else "") + substringAfterLast(".").replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase(
+            Locale.getDefault()
+        ) else it.toString()
+    }
+}

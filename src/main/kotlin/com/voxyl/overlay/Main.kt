@@ -26,9 +26,7 @@ import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import java.awt.Dimension
-import java.util.logging.FileHandler
-import java.util.logging.Handler
-import java.util.logging.LogRecord
+import java.util.logging.*
 
 lateinit var Window: ComposeWindow
     private set
@@ -58,9 +56,9 @@ fun main() = application {
 
         HomemadeCache.startAutoClear(cs, 5000L)
         LogFileReader.start(cs)
-        Napier.base(DebugAntilog(handler = listOf(DefaultHandler.`😳`)))
+        Napier.initialize()
         NativeListeners.initialize()
-
+        
         MainScreen(this)
     }
 }
@@ -77,4 +75,13 @@ fun getPreferredWindowSize(): DpSize {
     val h = SavedWindowState[Height].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
 
     return DpSize(w.dp, h.dp)
+}
+
+private fun Napier.initialize() {
+    val consoleHandler = ConsoleHandler().apply {
+        level = Level.ALL
+        formatter = SimpleFormatter()
+    }
+
+    base(DebugAntilog(handler = listOf(DefaultHandler.`😳`, consoleHandler)))
 }

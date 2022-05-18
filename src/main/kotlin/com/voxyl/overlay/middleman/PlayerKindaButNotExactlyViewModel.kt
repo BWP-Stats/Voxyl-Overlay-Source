@@ -55,7 +55,7 @@ object PlayerKindaButNotExactlyViewModel {
         }.launchIn(cs)
     }
 
-    private val devNames = listOf("ambmt", "_lightninq", "vitroid", "firestarad", "sirjosh3917", "hero_of_gb")
+    private val devNames = listOf("ambmt", "_lightninq", "vitroid", "firestarad", "sirjosh3917", "hero_of_gb", "Rezcwa")
 
     private fun generateTags(name: String): MutableList<Tags> {
         val tags = mutableListOf<Tags>()

@@ -17,19 +17,19 @@ import com.voxyl.overlay.ui.theme.VText
 
 @Composable
 fun RSlider(modifier: Modifier = Modifier) {
-    val r = mutableStateOf(Config[R].toFloatOrNull() ?: R.defaultValue.toFloat())
+    val r = mutableStateOf(Config[R].toIntOrNull()?.toFloat() ?: R.defaultValue.toInt().toFloat())
     MainColorSlider(R, r, modifier)
 }
 
 @Composable
 fun GSlider(modifier: Modifier = Modifier) {
-    val g = mutableStateOf(Config[G].toFloatOrNull() ?: G.defaultValue.toFloat())
+    val g = mutableStateOf(Config[G].toIntOrNull()?.toFloat() ?: G.defaultValue.toInt().toFloat())
     MainColorSlider(G, g, modifier)
 }
 
 @Composable
 fun BSlider(modifier: Modifier = Modifier) {
-    val b = mutableStateOf(Config[B].toFloatOrNull() ?: B.defaultValue.toFloat())
+    val b = mutableStateOf(Config[B].toIntOrNull()?.toFloat() ?: B.defaultValue.toInt().toFloat())
     MainColorSlider(B, b, modifier)
 }
 
@@ -56,10 +56,10 @@ fun MainColorSlider(
             value = color.value,
             onValueChange = {
                 color.value = it
-                Config[key] = color.value.toString()
+                Config[key] = color.value.toInt().toString()
             },
             modifier = Modifier.fillMaxWidth(),
-            valueRange = 0f..255f,
+            valueRange = 0f..255f
         )
     }
 }

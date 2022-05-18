@@ -2,15 +2,19 @@ package com.voxyl.overlay.nativelisteners
 
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener
+import kotlinx.coroutines.delay
 
 object KeyListenerForSettings : NativeKeyListener {
     private var paramString: String? = null
+    private var waiting = false
 
-    fun awaitParamString(): String {
+    suspend fun awaitParamString(): String {
+        NativeListeners.add(KeyListenerForSettings)
         paramString = null
         while(paramString == null) {
-            Thread.sleep(100)
+            delay(100)
         }
+        NativeListeners.remove(KeyListenerForSettings)
         return paramString!!
     }
 

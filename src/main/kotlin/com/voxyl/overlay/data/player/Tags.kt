@@ -24,7 +24,7 @@ import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
 
 enum class Tags(val iconName: String, val icon: @Composable (Modifier) -> Unit, val desc: String) {
-    You("account.png", { TagIcon(You, it, MainColor.value) }, "You"),
+    You("account.png", { TagIcon(You, it, Color(66, 126, 255).am) }, "You"),
     Party("account-group.png", { TagIcon(Party, it, Color(128, 61, 184).am) }, "Your party members"),
 
     ManuallySearched("form-textbox.png", { TagIcon(ManuallySearched, it, Color(181, 179, 51).am) }, "Manually added"),

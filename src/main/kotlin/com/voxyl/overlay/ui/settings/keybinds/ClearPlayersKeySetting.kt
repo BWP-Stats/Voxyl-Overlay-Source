@@ -3,7 +3,7 @@ package com.voxyl.overlay.ui.settings.keybinds
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,9 +15,12 @@ import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.ClearPlayersKeybind
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
+import kotlinx.coroutines.launch
 
 @Composable
 fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
+    val cs = rememberCoroutineScope()
+
     Row(
         modifier = modifier
             .height(32.dp)
@@ -34,8 +37,14 @@ fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .background(Color(0f, 0f, 0f, .3f).am)
                 .clickable {
-                    ClearPlayersKeyListener.paramString = KeyListenerForSettings.awaitParamString()
-                    Config[ClearPlayersKeybind] = ClearPlayersKeyListener.paramString
+                    if (ClearPlayersKeyListener.paramString == "Press 'esc' to cancel") return@clickable
+
+                    ClearPlayersKeyListener.paramString = "Press 'esc' to cancel"
+
+                    cs.launch {
+                        ClearPlayersKeyListener.paramString = KeyListenerForSettings.awaitParamString()
+                        Config[ClearPlayersKeybind] = ClearPlayersKeyListener.paramString
+                    }
                 }
                 .padding(10.dp)
         )

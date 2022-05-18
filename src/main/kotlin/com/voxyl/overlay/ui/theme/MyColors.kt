@@ -8,6 +8,7 @@ import com.voxyl.overlay.settings.config.ConfigKeys.R
 import com.voxyl.overlay.settings.config.ConfigKeys.G
 import com.voxyl.overlay.settings.config.ConfigKeys.B
 import com.voxyl.overlay.settings.config.ConfigKeys.Opacity
+import com.voxyl.overlay.settings.config.ConfigKeys.BackgroundOpacity
 import kotlin.math.roundToInt
 
 var alphaMultiplier = mutableStateOf(Config[Opacity].toFloatOrNull() ?: 1f)
@@ -38,3 +39,8 @@ val MainColor: MutableState<Color> = mutableStateOf(Color(130, 32, 229, 160).am)
         field.value = _MainColor
         return field
     }
+
+var bgAlphaMultiplier = mutableStateOf(Config[BackgroundOpacity].toFloatOrNull() ?: 1f)
+
+val Color.bgam
+    get() = this.copy((this.alpha * bgAlphaMultiplier.value).coerceIn(0f, 1f))

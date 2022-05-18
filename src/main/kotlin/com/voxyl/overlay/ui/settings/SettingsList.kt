@@ -3,11 +3,10 @@
 package com.voxyl.overlay.ui.settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material.Divider
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -36,10 +35,9 @@ import com.voxyl.overlay.ui.settings.qol.PinYourselfToTopCheckbox
 fun Settings(
     modifier: Modifier = Modifier
 ) {
-    val settingsList = rememberLazyListState()
     SettingsList(
         modifier = modifier,
-        lazyListState = settingsList
+        lazyListState = rememberLazyListState()
     )
 }
 
@@ -56,36 +54,60 @@ fun SettingsList(
         mutableStateOf(Config[AutoShowAndHide].toBooleanStrictOrNull() ?: true)
     }
 
-    val settings = remember {
-        mutableStateListOf<@Composable () -> Unit>(
-            { BWPApiKeyTextField() },
-            { HypixelApiKeyTextField() },
-            { PlayerNameTextField() },
-            { LogFilePathTextField() },
-            { PinYourselfToTopCheckbox(addYourself) },
-            { AddYourselfToOverlayCheckbox(addYourself) },
-            { AutoShowAndHideCheckBox(autoHide) },
-            { AutoShowAndHideDelaySlider(autoHide) },
-            { OpacitySlider() },
-            { TitleBarSizeSlider() },
-            { CenterStatsCheckBox() },
-            { ShowRankPrefixSetting() },
-            { RSlider() },
-            { GSlider() },
-            { BSlider() },
-            { OpenCloseKeySetting() },
-            { ClearPlayersKeySetting() },
-        )
+    val settings = mutableListOf(
+        @Composable { header("Basic") } to "Basic BWPApiKeyTextField HypixelApiKeyTextField PlayerNameTextField Username LogFilePathTextField",
+        @Composable { BWPApiKeyTextField() } to "Basic BWPApiKeyTextField",
+        @Composable { HypixelApiKeyTextField() } to "Basic HypixelApiKeyTextField",
+        @Composable { PlayerNameTextField() } to "Basic PlayerNameTextField Username",
+        @Composable { LogFilePathTextField() } to "Basic LogFilePathTextField",
+
+        @Composable { header("QOL") } to "QOL PinYourselfToTopCheckbox AddYourselfToOverlayCheckbox AutoShowAndHideCheckBox AutoShowAndHideDelaySlider AutoHide",
+        @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOL PinYourselfToTopCheckbox",
+        @Composable { AddYourselfToOverlayCheckbox(addYourself) } to "QOL AddYourselfToOverlayCheckbox",
+        @Composable { AutoShowAndHideCheckBox(autoHide) } to "QOL AutoShowAndHideCheckBox AutoHide",
+        @Composable { AutoShowAndHideDelaySlider(autoHide) } to "QOL AutoShowAndHideDelaySlider AutoHide",
+
+        @Composable { header("Appearance") } to "OpacitySlider TitleBarSizeSlider CenterStateCheckBox ShowRankPrefixSetting RSlider GSlider BSlider Red Green Blue",
+        @Composable { BackgroundOpacitySlider() } to "Appearance BackgroundOpacitySlider",
+        @Composable { OpacitySlider() } to "Appearance OpacitySlider",
+        @Composable { TitleBarSizeSlider() } to "Appearance TitleBarSizeSlider",
+        @Composable { CenterStatsCheckBox() } to "Appearance CenterStateCheckBox",
+        @Composable { ShowRankPrefixSetting() } to "Appearance ShowRankPrefixSetting",
+        @Composable { RSlider() } to "Appearance RSlider Red",
+        @Composable { GSlider() } to "Appearance GSlider Green",
+        @Composable { BSlider() } to "Appearance BSlider Blue",
+
+        @Composable { header("Keybinds") } to "Keybinds OpenCloseKeySetting ClearPlayersKeySetting Hotkeys",
+        @Composable { OpenCloseKeySetting() } to "Keybinds OpenCloseKeySetting Hotkeys",
+        @Composable { ClearPlayersKeySetting() } to "Keybinds ClearPlayersKeySetting Hotkeys"
+    ).filter {
+        it.second.contains(queriedSetting.text, true)
     }
 
     LazyColumn(
         state = lazyListState,
-        modifier = modifier.absoluteOffset(y = 60.tbsm.dp).fillMaxSize().scrollbar(lazyListState).requestFocusOnClick(),
+        modifier = modifier
+            .absoluteOffset(y = 60.tbsm.dp)
+            .fillMaxSize()
+            .scrollbar(lazyListState)
+            .requestFocusOnClick(),
         contentPadding = PaddingValues(bottom = 75.dp)
     ) {
         items(settings) {
-            it()
+            it.first()
         }
+    }
+}
+
+@Composable
+private fun header(text: String) {
+    Row(
+        Modifier.fillMaxWidth().height(30.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Divider(modifier = Modifier.width(100.dp).absolutePadding(left = 20.dp), color = MainWhite)
+        VText(text, modifier = Modifier.padding(5.dp))
+        Divider(modifier = Modifier.weight(1f).absolutePadding(right = 20.dp), color = MainWhite)
     }
 }
 

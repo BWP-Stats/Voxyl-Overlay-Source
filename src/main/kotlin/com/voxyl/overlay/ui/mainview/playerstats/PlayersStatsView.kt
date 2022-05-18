@@ -25,8 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.data.player.PlayerState
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
-import com.voxyl.overlay.settings.config.ConfigKeys.ShowRankPrefix
+import com.voxyl.overlay.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.common.elements.scrollbar
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.playerstats.colors.ErrorString
@@ -53,9 +52,13 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyL
         contentPadding = PaddingValues(bottom = 50.dp)
     ) {
         try {
-            var players = PlayerKindaButNotExactlyViewModel.players.toList()
+            val rawPlayers = PlayerKindaButNotExactlyViewModel.players.toList()
+            var players = Sort.sortPlayersList(rawPlayers)
 
-            players = sortPlayersList(players)
+            if (Config[PinYourselfToTop].toBooleanStrictOrNull() != false) {
+                players = players.filter { it.name != Config[PlayerName] }.toMutableList()
+                players.add(0, rawPlayers.first { it.name == Config[PlayerName] })
+            }
 
             items(items = players) {
                 PlayersStatsBar(player = it, statsToShow = statsToShow)
@@ -67,30 +70,6 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyL
     }
 
     PlayerContextMenu()
-}
-
-fun sortPlayersList(players: List<PlayerState>): List<PlayerState> {
-    return if (players.any { Sort.by != "name" }) {
-        if (Sort.ascending) {
-            players.sortedBy {
-                if (it.error.isNotBlank()) Int.MAX_VALUE else it[Sort.by]?.toInt()
-            }
-        } else {
-            players.sortedByDescending {
-                if (it.error.isNotBlank()) 0 else it[Sort.by]?.toInt()
-            }
-        }
-    } else {
-        if (Sort.ascending) {
-            players.sortedBy {
-                if (it.error.isNotBlank()) "∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐" else it[Sort.by]
-            }
-        } else {
-            players.sortedByDescending {
-                if (it.error.isNotBlank()) "                                  " else it[Sort.by]?.trimStart('_')
-            }
-        }
-    }
 }
 
 @Composable
@@ -127,57 +106,61 @@ fun PlayersStatsBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (stat in statsToShow) {
-                StatCell(player = player, statToShow = stat)
+                DisplayStat(player = player, statToShow = stat)
             }
         }
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
+@Composable
+fun RowScope.DisplayStat(
+    modifier: Modifier = Modifier,
+    player: PlayerState,
+    statToShow: String,
+) {
+    if (statToShow == "tags") {
+        TagCell(
+            modifier = modifier,
+            player = player
+        )
+    } else {
+        StatCell(
+            modifier = modifier,
+            player = player,
+            statToShow = statToShow
+        )
+    }
+}
+
+@Composable
+fun RowScope.TagCell(
+    modifier: Modifier = Modifier,
+    player: PlayerState
+) {
+    Row(
+        modifier = modifier
+            .weight(cellWeight("tags"))
+            .align(Alignment.CenterVertically)
+            .selectable(player),
+        horizontalArrangement = Arrangement.spacedBy(1.dp)
+    ) {
+        for (tag in player.tags) {
+            tag.icon(Modifier.size(24.dp))
+        }
+    }
+}
+
 @Composable
 fun RowScope.StatCell(
     modifier: Modifier = Modifier,
     player: PlayerState,
     statToShow: String,
 ) {
-    if (statToShow == "tags") {
-        Row(
-            modifier = modifier
-                .weight(cellWeight(statToShow))
-                .align(Alignment.CenterVertically)
-                .requestFocusOnClick(),
-            horizontalArrangement = Arrangement.spacedBy(1.dp)
-        ) {
-            for (tag in player.tags) {
-                tag.icon(Modifier.size(24.dp))
-            }
-        }
-        return
-    }
-
     val text = getStat(statToShow, player)
     Box(
         modifier = modifier
             .weight(cellWeight(statToShow))
-            .pointerMoveFilter(
-                onMove = {
-                    PlayerContextMenuState.player = player
-                    true
-                },
-                onExit = {
-                    if (!PlayerContextMenuState.show) {
-                        PlayerContextMenuState.player = PlayerState.empty
-                    }
-                    true
-                }
-            )
-            .mouseClickable(
-                onClick = {
-                    if (buttons.isSecondaryPressed) {
-                        PlayerContextMenuState.show = true
-                    }
-                }
-            ),
+            .selectable(player),
     ) {
         VText(
             text = text,
@@ -190,6 +173,29 @@ fun RowScope.StatCell(
         )
     }
 }
+
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
+@Composable
+private fun Modifier.selectable(
+    player: PlayerState,
+) = this
+    .pointerMoveFilter(
+        onMove = {
+            PlayerContextMenuState.player = player
+            true
+        },
+        onExit = {
+            if (!PlayerContextMenuState.show) {
+                PlayerContextMenuState.player = PlayerState.empty
+            }
+            true
+        }
+    )
+    .mouseClickable {
+        if (buttons.isSecondaryPressed) {
+            PlayerContextMenuState.show = true
+        }
+    }
 
 @Composable
 private fun getStat(statToShow: String, player: PlayerState) = when {

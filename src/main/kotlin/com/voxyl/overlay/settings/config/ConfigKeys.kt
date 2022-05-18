@@ -7,16 +7,16 @@ enum class ConfigKeys(var key: String, var defaultValue: String) {
     PlayerName("player_name", ""),
 
     AddYourselfToOverlay("add_yourself_to_overlay", "true"),
-    PinYourselfToTop("pin_yourself_to_top", "false"),
+    PinYourselfToTop("pin_yourself_to_top", "true"),
 
     AutoShowAndHide("auto_show_and_hide", "false"),
     AutoShowAndHideDelay("auto_show_and_hide_delay", "5"),
 
     Opacity("opacity", "1"),
+    BackgroundOpacity("background_opacity", "1"),
     TitleBarSizeMulti("title_bar_size_multi", "1"),
 
     CenterStats("center_stats", "false"),
-
     ShowRankPrefix("show_rank_prefix", "true"),
 
     R("r", "130"),

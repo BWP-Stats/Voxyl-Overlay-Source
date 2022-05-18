@@ -26,6 +26,7 @@ import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.MainSearchBar
+import com.voxyl.overlay.ui.settings.SettingsSearchBar
 import com.voxyl.overlay.ui.theme.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +45,11 @@ fun TitleBar(fws: FrameWindowScope) {
     ) {
         MainColorSettingsButton()
 
-        MainSearchBar(Modifier.weight(1f))
+        if (ScreenShowing.screen == "main") {
+            MainSearchBar(Modifier.weight(1f))
+        } else {
+            SettingsSearchBar(Modifier.weight(1f))
+        }
 
         RedCloseOverlayButton()
 

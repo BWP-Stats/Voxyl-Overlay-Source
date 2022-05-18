@@ -17,6 +17,7 @@ import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.playerstats.PlayerStats
 import com.voxyl.overlay.ui.settings.Settings
+import com.voxyl.overlay.ui.theme.bgam
 import com.voxyl.overlay.ui.theme.tbsm
 
 @Composable
@@ -44,7 +45,7 @@ fun BackgroundBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerSha
     modifier = modifier
         .fillMaxSize()
         .clip(shape)
-        .background(Color(0f, 0f, 0f, .4f))
+        .background(Color(0f, 0f, 0f, .4f).bgam)
         .requestFocusOnClick()
 )
 
@@ -55,7 +56,7 @@ fun TitleBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerShape(10
         .fillMaxWidth()
         .height(40.tbsm.dp)
         .clip(shape)
-        .background(Color(0f, 0f, 0f, .2f))
+        .background(Color(.15f, .15f, .15f, .4f).bgam)
         .requestFocusOnClick()
 )
 

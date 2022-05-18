@@ -54,7 +54,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
             packageName = "Voxyl Overlay"
-            packageVersion = "0.0.4"
+            packageVersion = "0.0.5"
 
             modules("java.sql", "java.instrument", "jdk.unsupported")
 

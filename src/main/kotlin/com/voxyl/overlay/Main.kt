@@ -58,7 +58,7 @@ fun main() = application {
         LogFileReader.start(cs)
         Napier.initialize()
         NativeListeners.initialize()
-        
+
         MainScreen(this)
     }
 }

@@ -5,11 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.mouseClickable
 import androidx.compose.material.Divider
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -19,15 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.data.player.PlayerState
-import com.voxyl.overlay.data.player.Tags
 import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
@@ -43,7 +38,6 @@ import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
 import com.voxyl.overlay.ui.theme.tbsm
 import io.github.aakira.napier.Napier
-import java.util.*
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -59,18 +53,44 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyL
         contentPadding = PaddingValues(bottom = 50.dp)
     ) {
         try {
-            PlayerKindaButNotExactlyViewModel.players.forEach {
-                item {
-                    PlayersStatsBar(player = it, statsToShow = statsToShow)
-                }
+            var players = PlayerKindaButNotExactlyViewModel.players.toList()
+
+            players = sortPlayersList(players)
+
+            items(items = players) {
+                PlayersStatsBar(player = it, statsToShow = statsToShow)
             }
         } catch (e: Exception) {
-            Napier.e(e) { "Error with iterating over the players in PlayersStarsView" }
+            Napier.wtf(e) { "Error with iterating over the players in PlayersStarsView" }
             return@LazyColumn
         }
     }
 
     PlayerContextMenu()
+}
+
+fun sortPlayersList(players: List<PlayerState>): List<PlayerState> {
+    return if (players.any { Sort.by != "name" }) {
+        if (Sort.ascending) {
+            players.sortedBy {
+                if (it.error.isNotBlank()) Int.MAX_VALUE else it[Sort.by]?.toInt()
+            }
+        } else {
+            players.sortedByDescending {
+                if (it.error.isNotBlank()) 0 else it[Sort.by]?.toInt()
+            }
+        }
+    } else {
+        if (Sort.ascending) {
+            players.sortedBy {
+                if (it.error.isNotBlank()) "∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐" else it[Sort.by]
+            }
+        } else {
+            players.sortedByDescending {
+                if (it.error.isNotBlank()) "                                  " else it[Sort.by]?.trimStart('_')
+            }
+        }
+    }
 }
 
 @Composable

@@ -25,4 +25,7 @@ enum class ConfigKeys(var key: String, var defaultValue: String) {
 
     OpenAndCloseKeybind("open_and_close_keybind", "Set a key"),
     ClearPlayersKeybind("clear_players_keybind", "Set a key"),
+
+    SortBy("sort_by", "name"),
+    SortAsc("sort_asc", "false"),
 }

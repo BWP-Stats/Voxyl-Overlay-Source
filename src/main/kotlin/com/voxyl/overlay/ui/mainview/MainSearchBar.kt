@@ -11,6 +11,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.voxyl.overlay.data.player.Tags
+import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.elements.MyTextField
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
@@ -18,24 +20,39 @@ import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
 import com.voxyl.overlay.ui.theme.tbsm
 import com.voxyl.overlay.ui.theme.titleBarSizeMulti
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainSearchBar(
-    modifier: Modifier = Modifier,
-    value: TextFieldValue,
-    doOnValueChange: (TextFieldValue) -> Unit,
-    doOnEnter: () -> Unit
+    modifier: Modifier = Modifier
 ) {
+    var queriedName by remember { mutableStateOf(TextFieldValue()) }
+
     val focusManager = LocalFocusManager.current
 
     var focused by remember { mutableStateOf(false) }
     val cs = rememberCoroutineScope()
 
+    val doOnEnter = {
+        try {
+            val savedQueriedName = queriedName.text
+
+            queriedName = TextFieldValue()
+
+            savedQueriedName.split(" ").filterNot { it.isBlank() }.distinct().forEach {
+                PlayerKindaButNotExactlyViewModel.add(it, cs, Tags.ManuallySearched)
+            }
+        } catch (e: Exception) {
+            Napier.wtf(e) { "Error adding someone to the KindaButNotExactlyViewModel" }
+        }
+    }
+
+
     MyTextField(
-        value = value,
+        value = queriedName,
         onValueChange = {
-            doOnValueChange(it)
+            queriedName = it
         },
         modifier = modifier
             .fillMaxWidth()
@@ -45,7 +62,7 @@ fun MainSearchBar(
             .onEnterOrEsc(
                 focusManager,
                 doOnEnter,
-                value
+                queriedName
             ) { isValid(it) }
             .onFocusEvent {
                 if (50f.tbsm > 50f) {
@@ -66,7 +83,7 @@ fun MainSearchBar(
             },
         label = {
             VText(
-                text = if (isValid(value)) "Search player(s)" else "Invalid characters and/or name(s) exceeds 16 chars",
+                text = if (isValid(queriedName)) "Search player(s)" else "Invalid characters and/or name(s) exceeds 16 chars",
                 modifier = Modifier.absoluteOffset(y = 6.dp),
                 fontSize = 10.sp
             )
@@ -77,10 +94,10 @@ fun MainSearchBar(
                     .offset(x = 10.dp, y = 5.dp)
                     .size(12.dp, 12.dp)
             ) {
-                if (isValid(value)) doOnEnter()
+                if (isValid(queriedName)) doOnEnter()
             }
         },
-        isError = !isValid(value)
+        isError = !isValid(queriedName)
     )
 }
 

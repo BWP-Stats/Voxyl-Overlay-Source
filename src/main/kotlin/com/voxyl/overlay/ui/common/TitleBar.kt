@@ -33,10 +33,6 @@ import kotlin.system.exitProcess
 
 @Composable
 fun TitleBar(fws: FrameWindowScope) {
-
-    val cs = rememberCoroutineScope { Dispatchers.IO }
-    var queriedName by remember { mutableStateOf(TextFieldValue()) }
-
     VoxylLogoForTitleBar()
 
     fws.WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
@@ -48,12 +44,7 @@ fun TitleBar(fws: FrameWindowScope) {
     ) {
         MainColorSettingsButton()
 
-        MainSearchBar(Modifier.weight(1f), queriedName, { queriedName = it }) {
-            queriedName.text.split(" ").filterNot { it.isBlank() }.distinct().forEach {
-                PlayerKindaButNotExactlyViewModel.add(it, cs, Tags.ManuallySearched)
-            }
-            queriedName = TextFieldValue()
-        }
+        MainSearchBar(Modifier.weight(1f))
 
         RedCloseOverlayButton()
 

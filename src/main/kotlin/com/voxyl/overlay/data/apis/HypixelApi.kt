@@ -13,7 +13,3 @@ interface HypixelApi {
         @Query("key") apiKey: String
     ): JsonObject
 }
-
-suspend fun main() {
-    println(ApiProvider.getHypixelApi().getStats("e21d44c5-c1fd-4119-b55c-5baced12fd6e", Config[HypixelApiKey]).getAsJsonObject("player").getAsJsonObject("stats")["Bedwars"])
-}

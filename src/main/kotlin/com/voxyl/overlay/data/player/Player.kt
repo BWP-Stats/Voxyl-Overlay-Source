@@ -2,6 +2,7 @@ package com.voxyl.overlay.data.player
 
 import com.google.gson.JsonObject
 import com.voxyl.overlay.data.valueclasses.*
+import kotlin.math.min
 
 class Player(
     val name: String,
@@ -32,7 +33,7 @@ class Player(
             }
         }
 
-        stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "Err"
+        stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "ERR"
 
         stats["bwp.realstars"] = calcRealStars(stats["bwp.level"])
     }
@@ -68,7 +69,13 @@ class Player(
     }
 
     private fun calcRealStars(s: String?): String {
-        return "#WIP"
+        val level = s?.toIntOrNull() ?: return "ERR"
+        val prestige = level / 100
+        var bonus = 0
+        for (i in 0..prestige) {
+            bonus += i * 500
+        }
+        return ""
     }
 
     private fun Int.toHypixelLevel(): Double {
@@ -103,4 +110,23 @@ class Player(
     operator fun get(key: String): String? = stats[key]
     override fun equals(other: Any?) = name.equals(other as? String, true)
     override fun hashCode() = name.lowercase().hashCode()
+}
+
+@Suppress("KotlinConstantConditions")
+fun main() {
+    println(calcRealStarsTm(210, 2))
+}
+
+tailrec fun calcRealStarsTm(level: Int = 1, prestige: Int = level / 100, acc: Int = 0): Int {
+    return if (prestige < 0) {
+        acc - 1000
+    } else {
+        var xp: Int
+        val relative = level - (prestige * 100)
+        val incomplete = min(4 + (prestige / 2), relative)
+        xp = (incomplete * (1 + incomplete)) / 2 * 1000
+        if (prestige % 2 == 1) xp -= 500
+        xp += (relative - incomplete) * (5000 + (prestige * 500))
+        calcRealStarsTm(level - relative, prestige - 1, xp + acc)
+    }
 }

@@ -1,31 +1,53 @@
 package com.voxyl.overlay.data.player
 
 import com.google.gson.JsonObject
-import com.voxyl.overlay.data.dto.BWPStats
+import com.voxyl.overlay.data.valueclasses.*
 
 class Player(
     val name: String,
     uuid: String,
-    bwpStats: BWPStats
+    playerInfoJson: PlayerInfoJson,
+    overallStatsJson: OverallStatsJson,
+    gameStatsJson: GameStatsJson,
+    hypixelStats: HypixelStatsJson
 ) {
 
     val stats = mutableMapOf<String, String>()
 
     init {
-        with(bwpStats) {
-            stats["name"] = playerInfoJson.json["lastLoginName"].toString().trim('"')
-            stats["uuid"] = uuid
+        stats["name"] = playerInfoJson.json["lastLoginName"].toString().trim('"')
+        stats["uuid"] = uuid
+    }
 
-            addStatsFromJsonToStatsMap(playerInfoJson.json, "bwp")
-            addStatsFromJsonToStatsMap(overallStatsJson.json, "bwp")
-            addStatsFromJsonToStatsMap(gameStatsJson.json, "bwp")
+    init {
+        addStatsFromJsonToStatsMap(playerInfoJson.json, "bwp")
+        addStatsFromJsonToStatsMap(overallStatsJson.json, "bwp")
+        addStatsFromJsonToStatsMap(gameStatsJson.json, "bwp")
 
-            stats += gameStatsJson.toOverallGameStats().map {
-                "bwp.${it.key}" to it.value
-            }
-
-            stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "None"
+        stats += gameStatsJson.toOverallGameStats().map {
+            "bwp.${it.key}" to it.value
         }
+
+        stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "None"
+
+        stats["bwp.realstars"] = calcRealStars(stats["bwp.level"])
+    }
+
+    init {
+        addStatsFromJsonToStatsMap(
+            hypixelStats.json
+                .getAsJsonObject("player")
+                .getAsJsonObject("stats")
+                .getAsJsonObject("Bedwars"),
+            "bedwars"
+        )
+
+        stats["bedwars.level"] = stats["bedwars.experience"]?.toInt()?.toHypixelLevel()?.toInt()?.toString() ?: "ERR"
+        stats["bedwars.fkdr"] = calcFkdr(stats)
+        stats["bedwars.wlr"] = calcWlr(stats)
+    }
+
+    init {
         println(stats)
     }
 
@@ -37,6 +59,39 @@ class Player(
                 addStatsFromJsonToStatsMap(value, "$prevKey.$key")
             else stats["$prevKey.$key".lowercase()] = "$value"
         }
+    }
+
+    private fun calcRealStars(s: String?): String {
+        return "#WIP"
+    }
+
+    private fun Int.toHypixelLevel(): Double {
+        var level = this / 487000 * 100
+        var experience = this % 487000
+        if (experience < 500) return level + experience / 500.0
+        level++
+        if (experience < 1500) return level + (experience - 500) / 1000.0
+        level++
+        if (experience < 3500) return level + (experience - 1500) / 2000.0
+        level++
+        if (experience < 7000) return level + (experience - 3500) / 3500.0
+        level++
+        experience -= 7000
+        return level + experience / 5000.0
+    }
+
+    private fun calcFkdr(stats: MutableMap<String, String>): String {
+        val fks = stats["bedwars.final_kills_bedwars"]?.toDouble() ?: return "ERR"
+        val fds = stats["bedwars.final_deaths_bedwars"]?.toDouble() ?: return "ERR"
+
+        return if (fds == 0.0) fks.toString() else String.format("%.2f", fks / fds)
+    }
+
+    private fun calcWlr(stats: MutableMap<String, String>): String {
+        val ws = stats["bedwars.wins_bedwars"]?.toDouble() ?: return "ERR"
+        val ls = stats["bedwars.losses_bedwars"]?.toDouble() ?: return "ERR"
+
+        return if (ls == 0.0) ws.toString() else String.format("%.2f", ws / ls)
     }
 
     operator fun get(key: String): String? = stats[key]

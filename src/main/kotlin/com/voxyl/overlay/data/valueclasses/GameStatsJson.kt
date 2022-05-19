@@ -1,9 +1,9 @@
-package com.voxyl.overlay.data.dto
+package com.voxyl.overlay.data.valueclasses
 
 import com.google.gson.JsonObject
 
-class GameStatsJson(override val json: JsonObject) : PlayerJson {
-
+@JvmInline
+value class GameStatsJson(val json: JsonObject) {
     fun toOverallGameStats(): Map<String, String> {
         var beds = 0
         var wins = 0
@@ -25,6 +25,4 @@ class GameStatsJson(override val json: JsonObject) : PlayerJson {
     }
 
     override fun toString() = json.toString()
-    override fun equals(other: Any?) = json == other
-    override fun hashCode() = json.hashCode()
 }

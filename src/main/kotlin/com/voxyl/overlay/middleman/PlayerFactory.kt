@@ -2,16 +2,14 @@ package com.voxyl.overlay.middleman
 
 import com.voxyl.overlay.data.apis.ApiProvider
 import com.voxyl.overlay.data.apis.BWPApi
+import com.voxyl.overlay.data.apis.HypixelApi
 import com.voxyl.overlay.data.apis.UUIDApi
-import com.voxyl.overlay.data.dto.BWPStats
-import com.voxyl.overlay.data.dto.GameStatsJson
-import com.voxyl.overlay.data.dto.OverallStatsJson
-import com.voxyl.overlay.data.dto.PlayerInfoJson
+import com.voxyl.overlay.data.valueclasses.*
 import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.data.player.Player
 import com.voxyl.overlay.data.player.Status
 import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys
+import com.voxyl.overlay.settings.config.ConfigKeys.*
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -22,9 +20,12 @@ import java.io.IOException
 object PlayerFactory {
     fun makePlayer(
         name: String,
-        apiKey: String = Config[ConfigKeys.BwpApiKey],
-        bwpApi: BWPApi = ApiProvider.getBWPApi()
+        bwpApiKey: String = Config[BwpApiKey],
+        hypixelApiKey: String = Config[HypixelApiKey],
+        bwpApi: BWPApi = ApiProvider.getBWPApi(),
+        hypixelApi: HypixelApi = ApiProvider.getHypixelApi(),
     ): Flow<Status<Player>> = flow {
+
         if (HomemadeCache[name]?.player != null) {
             val player = HomemadeCache[name]?.player ?: makePlayer(name)
 
@@ -38,30 +39,33 @@ object PlayerFactory {
             emit(Status.Loading(name = name))
 
             val uuid = getUUID(name)
+            val hypixelStats = getHypixelStats(uuid, hypixelApiKey, hypixelApi)
+            val bwpStats = getBWPStats(uuid, bwpApiKey, bwpApi)
 
-            emit(
-                Status.Loaded(
-                    Player(name, uuid, getBWPStats(uuid, apiKey, bwpApi)),
-                    name = name
-                )
-            )
+            emit(Status.Loaded(
+                Player(
+                    name,
+                    uuid,
+                    bwpStats.info.await(),
+                    bwpStats.overall.await(),
+                    bwpStats.game.await(),
+                    hypixelStats.await()
+                ),
+                name = name
+            ))
 
         } catch (e: HttpException) {
             Napier.e(e) { "HttpException for '$name'" }
-            emit(
-                Status.Error(
+            emit(Status.Error(
                     e.localizedMessage ?: "An unexpected error occurred trying to reach an API for '$name'",
                     name = name
-                )
-            )
+            ))
         } catch (e: IOException) {
             Napier.e(e) { "IOException for '$name'" }
-            emit(
-                Status.Error(
+            emit(Status.Error(
                     e.localizedMessage ?: "IOException for '$name'; either your wifi or an API is down",
                     name = name
-                )
-            )
+            ))
         }
     }
 
@@ -91,17 +95,29 @@ object PlayerFactory {
             .replaceRange(23, 23, "-")
     }
 
+    private class BWPStats(
+        val overall: Deferred<OverallStatsJson>,
+        val info: Deferred<PlayerInfoJson>,
+        val game: Deferred<GameStatsJson>
+    )
+
     private suspend fun getBWPStats(uuid: String, apiKey: String, bwpApi: BWPApi): BWPStats {
         return withContext(Dispatchers.IO) {
-            val playerInfoJson = async { bwpApi.getPlayerInfo(uuid, apiKey) }
-            val overallStatsJson = async { bwpApi.getOverallStats(uuid, apiKey) }
-            val gameStatsJson = async { bwpApi.getGameStats(uuid, apiKey) }
-
-            return@withContext BWPStats(
-                OverallStatsJson(overallStatsJson.await()),
-                PlayerInfoJson(playerInfoJson.await()),
-                GameStatsJson(gameStatsJson.await())
+            BWPStats(
+                async { OverallStatsJson(bwpApi.getOverallStats(uuid, apiKey)) },
+                async { PlayerInfoJson(bwpApi.getPlayerInfo(uuid, apiKey)) },
+                async { GameStatsJson(bwpApi.getGameStats(uuid, apiKey)) }
             )
+        }
+    }
+
+    private suspend fun getHypixelStats(
+        uuid: String,
+        apiKey: String,
+        hypixelApi: HypixelApi
+    ): Deferred<HypixelStatsJson> {
+        return withContext(Dispatchers.IO) {
+            async { HypixelStatsJson(hypixelApi.getStats(uuid, apiKey)) }
         }
     }
 }

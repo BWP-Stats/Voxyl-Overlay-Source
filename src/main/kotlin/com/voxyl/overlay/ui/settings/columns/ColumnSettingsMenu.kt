@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow
+import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow.clean
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.alphaMultiplier
@@ -60,7 +61,7 @@ fun ColumnSettingsMenu() {
                     onClick = {},
                     enabled = false
                 ) {
-                    VText("Options for ${ColumnSettingsMenuState.stat}", fontSize = TextUnit.Unspecified)
+                    VText("Options for ${ColumnSettingsMenuState.stat.clean()}", fontSize = TextUnit.Unspecified)
                 }
 
                 Divider(

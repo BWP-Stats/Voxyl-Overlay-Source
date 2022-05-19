@@ -9,6 +9,7 @@ import com.voxyl.overlay.data.player.PlayerState
 import com.voxyl.overlay.data.player.Tags
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.PlayerName
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -23,7 +24,7 @@ object PlayerKindaButNotExactlyViewModel {
     private var jobs = mutableMapOf<String, Job>()
 
     fun add(name: String, cs: CoroutineScope, vararg tags: Tags) {
-        val tags2 = (listOf(*tags) + generateTags(name)).toTypedArray()
+        val tags2 = (listOf(*tags) + generatePreTags(name)).toTypedArray()
 
         jobs[name] = PlayerFactory.makePlayer(name).onEach {
             _players += when (it) {
@@ -35,6 +36,11 @@ object PlayerKindaButNotExactlyViewModel {
                         tags = mutableStateListOf(*tags2)
                     ).also { ps ->
                         HomemadeCache.add(ps)
+                        try {
+                            ps.tags += generatePostTags(ps)
+                        } catch (e: Exception) {
+                            Napier.wtf(e) { "Failed to generate post tags" }
+                        }
                     }
                 }
                 is Status.Loading -> {
@@ -57,12 +63,24 @@ object PlayerKindaButNotExactlyViewModel {
 
     private val devNames = listOf("ambmt", "_lightninq", "vitroid", "firestarad", "sirjosh3917", "hero_of_gb", "Rezcwa")
 
-    private fun generateTags(name: String): MutableList<Tags> {
+    private fun generatePreTags(name: String): MutableList<Tags> {
         val tags = mutableListOf<Tags>()
+
         if (name.equals(Config[PlayerName], true)) tags += Tags.You
         if (name.lowercase() == "ambmt") tags += Tags.Ambmt
         if (name.lowercase() in devNames) tags += Tags.VoxylDev
         if (name.lowercase() == "carburettor") tags += Tags.OverlayDev
+
+        return tags
+    }
+
+    private fun generatePostTags(player: PlayerState): MutableList<Tags> {
+        var tags = mutableListOf<Tags>()
+
+        if (LeaderboardTrackerWhatEvenIsAViewModel.foundInLevelLB(player["uuid"]!!)) tags += Tags.LevelLB
+        if (LeaderboardTrackerWhatEvenIsAViewModel.foundInWWLB(player["uuid"]!!)) tags += Tags.WWLB
+
+        if (Tags.LevelLB in tags && Tags.WWLB in tags) tags = mutableListOf(Tags.LevelAndWWLB)
         return tags
     }
 

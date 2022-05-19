@@ -13,6 +13,13 @@ object ApiProvider {
             .build()
             .create(BWPApi::class.java)
 
+    fun getHypixelApi(): HypixelApi =
+        Retrofit.Builder()
+            .baseUrl("https://api.hypixel.net")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(HypixelApi::class.java)
+
     fun getUUIDApi(): UUIDApi =
         Retrofit.Builder()
             .baseUrl("https://api.mojang.com/users/profiles/minecraft/")

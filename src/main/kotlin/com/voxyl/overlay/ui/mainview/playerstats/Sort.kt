@@ -31,24 +31,24 @@ object Sort {
         }
 
     fun sortPlayersList(players: List<PlayerState>): List<PlayerState> {
-        return if (players.any { Sort.by != "name" }) {
-            if (Sort.ascending) {
+        return if (players.any { by != "name" }) {
+            if (ascending) {
                 players.sortedBy {
-                    if (it.error.isNotBlank()) Int.MAX_VALUE else it[Sort.by]?.toInt()
+                    if (it.error.isNotBlank()) Double.MAX_VALUE else it[by]?.toDouble()
                 }
             } else {
                 players.sortedByDescending {
-                    if (it.error.isNotBlank()) 0 else it[Sort.by]?.toInt()
+                    if (it.error.isNotBlank()) 0.0 else it[by]?.toDouble()
                 }
             }
         } else {
-            if (Sort.ascending) {
+            if (ascending) {
                 players.sortedBy {
-                    if (it.error.isNotBlank()) "∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐" else it[Sort.by]
+                    if (it.error.isNotBlank()) "∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐" else it[by]
                 }
             } else {
                 players.sortedByDescending {
-                    if (it.error.isNotBlank()) "                             " else it[Sort.by]?.trimStart('_')
+                    if (it.error.isNotBlank()) "                             " else it[by]?.trimStart('_')
                 }
             }
         }

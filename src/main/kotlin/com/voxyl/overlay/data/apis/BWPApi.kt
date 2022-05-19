@@ -16,4 +16,18 @@ interface BWPApi {
 
     @GET("/player/stats/game/{uuid}")
     suspend fun getGameStats(@Path("uuid") uuid: String, @Query("api") apiKey: String): JsonObject
+
+    @GET("/leaderboard/normal")
+    suspend fun getLevelLeaderboard(
+        @Query("api") apiKey: String,
+        @Query("type") type: String = "level",
+        @Query("num") number: String = "100"
+    ): JsonObject
+
+    @GET("/leaderboard/normal")
+    suspend fun getWWLeaderboard(
+        @Query("api") apiKey: String,
+        @Query("type") type: String = "weightedwins",
+        @Query("num") number: String = "100"
+    ): JsonObject
 }

@@ -31,7 +31,7 @@ object HomemadeCache {
         cache.clear()
     }
 
-    fun startAutoClear(cs: CoroutineScope, delayBetweenClears: Long) {
+    fun startAutoClear(cs: CoroutineScope, delayBetweenClears: Long = 300000L) {
         cs.launch {
             while (true) {
                 delay(delayBetweenClears)

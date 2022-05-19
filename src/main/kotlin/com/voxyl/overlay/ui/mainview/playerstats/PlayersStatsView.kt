@@ -211,6 +211,10 @@ private fun getStat(statToShow: String, player: PlayerState) = when {
         coloredLevel(player["bwp.level"] ?: "0")
     }
 
+    statToShow == "bedwars.level" && player.player != null -> {
+        coloredLevel(player["bedwars.level"] ?: "0")
+    }
+
     statToShow == "tags" -> {
         player.tags.joinToString(", ").toAnnotatedString()
     }

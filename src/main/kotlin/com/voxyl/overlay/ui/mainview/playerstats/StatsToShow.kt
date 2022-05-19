@@ -18,6 +18,11 @@ object StatsToShow {
         "Killsᴮ" `2` "bwp.kills",
         "Finalsᴮ" `2` "bwp.finals",
         "RealStars™" `2` "bwp.realstars",
+        "Levelᴴ" `2` "bedwars.level",
+        "Fkdrᴴ" `2` "bedwars.fkdr",
+        "Wlrᴴ" `2` "bedwars.wlr",
+        "Finalsᴴ" `2` "bedwars.final_kills_bedwars",
+        "Winsᴴ" `2` "bedwars.wins_bedwars",
     )
 
     val addableStats get() = availableStats.filter { it.raw !in stats }

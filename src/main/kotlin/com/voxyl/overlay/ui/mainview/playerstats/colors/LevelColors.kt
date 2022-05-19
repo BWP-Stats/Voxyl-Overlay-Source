@@ -18,6 +18,7 @@ object LevelColors {
         300 until 400 to Color(85, 255, 255),
         400 until 500 to Color(0, 170, 0),
         500 until 600 to Color(0, 170, 170),
+        600 until Integer.MAX_VALUE to ErrorColor
     )
     
     fun coloredLevel(level: String): AnnotatedString {

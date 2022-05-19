@@ -35,7 +35,11 @@ enum class Tags(val iconName: String, val icon: @Composable (Modifier) -> Unit, 
     VoxylDev("account-group.png", { TagIcon(VoxylDev, it, Color(13, 84, 26).am) }, "Developer for Voxyl Stats"),
     OverlayDev("account.png", { TagIcon(OverlayDev, it, Color(13, 84, 26).am) }, "Overlay Developer"),
 
-    Ambmt("delete.png", { TagIcon(Ambmt, it, Color(115, 115, 115).am) }, "Ambmt");
+    Ambmt("delete.png", { TagIcon(Ambmt, it, Color(115, 115, 115).am) }, "Ambmt"),
+
+    LevelAndWWLB("account-star.png", { TagIcon(LevelAndWWLB, it, Color(201, 158, 16).am) }, "Top 100 in levels AND weighted wins"),
+    LevelLB("account-star.png", { TagIcon(LevelLB, it, Color(140, 140, 140).am) }, "Top 100 in levels"),
+    WWLB("account-star.png", { TagIcon(WWLB, it, Color(122, 95, 6).am) }, "Top 100 in weighted wins");
 
     companion object {
         @OptIn(ExperimentalFoundationApi::class)

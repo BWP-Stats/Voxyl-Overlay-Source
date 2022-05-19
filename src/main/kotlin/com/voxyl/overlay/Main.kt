@@ -15,6 +15,7 @@ import androidx.compose.ui.window.rememberWindowState
 import com.github.kwhat.jnativehook.GlobalScreen
 import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.data.logfilereader.LogFileReader
+import com.voxyl.overlay.middleman.LeaderboardTrackerWhatEvenIsAViewModel
 import com.voxyl.overlay.nativelisteners.NativeListeners
 import com.voxyl.overlay.nativelisteners.OpenCloseKeyListener
 import com.voxyl.overlay.settings.Settings
@@ -54,7 +55,8 @@ fun main() = application {
 
         val cs = rememberCoroutineScope()
 
-        HomemadeCache.startAutoClear(cs, 5000L)
+        LeaderboardTrackerWhatEvenIsAViewModel.startTracking(cs)
+        HomemadeCache.startAutoClear(cs)
         LogFileReader.start(cs)
         Napier.initialize()
         NativeListeners.initialize()

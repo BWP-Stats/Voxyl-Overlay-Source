@@ -15,7 +15,7 @@ object DefaultHandler {
         formatter = SimpleFormatter()
     }
 
-    private fun getPath(path: String = System.getProperty("user.home") + "/.voxyl/logs/voxyl.log"): String {
+    private fun getPath(path: String = System.getenv("APPDATA") + "/.voverlay/logs/voxyl.log"): String {
         val configFile = File(path)
         if (!configFile.exists()) {
             configFile.parentFile.mkdirs()

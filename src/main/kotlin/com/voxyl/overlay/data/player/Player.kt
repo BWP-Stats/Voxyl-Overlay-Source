@@ -6,41 +6,47 @@ import com.voxyl.overlay.data.valueclasses.*
 class Player(
     val name: String,
     uuid: String,
-    playerInfoJson: PlayerInfoJson,
-    overallStatsJson: OverallStatsJson,
-    gameStatsJson: GameStatsJson,
-    hypixelStats: HypixelStatsJson
+    playerInfoJson: PlayerInfoJson?,
+    overallStatsJson: OverallStatsJson?,
+    gameStatsJson: GameStatsJson?,
+    hypixelStatsJson: HypixelStatsJson?
 ) {
 
     val stats = mutableMapOf<String, String>()
 
     init {
-        stats["name"] = playerInfoJson.json["lastLoginName"].toString().trim('"')
+        stats["name"] = playerInfoJson?.json?.get("displayname")?.asString?.trim('"')
+            ?: hypixelStatsJson?.json?.getAsJsonObject("player")?.get("displayname")?.asString?.trim('"')
+                    ?: name
         stats["uuid"] = uuid
     }
 
     init {
-        addStatsFromJsonToStatsMap(playerInfoJson.json, "bwp")
-        addStatsFromJsonToStatsMap(overallStatsJson.json, "bwp")
-        addStatsFromJsonToStatsMap(gameStatsJson.json, "bwp")
+        playerInfoJson?.let { addStatsFromJsonToStatsMap(it.json, "bwp") }
+        overallStatsJson?.let { addStatsFromJsonToStatsMap(it.json, "bwp") }
+        gameStatsJson?.let {
+            addStatsFromJsonToStatsMap(it.json, "bwp")
 
-        stats += gameStatsJson.toOverallGameStats().map {
-            "bwp.${it.key}" to it.value
+            stats += it.toOverallGameStats().map { stat ->
+                "bwp.${stat.key}" to stat.value
+            }
         }
 
-        stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "None"
+        stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "Err"
 
         stats["bwp.realstars"] = calcRealStars(stats["bwp.level"])
     }
 
     init {
-        addStatsFromJsonToStatsMap(
-            hypixelStats.json
-                .getAsJsonObject("player")
-                .getAsJsonObject("stats")
-                .getAsJsonObject("Bedwars"),
-            "bedwars"
-        )
+        hypixelStatsJson?.let {
+            addStatsFromJsonToStatsMap(
+                hypixelStatsJson.json
+                    .getAsJsonObject("player")
+                    .getAsJsonObject("stats")
+                    .getAsJsonObject("Bedwars"),
+                prevKey = "bedwars"
+            )
+        }
 
         stats["bedwars.level"] = stats["bedwars.experience"]?.toInt()?.toHypixelLevel()?.toInt()?.toString() ?: "ERR"
         stats["bedwars.fkdr"] = calcFkdr(stats)

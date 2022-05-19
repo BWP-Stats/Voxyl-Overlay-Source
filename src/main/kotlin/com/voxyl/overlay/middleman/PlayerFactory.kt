@@ -3,7 +3,7 @@ package com.voxyl.overlay.middleman
 import com.voxyl.overlay.data.apis.ApiProvider
 import com.voxyl.overlay.data.apis.BWPApi
 import com.voxyl.overlay.data.apis.HypixelApi
-import com.voxyl.overlay.data.apis.UUIDApi
+import com.voxyl.overlay.data.apis.MojangApi
 import com.voxyl.overlay.data.valueclasses.*
 import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.data.player.Player
@@ -69,10 +69,10 @@ object PlayerFactory {
         }
     }
 
-    private suspend fun getUUID(name: String, uuidApi: UUIDApi = ApiProvider.getUUIDApi()): String {
+    private suspend fun getUUID(name: String, mojangApi: MojangApi = ApiProvider.getMojangApi()): String {
         return withContext(Dispatchers.IO) {
             try {
-                val uuid = uuidApi.getUUID(name)
+                val uuid = mojangApi.getUUID(name)
                     .substringAfterLast(":")
                     .trim('"', '}')
                     .untrimUUID()

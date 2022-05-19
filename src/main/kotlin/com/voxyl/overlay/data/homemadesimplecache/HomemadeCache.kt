@@ -6,6 +6,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object HomemadeCache {
+    private var aboutToClear = false
+
     private val cache = mutableMapOf<String, PlayerState>()
         get() = synchronized(this) {
             field
@@ -16,7 +18,7 @@ object HomemadeCache {
     }
 
     operator fun get(name: String): PlayerState? {
-        return cache[name]
+        return if (aboutToClear) null else { cache[name] }
     }
 
     operator fun set(name: String, player: PlayerState) {
@@ -35,7 +37,10 @@ object HomemadeCache {
         cs.launch {
             while (true) {
                 delay(delayBetweenClears)
+                aboutToClear = true
+                delay(3L)
                 clear()
+                aboutToClear = false
             }
         }
     }

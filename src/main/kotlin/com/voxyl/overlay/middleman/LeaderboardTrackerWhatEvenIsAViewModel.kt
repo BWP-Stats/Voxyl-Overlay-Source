@@ -62,12 +62,11 @@ object LeaderboardTrackerWhatEvenIsAViewModel {
     fun startTracking(cs: CoroutineScope, delay: Long = 300000L) {
         cs.launch {
             while (true) {
+                aboutToUpdate = true
                 updateLevelLB(cs)
                 updateWWinsLB(cs)
-                delay(delay)
-                aboutToUpdate = true
-                delay(4L)
                 aboutToUpdate = false
+                delay(delay)
             }
         }
     }

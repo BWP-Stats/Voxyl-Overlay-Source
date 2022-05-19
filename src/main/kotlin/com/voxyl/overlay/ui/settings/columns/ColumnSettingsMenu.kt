@@ -66,7 +66,8 @@ fun ColumnSettingsMenu() {
 
                 Divider(
                     color = MainWhite.copy(.313f),
-                    modifier = Modifier.fillMaxWidth(.9f).align(Alignment.CenterHorizontally)
+                    modifier = Modifier.fillMaxWidth(.9f)
+                        .align(Alignment.CenterHorizontally)
                 )
 
                 DropdownMenuItem(onClick = {

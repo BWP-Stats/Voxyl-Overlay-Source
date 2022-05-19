@@ -64,7 +64,8 @@ fun ColumnsList() {
 
                 Divider(
                     color = MainWhite.copy(.313f),
-                    modifier = Modifier.fillMaxWidth(.9f).align(Alignment.CenterHorizontally)
+                    modifier = Modifier.fillMaxWidth(.9f)
+                        .align(Alignment.CenterHorizontally)
                 )
 
                 Spacer(Modifier.height(8.dp))

@@ -20,14 +20,12 @@ object OpenCloseKeyListener : NativeKeyListener {
         Config[OpenAndCloseKeybind]
     )
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun nativeKeyReleased(e: NativeKeyEvent) {
         if (e.paramString() == paramString) {
             if (Window.isMinimized) {
-                GlobalScope.launch(Dispatchers.Default) {
-                    Window.isAlwaysOnTop = true
-                    Window.isMinimized = false
-                }
+                Window.focusableWindowState = false
+                Window.isMinimized = false
+                Window.focusableWindowState = true
             } else {
                 Window.isMinimized = true
             }

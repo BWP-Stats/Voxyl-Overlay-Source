@@ -63,13 +63,14 @@ object LogFileReader {
         PlayerKindaButNotExactlyViewModel.removeAll()
 
         line.substringAfterLast(":").toPlayerList().forEach {
-            PlayerKindaButNotExactlyViewModel.removeAll()
             PlayerKindaButNotExactlyViewModel.add(it, cs, Tags.FromGame)
         }
 
         if (Config[AutoShowAndHide] == "true") {
             cs.launch(Dispatchers.Default) {
-                Window.isAlwaysOnTop = true
+                Window.focusableWindowState = false
+                Window.isMinimized = false
+                Window.focusableWindowState = true
                 delay(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
                 Window.isMinimized = true
             }

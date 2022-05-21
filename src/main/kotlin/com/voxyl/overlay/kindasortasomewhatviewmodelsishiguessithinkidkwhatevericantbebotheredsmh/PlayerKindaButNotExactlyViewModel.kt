@@ -21,41 +21,47 @@ object PlayerKindaButNotExactlyViewModel {
     private var jobs = mutableMapOf<String, Job>()
 
     fun add(name: String, cs: CoroutineScope, vararg tags: Tags) {
-        val tags2 = (listOf(*tags) + generatePreTags(name)).toTypedArray()
+        try {
+            val tags2 = (listOf(*tags) + generatePreTags(name)).toTypedArray()
 
-        jobs[name] = PlayerFactory.makePlayer(name).onEach {
-            _players += when (it) {
-                is Status.Loaded -> {
-                    _players.remove(name)
-                    PlayerState(
-                        name = (it.data as Player)["name"] ?: name,
-                        player = it.data,
-                        tags = mutableStateListOf(*tags2)
-                    ).also { ps ->
-                        HomemadeCache.add(ps)
-                        try {
-                            ps.tags += generatePostTags(ps)
-                        } catch (e: Exception) {
-                            Napier.wtf(e) { "Failed to generate post tags" }
+            jobs[name] = PlayerFactory.makePlayer(name).onEach {
+                _players += when (it) {
+                    is Status.Loaded -> {
+                        _players.remove(name)
+                        PlayerState(
+                            name = (it.data as Player)["name"] ?: name,
+                            player = it.data,
+                            tags = mutableStateListOf(*tags2)
+                        ).also { ps ->
+                            HomemadeCache.add(ps)
+                            try {
+                                ps.tags += generatePostTags(ps)
+                            } catch (e: Exception) {
+                                Napier.wtf(e) { "Failed to generate post tags" }
+                            }
+                        }
+                    }
+                    is Status.Loading -> {
+                        _players.remove(name)
+                        PlayerState(name = name, isLoading = true, tags = mutableStateListOf(*tags2))
+                    }
+                    is Status.Error -> {
+                        _players.remove(name)
+                        PlayerState(
+                            name = name,
+                            error = it.message ?: "An unexpected error has occurred",
+                            tags = mutableStateListOf(*tags2 + Tags.Error)
+                        ).also { ps ->
+                            HomemadeCache.add(ps)
                         }
                     }
                 }
-                is Status.Loading -> {
-                    _players.remove(name)
-                    PlayerState(name = name, isLoading = true, tags = mutableStateListOf(*tags2))
-                }
-                is Status.Error -> {
-                    _players.remove(name)
-                    PlayerState(
-                        name = name,
-                        error = it.message ?: "An unexpected error has occurred",
-                        tags = mutableStateListOf(*tags2 + Tags.Error)
-                    ).also { ps ->
-                        HomemadeCache.add(ps)
-                    }
-                }
-            }
-        }.launchIn(cs)
+            }.launchIn(cs)
+        } catch (e: Exception) {
+            jobs[name]?.cancel()
+            _players.remove(name)
+            Napier.wtf(e) { "Failed to add player" }
+        }
     }
 
     private val devNames = listOf("ambmt", "_lightninq", "vitroid", "firestarad", "sirjosh3917", "hero_of_gb", "Rezcwa")

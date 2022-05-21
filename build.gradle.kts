@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.voxyl"
-version = "1.0"
+version = "0.0.9"
 
 repositories {
     google()
@@ -52,7 +52,7 @@ tasks.withType<KotlinCompile> {
 
 compose.desktop {
     application {
-        mainClass = "com.voxyl.overlay.MainKt"
+        mainClass = "$group.overlay.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Msi, TargetFormat.Exe)

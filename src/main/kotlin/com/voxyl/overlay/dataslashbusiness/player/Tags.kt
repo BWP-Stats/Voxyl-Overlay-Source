@@ -24,6 +24,7 @@ enum class Tags(val iconName: String, val icon: @Composable (Modifier) -> Unit, 
 
     ManuallySearched("form-textbox.png", { TagIcon(ManuallySearched, it, Color(181, 179, 51).am) }, "Manually added"),
     FromChat("chat.png", { TagIcon(FromChat, it, Color(43, 176, 194).am) }, "Said your name in chat"),
+    FromGame("", {}, ""),
 
     Error("account-question.png", { TagIcon(Error, it, Color(255, 85, 85).am) }, "Error, nicked maybe?"),
 

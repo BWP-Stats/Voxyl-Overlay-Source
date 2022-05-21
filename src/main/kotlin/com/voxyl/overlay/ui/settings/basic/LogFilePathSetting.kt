@@ -81,7 +81,7 @@ fun LogFilePathTextField() {
 }
 
 fun autofillLogFilePath(logFilePath: TextFieldValue, autoFillLogPath: (String) -> Unit) {
-    val autofilledFilePath = when (logFilePath.text) {
+    val autofilledFilePath = when (logFilePath.text.lowercase()) {
         "badlion" -> LogFiles.Badlion.path
         "lunar" -> LogFiles.Lunar.path
         "vanilla", "forge", "feather" -> LogFiles.Vanilla.path

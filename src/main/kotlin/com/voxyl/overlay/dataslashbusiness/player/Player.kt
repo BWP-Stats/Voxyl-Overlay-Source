@@ -2,61 +2,75 @@ package com.voxyl.overlay.dataslashbusiness.player
 
 import com.google.gson.JsonObject
 import com.voxyl.overlay.dataslashbusiness.valueclasses.*
+import io.github.aakira.napier.Napier
 import kotlin.math.ceil
 import kotlin.math.min
 
+//TODO: Better initialization; rely less on try catches. I don't have the time to do it right now.
 class Player(
     val name: String,
     uuid: String,
-    playerInfoJson: PlayerInfoJson?,
-    overallStatsJson: OverallStatsJson?,
-    gameStatsJson: GameStatsJson?,
-    hypixelStatsJson: HypixelStatsJson?
+    private var playerInfoJson: PlayerInfoJson?,
+    private var overallStatsJson: OverallStatsJson?,
+    private var gameStatsJson: GameStatsJson?,
+    private var hypixelStatsJson: HypixelStatsJson?
 ) {
 
     val stats = mutableMapOf<String, String>()
 
     init {
-        stats["name"] = playerInfoJson?.json?.get("displayname")?.asString?.trim('"')
-            ?: hypixelStatsJson?.json?.getAsJsonObject("player")?.get("displayname")?.asString?.trim('"')
-                    ?: name
         stats["uuid"] = uuid
-    }
-
-    init {
-        playerInfoJson?.let { addStatsFromJsonToStatsMap(it.json, "bwp") }
-        overallStatsJson?.let { addStatsFromJsonToStatsMap(it.json, "bwp") }
-        gameStatsJson?.let {
-            addStatsFromJsonToStatsMap(it.json, "bwp")
-
-            stats += it.toOverallGameStats().map { stat ->
-                "bwp.${stat.key}" to stat.value
-            }
+        try {
+            stats["name"] = playerInfoJson?.json?.get("displayname")?.asString?.trim('"')
+                ?: hypixelStatsJson?.json?.getAsJsonObject("player")?.get("displayname")?.asString?.trim('"')
+                        ?: name
+        } catch (e: Exception) {
+            stats["name"] = name
+            Napier.e("Error initializing name for $name; ${e.message}")
         }
-
-        stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "ERR"
-
-        stats["bwp.realstars"] = calcRealStarsTm()
     }
 
     init {
-        hypixelStatsJson?.let {
+        try {
+            playerInfoJson?.let { addStatsFromJsonToStatsMap(it.json, "bwp") }
+            overallStatsJson?.let { addStatsFromJsonToStatsMap(it.json, "bwp") }
+            gameStatsJson?.let {
+                addStatsFromJsonToStatsMap(it.json, "bwp")
+
+                stats += it.toOverallGameStats().map { stat ->
+                    "bwp.${stat.key}" to stat.value
+                }
+            }
+
+            stats["bwp.role"] = stats["bwp.role"]?.trim('"') ?: "ERR"
+
+            stats["bwp.realstars"] = calcRealStarsTm()
+        } catch (e: Exception) {
+            Napier.e("Error initializing BWP stats for $name; ${e.message}")
+        }
+    }
+
+    init {
+        try {
             addStatsFromJsonToStatsMap(
-                hypixelStatsJson.json
-                    .getAsJsonObject("player")
+                hypixelStatsJson?.json
+                    ?.getAsJsonObject("player")
                     ?.getAsJsonObject("stats")
                     ?.getAsJsonObject("Bedwars"),
                 prevKey = "bedwars"
             )
-        }
 
-        stats["bedwars.level"] = stats["bedwars.experience"]?.toInt()?.toHypixelLevel()?.toInt()?.toString() ?: "ERR"
-        stats["bedwars.fkdr"] = calcFkdr(stats)
-        stats["bedwars.wlr"] = calcWlr(stats)
+            stats["bedwars.level"] =
+                stats["bedwars.experience"]?.toInt()?.toHypixelLevel()?.toInt()?.toString() ?: "ERR"
+            stats["bedwars.fkdr"] = calcFkdr(stats)
+            stats["bedwars.wlr"] = calcWlr(stats)
+        } catch (e: Exception) {
+            Napier.e("Error initializing Bedwars stats for $name; ${e.message}")
+        }
     }
 
     init {
-        println(stats)
+//        println(stats)
     }
 
     private fun addStatsFromJsonToStatsMap(jsonObj: JsonObject?, prevKey: String = "") {

@@ -8,6 +8,7 @@ import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.dataslashbusiness.events.Error
+import com.voxyl.overlay.dataslashbusiness.player.Tags
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.FileInputStream
@@ -62,7 +63,8 @@ object LogFileReader {
         PlayerKindaButNotExactlyViewModel.removeAll()
 
         line.substringAfterLast(":").toPlayerList().forEach {
-            PlayerKindaButNotExactlyViewModel.add(it, cs)
+            PlayerKindaButNotExactlyViewModel.removeAll()
+            PlayerKindaButNotExactlyViewModel.add(it, cs, Tags.FromGame)
         }
 
         if (Config[AutoShowAndHide] == "true") {

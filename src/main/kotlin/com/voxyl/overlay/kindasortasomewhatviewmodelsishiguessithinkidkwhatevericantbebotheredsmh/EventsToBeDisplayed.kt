@@ -75,7 +75,7 @@ object EventsToBeDisplayed {
             DisplayedEventState.cancel()
             paused = true
         } else if (!pause && paused) {
-            events[0].cancelled = false
+            events.getOrNull(0)?.cancelled = false
             paused = false
         }
     }

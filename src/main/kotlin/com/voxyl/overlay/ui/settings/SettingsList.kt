@@ -31,6 +31,7 @@ import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.OpenCloseKeySetting
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
 import com.voxyl.overlay.ui.settings.qol.PinYourselfToTopCheckbox
+import io.github.aakira.napier.Napier
 
 @Composable
 fun Settings(
@@ -56,19 +57,19 @@ fun SettingsList(
     }
 
     val settings = mutableListOf(
-        @Composable { header("Basic") } to "Basic BWPApiKeyTextField HypixelApiKeyTextField PlayerNameTextField Username LogFilePathTextField",
+        @Composable { Header("Basic") } to "Basic BWPApiKeyTextField HypixelApiKeyTextField PlayerNameTextField Username LogFilePathTextField",
         @Composable { BWPApiKeyTextField() } to "Basic BWPApiKeyTextField",
         @Composable { HypixelApiKeyTextField() } to "Basic HypixelApiKeyTextField",
         @Composable { PlayerNameTextField() } to "Basic PlayerNameTextField Username",
         @Composable { LogFilePathTextField(); Spacer(Modifier.height(10.dp)) } to "Basic LogFilePathTextField",
 
-        @Composable { header("QOL") } to "QOL PinYourselfToTopCheckbox AddYourselfToOverlayCheckbox AutoShowAndHideCheckBox AutoShowAndHideDelaySlider AutoHide",
+        @Composable { Header("QOL") } to "QOL PinYourselfToTopCheckbox AddYourselfToOverlayCheckbox AutoShowAndHideCheckBox AutoShowAndHideDelaySlider AutoHide",
         @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOL PinYourselfToTopCheckbox",
         @Composable { AddYourselfToOverlayCheckbox(addYourself) } to "QOL AddYourselfToOverlayCheckbox",
         @Composable { AutoShowAndHideCheckBox(autoHide) } to "QOL AutoShowAndHideCheckBox AutoHide",
         @Composable { AutoShowAndHideDelaySlider(autoHide) } to "QOL AutoShowAndHideDelaySlider AutoHide",
 
-        @Composable { header("Appearance") } to "OpacitySlider TitleBarSizeSlider CenterStateCheckBox ShowRankPrefixSetting RSlider GSlider BSlider Red Green Blue",
+        @Composable { Header("Appearance") } to "OpacitySlider TitleBarSizeSlider CenterStateCheckBox ShowRankPrefixSetting RSlider GSlider BSlider Red Green Blue",
         @Composable { BackgroundOpacitySlider() } to "Appearance BackgroundOpacitySlider",
         @Composable { OpacitySlider() } to "Appearance OpacitySlider",
         @Composable { TitleBarSizeSlider() } to "Appearance TitleBarSizeSlider",
@@ -78,12 +79,12 @@ fun SettingsList(
         @Composable { GSlider() } to "Appearance GSlider Green",
         @Composable { BSlider() } to "Appearance BSlider Blue",
 
-        @Composable { header("Keybinds") } to "Keybinds OpenCloseKeySetting ClearPlayersKeySetting Hotkeys",
+        @Composable { Header("Keybinds") } to "Keybinds OpenCloseKeySetting ClearPlayersKeySetting Hotkeys",
         @Composable { OpenCloseKeySetting() } to "Keybinds OpenCloseKeySetting Hotkeys",
         @Composable { ClearPlayersKeySetting() } to "Keybinds ClearPlayersKeySetting Hotkeys",
 
-        @Composable { header("Columns") } to "Columns Stats Show",
-        @Composable { ColumnsSettings() } to "Columns Stats Show"
+        @Composable { Header("Columns") } to "Columns Stats Show Rows",
+        @Composable { ColumnsSettings() } to "Columns Stats Show Rows"
     ).filter {
         it.second.contains(queriedSetting.text, true)
     }
@@ -97,14 +98,18 @@ fun SettingsList(
             .requestFocusOnClick(),
         contentPadding = PaddingValues(bottom = 75.dp)
     ) {
-        items(settings) {
-            it.first()
+        try {
+            items(settings) {
+                it.first()
+            }
+        } catch (e: Exception) {
+            Napier.wtf(e) { "Error rendering settings list" }
         }
     }
 }
 
 @Composable
-private fun header(text: String) {
+private fun Header(text: String) {
     Row(
         Modifier.fillMaxWidth().height(30.dp),
         verticalAlignment = Alignment.CenterVertically

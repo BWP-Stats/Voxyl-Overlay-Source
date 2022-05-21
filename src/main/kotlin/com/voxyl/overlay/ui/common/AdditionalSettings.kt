@@ -16,16 +16,14 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
-import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
-import com.voxyl.overlay.data.player.Tags
+import com.voxyl.overlay.dataslashbusiness.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
-import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.elements.ShapeThatIdkTheNameOf
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.theme.*
@@ -98,7 +96,7 @@ fun AdditionalSettings(
                 Spacer(Modifier.height(3.dp))
 
                 Tooltip(
-                    "Join the Discord for help: <insert link here>"
+                    "Join the Discord for help: gg/fBnfWXSDpu"
                 ) {
                     Icon(Icons.Filled.Info, contentDescription = null, tint = MainWhite)
                 }

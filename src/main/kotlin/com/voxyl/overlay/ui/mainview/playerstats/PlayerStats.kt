@@ -7,8 +7,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,21 +14,22 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.Sort
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
-import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow.clean
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.clean
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.tbsm
-import java.util.*
 
 @Composable
 fun PlayerStats() {
     val playerStatsLazyListState = rememberLazyListState()
 
-    PlayerStatsViewHeader(StatsToShow.stats)
-    PlayerStatsView(StatsToShow.stats, playerStatsLazyListState)
+    PlayerStatsViewHeader(StatsToShow._stats)
+    PlayerStatsView(StatsToShow._stats, playerStatsLazyListState)
 }
 
 @Composable
@@ -49,8 +48,9 @@ fun PlayerStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
             Row(
                 modifier = Modifier.weight(cellWeight(stat))
                     .clickable {
-                        if (stat == "tags") return@clickable
-                        Sort.by = stat
+                        if (stat != "tags") {
+                            Sort.by = stat
+                        }
                     },
                 horizontalArrangement = if (Config[CenterStats].toBooleanStrictOrNull() != false) Arrangement.Center else Arrangement.Start
             ) {

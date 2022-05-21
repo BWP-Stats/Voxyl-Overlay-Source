@@ -1,6 +1,6 @@
 package com.voxyl.overlay.settings.config
 
-enum class ConfigKeys(var key: String, var defaultValue: String) {
+enum class ConfigKeys(val key: String, var defaultValue: String) {
     HypixelApiKey("hypixel_api_key", ""),
     BwpApiKey("bwp_api_key", ""),
     LogFilePath("log_file_path", ""),

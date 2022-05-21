@@ -6,7 +6,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import com.voxyl.overlay.data.player.PlayerState
+import com.voxyl.overlay.dataslashbusiness.player.PlayerState
 import com.voxyl.overlay.ui.theme.am
 
 object RankColors {

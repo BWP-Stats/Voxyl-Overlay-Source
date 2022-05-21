@@ -20,19 +20,19 @@ object LevelColors {
 
     val colors = mapOf(
         "black" to Color(0xFF000000),
-        "dark_blue" to Color(0xFF0000AA),
-        "dark_green" to Color(0xFF00AA00),
-        "dark_aqua" to Color(0xFF00AAAA),
-        "dark_red" to Color(0xFFAA0000),
-        "dark_purple" to Color(0xFFAA00AA),
+        "dark-blue" to Color(0xFF0000AA),
+        "dark-green" to Color(0xFF00AA00),
+        "dark-aqua" to Color(0xFF00AAAA),
+        "dark-red" to Color(0xFFAA0000),
+        "dark-purple" to Color(0xFFAA00AA),
         "gold" to Color(0xFFFFAA00),
         "gray" to Color(0xFFAAAAAA),
-        "dark_gray" to Color(0xFF555555),
+        "dark-gray" to Color(0xFF555555),
         "blue" to Color(0xFF5555FF),
         "green" to Color(0xFF55FF55),
         "aqua" to Color(0xFF55FFFF),
         "red" to Color(0xFFFF5555),
-        "light_purple" to Color(0xFFFF55FF),
+        "light-purple" to Color(0xFFFF55FF),
         "yellow" to Color(0xFFFFFF55),
         "white" to Color(0xFFFFFFFF)
     )
@@ -71,7 +71,7 @@ object LevelColors {
                     "{\"level\":2700,\"star\":\"⚝\",\"colors\":[\"dark-red\",\"dark-red\",\"red\",\"red\",\"light-purple\",\"light-purple\",\"dark-purple\"]}," +
                     "{\"level\":2800,\"star\":\"⚝\",\"colors\":[\"green\",\"green\",\"dark-green\",\"dark-green\",\"gold\",\"gold\",\"yellow\"]}," +
                     "{\"level\":2900,\"star\":\"⚝\",\"colors\":[\"aqua\",\"aqua\",\"dark-aqua\",\"dark-aqua\",\"blue\",\"blue\",\"dark-blue\"]}," +
-                    "x{\"level\":3000,\"star\":\"⚝\",\"colors\":[\"yellow\",\"yellow\",\"gold\",\"gold\",\"red\",\"red\",\"dark-red\"]}]",
+                    "{\"level\":3000,\"star\":\"⚝\",\"colors\":[\"yellow\",\"yellow\",\"gold\",\"gold\",\"red\",\"red\",\"dark-red\"]}]",
             JsonArray::class.java
         )
     }

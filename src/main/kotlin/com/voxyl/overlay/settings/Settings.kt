@@ -2,18 +2,21 @@ package com.voxyl.overlay.settings
 
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.window.SavedWindowState
-import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
+import com.voxyl.overlay.settings.misc.Misc
 
 object Settings {
 
     private val root = System.getenv("APPDATA")
 
     fun storeAll(
-        settingsPath: String = "$root/.voverlay/config.properties",
+        configPath: String = "$root/.voverlay/config.properties",
         savedWindowStatePath: String = "$root/.voverlay/window-state.properties",
+        miscPath: String = "$root/.voverlay/misc.properties"
     ) {
         StatsToShow.save()
-        Config.store(settingsPath)
+        Config.store(configPath)
         SavedWindowState.store(savedWindowStatePath)
+        Misc.store(miscPath)
     }
 }

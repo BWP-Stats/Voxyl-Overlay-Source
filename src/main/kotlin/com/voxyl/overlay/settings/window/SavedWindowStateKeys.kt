@@ -1,6 +1,6 @@
 package com.voxyl.overlay.settings.window
 
-enum class SavedWindowStateKeys(var key: String, var defaultValue: String) {
+enum class SavedWindowStateKeys(val key: String, var defaultValue: String) {
     Width("saved_width", "650"),
     Height("saved_height", "300"),
 

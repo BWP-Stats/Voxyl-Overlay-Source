@@ -24,19 +24,18 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.Columns
-import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow
-import com.voxyl.overlay.ui.mainview.playerstats.StatsToShow.clean
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.clean
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
 import org.burnoutcrew.reorderable.*
-import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColumnsSettings() {
     val state = rememberReorderState()
-    val stats = StatsToShow.stats
+    val stats = StatsToShow._stats
 
     val width = (Window.width.dp - 40.dp) / stats.size
 

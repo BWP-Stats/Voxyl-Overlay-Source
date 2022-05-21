@@ -12,22 +12,25 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.github.kwhat.jnativehook.GlobalScreen
-import com.voxyl.overlay.data.homemadesimplecache.HomemadeCache
-import com.voxyl.overlay.data.logfilereader.LogFileReader
-import com.voxyl.overlay.middleman.LeaderboardTrackerWhatEvenIsAViewModel
+import com.voxyl.overlay.dataslashbusiness.events.Info
+import com.voxyl.overlay.dataslashbusiness.homemadesimplecache.HomemadeCache
+import com.voxyl.overlay.dataslashbusiness.logfilereader.LogFileReader
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.EventsToBeDisplayed
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
 import com.voxyl.overlay.nativelisteners.NativeListeners
-import com.voxyl.overlay.nativelisteners.OpenCloseKeyListener
+import com.voxyl.overlay.nativelisteners.ValidationChecks
 import com.voxyl.overlay.settings.Settings
-import com.voxyl.overlay.settings.logger.DefaultHandler
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
 import com.voxyl.overlay.ui.common.MainScreen
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.Dispatchers
 import java.awt.Dimension
-import java.util.logging.*
+import java.io.File
+import java.util.logging.ConsoleHandler
+import java.util.logging.FileHandler
+import java.util.logging.Level
+import java.util.logging.SimpleFormatter
 
 lateinit var Window: ComposeWindow
     private set
@@ -55,11 +58,15 @@ fun main() = application {
 
         val cs = rememberCoroutineScope()
 
-        LeaderboardTrackerWhatEvenIsAViewModel.startTracking(cs)
-        HomemadeCache.startAutoClear(cs)
-        LogFileReader.start(cs)
-        Napier.initialize()
-        NativeListeners.initialize()
+        LaunchedEffect(Unit) {
+            LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
+            HomemadeCache.startAutoClear()
+            EventsToBeDisplayed.start()
+            LogFileReader.start()
+            Napier.initialize()
+            NativeListeners.initialize()
+            ValidationChecks.runAtStart(cs)
+        }
 
         MainScreen(this)
     }
@@ -86,4 +93,21 @@ private fun Napier.initialize() {
     }
 
     base(DebugAntilog(handler = listOf(DefaultHandler.`😳`, consoleHandler)))
+}
+
+@Suppress("ObjectPropertyName", "NonAsciiCharacters", "MemberVisibilityCanBePrivate")
+object DefaultHandler {
+    val path = getPath()
+
+    val `😳` = FileHandler(path, 2000000, 5, true).apply {
+        level = Level.ALL
+        formatter = SimpleFormatter()
+    }
+
+    @JvmName("getPath1")
+    private fun getPath(path: String = System.getenv("APPDATA") + "/.voverlay/logs/voxyl%g.log"): String {
+        val configFile = File(path)
+        configFile.parentFile.mkdirs()
+        return configFile.absolutePath
+    }
 }

@@ -22,8 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.data.player.PlayerState
-import com.voxyl.overlay.middleman.PlayerKindaButNotExactlyViewModel
+import com.voxyl.overlay.dataslashbusiness.player.PlayerState
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.Sort
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.common.elements.scrollbar
@@ -209,6 +210,10 @@ private fun getStat(statToShow: String, player: PlayerState) = when {
 
     statToShow == "bwp.level" && player.player != null -> {
         coloredLevel(player["bwp.level"] ?: "0")
+    }
+
+    statToShow == "bwp.realstars" && player.player != null -> {
+        coloredLevel(player["bwp.realstars"] ?: "0")
     }
 
     statToShow == "bedwars.level" && player.player != null -> {

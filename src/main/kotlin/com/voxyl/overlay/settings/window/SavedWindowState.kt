@@ -8,7 +8,6 @@ import java.util.*
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
 
 object SavedWindowState {
-
     private val state by lazy {
         load()
     }

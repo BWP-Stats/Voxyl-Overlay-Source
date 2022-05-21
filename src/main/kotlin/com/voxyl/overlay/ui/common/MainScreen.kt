@@ -16,25 +16,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.playerstats.PlayerStats
-import com.voxyl.overlay.ui.navigation.ScreenShowing
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.ScreenShowing
 import com.voxyl.overlay.ui.settings.Settings
 import com.voxyl.overlay.ui.theme.bgam
 import com.voxyl.overlay.ui.theme.tbsm
 
 @Composable
 fun MainScreen(fws: FrameWindowScope) {
-    BackgroundBox()
-    TitleBox()
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        BackgroundBox()
+        TitleBox()
 
-    TitleBar(fws)
+        TitleBar(fws)
 
-    if (ScreenShowing.screen == "main") {
-        PlayerStats()
-    } else {
-        Settings()
+        if (ScreenShowing.screen == "main") {
+            PlayerStats()
+        } else {
+            Settings()
+        }
+
+        EventBar()
+        AdditionalSettings()
     }
-
-    AdditionalSettings()
 }
 
 @Composable
@@ -42,7 +47,7 @@ fun BackgroundBox(modifier: Modifier = Modifier, shape: Shape = RoundedCornerSha
     modifier = modifier
         .fillMaxSize()
         .clip(shape)
-        .background(Color(0f, 0f, 0f, .4f).bgam)
+        .background(Color(.05f, .05f, .05f, .4f).bgam)
         .requestFocusOnClick()
 )
 

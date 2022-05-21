@@ -247,23 +247,33 @@ fun cellWeight(stat: String) = when (stat) {
 }
 
 fun calcTagCellWeight(): Float {
-    val tagLengths = PlayerKindaButNotExactlyViewModel.players.map {
-        "--".repeat(it.tags.size)
+    return try {
+        val tagLengths = PlayerKindaButNotExactlyViewModel.players.map {
+            "--".repeat(it.tags.size)
+        }
+
+        val max = tagLengths.maxByOrNull { it.length } ?: ""
+
+        max("tags".getCellWeight(), max.length.toFloat() / 3f)
+    } catch (e: Exception) {
+        Napier.wtf(e) { "Error with calculating the tag cell weight" }
+        "tags".getCellWeight()
     }
-
-    val max = tagLengths.maxByOrNull { it.length } ?: ""
-
-    return max("tags".getCellWeight(), max.length.toFloat() / 3f)
 }
 
 fun calcRegularCellWeight(stat: String): Float {
-    val stats = PlayerKindaButNotExactlyViewModel.players.map {
-        it[stat] ?: ""
+    return try {
+        val stats = PlayerKindaButNotExactlyViewModel.players.map {
+            it[stat] ?: ""
+        }
+
+        val max = stats.maxByOrNull { it.substringAfterLast(".").length } ?: ""
+
+        max(stat.getCellWeight(), sqrt(max.length.toFloat()))
+    } catch (e: Exception) {
+        Napier.wtf(e) { "Error with calculating the regular cell weight" }
+        stat.getCellWeight()
     }
-
-    val max = stats.maxByOrNull { it.substringAfterLast(".").length } ?: ""
-
-    return max(stat.getCellWeight(), sqrt(max.length.toFloat()))
 }
 
 private fun String.getCellWeight() = when (this) {

@@ -42,6 +42,6 @@ fun BackgroundOpacitySlider(modifier: Modifier = Modifier) {
 
 @Composable
 private fun OpacityText(opacity: MutableState<Float>) {
-    VText(" Bg Opacity (${String.format("%.1f", opacity.value)}x)")
+    VText("Bg Opacity (${String.format("%.1f", opacity.value)}x)")
     Spacer(modifier = Modifier.width(17.dp))
 }

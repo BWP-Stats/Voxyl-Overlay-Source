@@ -103,16 +103,16 @@ object PlayerKindaButNotExactlyViewModel {
     }
 
     fun remove(name: String) {
-        _players.remove(name)
         jobs[name]?.cancel()
         jobs.remove(name)
         HomemadeCache.remove(name)
+        _players.remove(name)
     }
 
     fun removeAll() {
-        _players.clear()
         jobs.forEach { it.value.cancel() }
         jobs.clear()
         HomemadeCache.clear()
+        _players.clear()
     }
 }

@@ -71,6 +71,8 @@ object LogFileReader {
                 Window.focusableWindowState = false
                 Window.isMinimized = false
                 Window.focusableWindowState = true
+                println(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
+                println(Config[AutoShowAndHideDelay])
                 delay(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
                 Window.isMinimized = true
             }

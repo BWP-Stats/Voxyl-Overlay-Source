@@ -60,7 +60,7 @@ object PlayerKindaButNotExactlyViewModel {
         } catch (e: Exception) {
             jobs[name]?.cancel()
             _players.remove(name)
-            Napier.wtf(e) { "Failed to add player" }
+            Napier.wtf(e) { "Failed to add player $name" }
         }
     }
 

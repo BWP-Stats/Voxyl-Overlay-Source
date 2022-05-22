@@ -54,10 +54,11 @@ object LogFileReader {
     private fun skipToEndOfFile(reader: BufferedReader) = reader.skip(Long.MAX_VALUE)
 
     private fun interpret(line: String, cs: CoroutineScope) {
-        checkForGameStart(line, cs)
+        checkForBwpGameStart(line, cs)
+        checkForHypixelGameStart(line, cs)
     }
 
-    private fun checkForGameStart(line: String, cs: CoroutineScope) {
+    private fun checkForBwpGameStart(line: String, cs: CoroutineScope) {
         if (" [CHAT] Players in this game: " !in line) return
 
         PlayerKindaButNotExactlyViewModel.removeAll()
@@ -66,6 +67,24 @@ object LogFileReader {
             PlayerKindaButNotExactlyViewModel.add(it, cs, Tags.FromGame)
         }
 
+        autoShowAndHide(cs)
+    }
+
+    private fun checkForHypixelGameStart(line: String, cs: CoroutineScope) {
+        if (" [CHAT] ONLINE: " !in line) return
+
+        PlayerKindaButNotExactlyViewModel.removeAll()
+
+        line.substringAfterLast(":").toPlayerList().forEach {
+            PlayerKindaButNotExactlyViewModel.add(it, cs, Tags.FromGame)
+        }
+
+        autoShowAndHide(cs)
+    }
+
+    private fun String.toPlayerList() = split(" ", ", ").filterNot { it.isBlank() }.distinct()
+
+    private fun autoShowAndHide(cs: CoroutineScope) {
         if (Config[AutoShowAndHide] == "true") {
             cs.launch(Dispatchers.Default) {
                 Window.focusableWindowState = false
@@ -78,6 +97,4 @@ object LogFileReader {
             }
         }
     }
-
-    private fun String.toPlayerList() = split(" ").filterNot { it.isBlank() }.distinct()
 }

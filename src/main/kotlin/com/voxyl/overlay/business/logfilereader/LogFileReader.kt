@@ -1,14 +1,9 @@
 package com.voxyl.overlay.business.logfilereader
 
-import com.voxyl.overlay.Window
+import com.voxyl.overlay.business.events.Error
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.EventsToBeDisplayed
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
-import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
-import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.business.events.Error
-import com.voxyl.overlay.business.player.tags.FromGame
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.FileInputStream
@@ -33,7 +28,7 @@ object LogFileReader {
         } ?: return@launch Unit.also {
             EventsToBeDisplayed.add(
                 Error(
-                    "Error starting log file reader: Log file path may be invalid or inaccessable.",
+                    "Error starting log file reader: Log file path may be invalid or inaccessible.",
                     10000
                 ).withTags("LogFileError")
             )
@@ -52,56 +47,11 @@ object LogFileReader {
                 val line = reader.readLine()
 
                 if (line != null) {
-                    interpret(line, cs)
+                    LogFileInterpreter.interpret(line, cs)
                 }
             }
         }
     }
 
     private fun skipToEndOfFile(reader: BufferedReader) = reader.skip(Long.MAX_VALUE)
-
-    private fun interpret(line: String, cs: CoroutineScope) {
-        checkForBwpGameStart(line, cs)
-        checkForHypixelGameStart(line, cs)
-    }
-
-    private fun checkForBwpGameStart(line: String, cs: CoroutineScope) {
-        if (" [CHAT] Players in this game: " !in line) return
-
-        PlayerKindaButNotExactlyViewModel.removeAll()
-
-        line.substringAfterLast(":").toPlayerList().forEach {
-            PlayerKindaButNotExactlyViewModel.add(it, cs, FromGame)
-        }
-
-        autoShowAndHide(cs)
-    }
-
-    private fun checkForHypixelGameStart(line: String, cs: CoroutineScope) {
-        if (" [CHAT] ONLINE: " !in line) return
-
-        PlayerKindaButNotExactlyViewModel.removeAll()
-
-        line.substringAfterLast(":").toPlayerList().forEach {
-            PlayerKindaButNotExactlyViewModel.add(it, cs, FromGame)
-        }
-
-        autoShowAndHide(cs)
-    }
-
-    private fun String.toPlayerList() = split(" ", ", ").filterNot { it.isBlank() }.distinct()
-
-    private fun autoShowAndHide(cs: CoroutineScope) {
-        if (Config[AutoShowAndHide] == "true") {
-            cs.launch(Dispatchers.Default) {
-                Window.focusableWindowState = false
-                Window.isMinimized = false
-                Window.focusableWindowState = true
-                println(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
-                println(Config[AutoShowAndHideDelay])
-                delay(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
-                Window.isMinimized = true
-            }
-        }
-    }
 }

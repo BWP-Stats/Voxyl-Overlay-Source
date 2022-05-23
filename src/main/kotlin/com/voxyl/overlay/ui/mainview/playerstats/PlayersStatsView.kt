@@ -283,7 +283,7 @@ fun calcRegularCellWeight(stat: String): Float {
 }
 
 private fun String.getCellWeight() = when (this) {
-    "name" -> 5f
+    "name" -> 4f
     "tags" -> 1f
     else -> 2f
 }

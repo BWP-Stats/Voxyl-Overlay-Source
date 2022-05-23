@@ -59,35 +59,36 @@ fun SettingsList(
     }
 
     val settings = mutableListOf(
-        @Composable { Header("Basic") } to "Basic BWPApiKeyTextField HypixelApiKeyTextField PlayerNameTextField Username LogFilePathTextField",
-        @Composable { BWPApiKeyTextField() } to "Basic BWPApiKeyTextField",
-        @Composable { HypixelApiKeyTextField() } to "Basic HypixelApiKeyTextField",
-        @Composable { PlayerNameTextField() } to "Basic PlayerNameTextField Username",
-        @Composable { LogFilePathTextField(); Spacer(Modifier.height(10.dp)) } to "Basic LogFilePathTextField",
+        @Composable { Header("Basic") } to "BasicBWPApiKeyTextFieldHypixelApiKeyTextFieldPlayerNameTextFieldUsernameLogFilePathTextField",
+        @Composable { BWPApiKeyTextField() } to "BasicBWPApiKeyTextField",
+        @Composable { HypixelApiKeyTextField() } to "BasicHypixelApiKeyTextField",
+        @Composable { PlayerNameTextField() } to "BasicPlayerNameTextField Username",
+        @Composable { LogFilePathTextField() } to "BasicLogFilePathTextField",
+        @Composable { Spacer(Modifier.height(10.dp)) } to "NeverGonnaGiveYouUpNeverGonnaLetYouDown",
 
-        @Composable { Header("QOL") } to "QOL PinYourselfToTopCheckbox AddYourselfToOverlayCheckbox AutoShowAndHideCheckBox AutoShowAndHideDelaySlider AutoHide",
-        @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOL PinYourselfToTopCheckbox",
-        @Composable { AddYourselfToOverlayCheckbox(addYourself) } to "QOL AddYourselfToOverlayCheckbox",
-        @Composable { AutoShowAndHideCheckBox(autoHide) } to "QOL AutoShowAndHideCheckBox AutoHide",
-        @Composable { AutoShowAndHideDelaySlider(autoHide) } to "QOL AutoShowAndHideDelaySlider AutoHide",
+        @Composable { Header("QOL") } to "QOLPinYourselfToTopCheckboxAddYourselfToOverlayCheckboxAutoShowAndHideCheckBoxAutoShowAndHideDelaySliderAutoHide",
+        @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOLPinYourselfToTopCheckbox",
+        @Composable { AddYourselfToOverlayCheckbox(addYourself) } to "QOLAddYourselfToOverlayCheckbox",
+        @Composable { AutoShowAndHideCheckBox(autoHide) } to "QOLAutoShowAndHideCheckBoxAutoHide",
+        @Composable { AutoShowAndHideDelaySlider(autoHide) } to "QOLAutoShowAndHideDelaySliderAutoHide",
 
-        @Composable { Header("Appearance") } to "OpacitySlider TitleBarSizeSlider CenterStateCheckBox RSlider GSlider BSlider Red Green Blue",
-        @Composable { BackgroundOpacitySlider() } to "Appearance BackgroundOpacitySlider",
-        @Composable { OpacitySlider() } to "Appearance OpacitySlider",
-        @Composable { TitleBarSizeSlider() } to "Appearance TitleBarSizeSlider",
-        @Composable { CenterStatsCheckBox() } to "Appearance CenterStateCheckBox",
-        @Composable { RSlider() } to "Appearance RSlider Red",
-        @Composable { GSlider() } to "Appearance GSlider Green",
-        @Composable { BSlider() } to "Appearance BSlider Blue",
+        @Composable { Header("Appearance") } to "AppearanceOpacitySliderTitleBarSizeSliderCenterStatsCheckBoxRSliderGSliderBSliderRedGreenBlue",
+        @Composable { BackgroundOpacitySlider() } to "AppearanceBackgroundOpacitySlider",
+        @Composable { OpacitySlider() } to "AppearanceOpacitySlider",
+        @Composable { TitleBarSizeSlider() } to "AppearanceTitleBarSizeSlider",
+        @Composable { CenterStatsCheckBox() } to "AppearanceCenterStatsCheckBox",
+        @Composable { RSlider() } to "AppearanceRSliderRed",
+        @Composable { GSlider() } to "AppearanceGSliderGreen",
+        @Composable { BSlider() } to "AppearanceBSliderBlue",
 
-        @Composable { Header("Keybinds") } to "Keybinds OpenCloseKeySetting ClearPlayersKeySetting Hotkeys",
-        @Composable { OpenCloseKeySetting() } to "Keybinds OpenCloseKeySetting Hotkeys",
-        @Composable { ClearPlayersKeySetting() } to "Keybinds ClearPlayersKeySetting Hotkeys",
+        @Composable { Header("Keybinds") } to "KeybindsOpenCloseKeySettingClearPlayersKeySettingHotkeys",
+        @Composable { OpenCloseKeySetting() } to "KeybindsOpenCloseKeySettingHotkeys",
+        @Composable { ClearPlayersKeySetting() } to "KeybindsClearPlayersKeySettingHotkeys",
 
-        @Composable { Header("Columns") } to "Columns Stats Show Rows",
-        @Composable { ColumnsSettings() } to "Columns Stats Show Rows"
+        @Composable { Header("Columns") } to "ColumnsStatsShowRows",
+        @Composable { ColumnsSettings() } to "ColumnsStatsShowRows"
     ).filter {
-        it.second.contains(queriedSetting.text, true)
+        it.second.contains(queriedSetting.text.replace(" ", ""), true)
     }
 
     LazyColumn(

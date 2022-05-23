@@ -1,7 +1,7 @@
 package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
 
 import androidx.compose.runtime.mutableStateOf
-import com.voxyl.overlay.dataslashbusiness.player.PlayerState
+import com.voxyl.overlay.business.player.PlayerState
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.SortAsc
 import com.voxyl.overlay.settings.config.ConfigKeys.SortBy

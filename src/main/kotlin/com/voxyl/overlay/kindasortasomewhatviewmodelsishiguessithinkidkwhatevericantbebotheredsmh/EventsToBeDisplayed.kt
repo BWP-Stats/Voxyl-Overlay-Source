@@ -1,7 +1,7 @@
 package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
 
 import androidx.compose.runtime.mutableStateListOf
-import com.voxyl.overlay.dataslashbusiness.events.*
+import com.voxyl.overlay.business.events.*
 import com.voxyl.overlay.ui.common.DisplayedEventState
 import kotlinx.coroutines.*
 
@@ -54,6 +54,14 @@ object EventsToBeDisplayed {
 
     fun add(event: Event) {
         _events.add(event)
+    }
+
+
+    fun filter(tag: String) {
+        if (events.firstOrNull()?.tags?.contains(tag) == true) {
+            endCurrent()
+        }
+        _events.filter { tag in it.tags }
     }
 
     fun endCurrent() {

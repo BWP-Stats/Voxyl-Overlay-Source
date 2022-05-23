@@ -13,7 +13,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.dataslashbusiness.logfilereader.LogFileReader
+import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
 import com.voxyl.overlay.settings.config.LogFiles

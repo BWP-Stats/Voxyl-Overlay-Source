@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
-import com.voxyl.overlay.dataslashbusiness.homemadesimplecache.HomemadeCache
+import com.voxyl.overlay.business.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel

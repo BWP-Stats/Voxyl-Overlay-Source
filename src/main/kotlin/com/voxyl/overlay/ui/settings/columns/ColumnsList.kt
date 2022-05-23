@@ -84,7 +84,11 @@ fun ColumnsList() {
     }
 }
 
-fun LazyListScope.stat(item: StatsToShow.Stat) {
+val statsWithAdditionalSettings = listOf(
+    "name"
+)
+
+private fun LazyListScope.stat(item: StatsToShow.Stat) {
     item {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -93,7 +97,10 @@ fun LazyListScope.stat(item: StatsToShow.Stat) {
                 }
         ) {
             Spacer(modifier = Modifier.height(2.dp))
-            VText(item.clean, fontSize = TextUnit.Unspecified)
+            VText(
+                item.clean + (if (item.raw in statsWithAdditionalSettings) "*" else ""),
+                fontSize = TextUnit.Unspecified
+            )
         }
     }
 }

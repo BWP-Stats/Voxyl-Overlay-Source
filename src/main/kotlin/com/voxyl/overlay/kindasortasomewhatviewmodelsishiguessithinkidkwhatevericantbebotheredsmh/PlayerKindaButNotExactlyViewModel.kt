@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.*
 import com.voxyl.overlay.dataslashbusiness.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.dataslashbusiness.player.*
+import com.voxyl.overlay.dataslashbusiness.player.tags.*
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.PlayerName
 import io.github.aakira.napier.Napier
@@ -20,7 +21,7 @@ object PlayerKindaButNotExactlyViewModel {
 
     private var jobs = mutableMapOf<String, Job>()
 
-    fun add(name: String, cs: CoroutineScope, vararg tags: Tags) {
+    fun add(name: String, cs: CoroutineScope, vararg tags: Tag) {
         try {
             val tags2 = (listOf(*tags) + generatePreTags(name)).toTypedArray()
 
@@ -50,7 +51,7 @@ object PlayerKindaButNotExactlyViewModel {
                         PlayerState(
                             name = name,
                             error = it.message ?: "An unexpected error has occurred",
-                            tags = mutableStateListOf(*tags2 + Tags.Error)
+                            tags = mutableStateListOf(*tags2 + Error)
                         ).also { ps ->
                             HomemadeCache.add(ps)
                         }
@@ -64,26 +65,32 @@ object PlayerKindaButNotExactlyViewModel {
         }
     }
 
-    private val devNames = listOf("ambmt", "_lightninq", "vitroid", "firestarad", "sirjosh3917", "hero_of_gb", "Rezcwa")
+    private val devNames = listOf("ambmt", "_lightninq", "vitroid", "firestarad", "sirjosh3917", "hero_of_gb", "rezcwa")
 
-    private fun generatePreTags(name: String): MutableList<Tags> {
-        val tags = mutableListOf<Tags>()
+    private fun generatePreTags(name: String): MutableList<Tag> {
+        val tags = mutableListOf<Tag>()
 
-        if (name.equals(Config[PlayerName], true)) tags += Tags.You
-        if (name.lowercase() == "ambmt") tags += Tags.Ambmt
-        if (name.lowercase() in devNames) tags += Tags.VoxylDev
-        if (name.lowercase() == "carburettor") tags += Tags.OverlayDev
+        if (name.equals(Config[PlayerName], true)) tags += You
+        if (name.lowercase() == "ambmt") tags += Ambmt
+        if (name.lowercase() in devNames) tags += VoxylDev
+        if (name.lowercase() == "carburettor") tags += OverlayDev
 
         return tags
     }
 
-    private fun generatePostTags(player: PlayerState): MutableList<Tags> {
-        var tags = mutableListOf<Tags>()
+    private fun generatePostTags(player: PlayerState): MutableList<Tag> {
+        var tags = mutableListOf<Tag>()
 
-        if (LeaderboardTrackerWhatEvenIsAViewModel.foundInLevelLB(player["uuid"]!!)) tags += Tags.LevelLB
-        if (LeaderboardTrackerWhatEvenIsAViewModel.foundInWWLB(player["uuid"]!!)) tags += Tags.WWLB
+        val lvlLbPos = LeaderboardTrackerWhatEvenIsAViewModel.findInLevelLB(player["uuid"]!!)
+        val wwLbPos = LeaderboardTrackerWhatEvenIsAViewModel.findInWWLB(player["uuid"]!!)
 
-        if (Tags.LevelLB in tags && Tags.WWLB in tags) tags = mutableListOf(Tags.LevelAndWWLB)
+        if (lvlLbPos != null) tags += LevelLB(lvlLbPos["position"].asString ?: "")
+        if (wwLbPos != null) tags += LevelLB(wwLbPos["position"].asString ?: "")
+
+        if (tags.size == 2) tags = mutableListOf(LevelAndWWLB(
+                lvlLbPos?.get("position")?.asString ?: "",
+                wwLbPos?.get("position")?.asString ?: ""
+        ))
         return tags
     }
 

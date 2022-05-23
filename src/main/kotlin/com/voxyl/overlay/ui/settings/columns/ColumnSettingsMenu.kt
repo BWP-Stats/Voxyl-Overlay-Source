@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.clean
+import com.voxyl.overlay.ui.settings.columns.settings.NameSettings
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.alphaMultiplier
@@ -76,6 +77,8 @@ fun ColumnSettingsMenu() {
                 }) {
                     VText("Remove", fontSize = TextUnit.Unspecified)
                 }
+
+                NameSettings()
             }
         }
     }

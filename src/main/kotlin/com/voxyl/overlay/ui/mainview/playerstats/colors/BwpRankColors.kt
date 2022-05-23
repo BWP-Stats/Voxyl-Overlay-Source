@@ -1,6 +1,5 @@
 package com.voxyl.overlay.ui.mainview.playerstats.colors
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -9,7 +8,7 @@ import androidx.compose.ui.text.withStyle
 import com.voxyl.overlay.dataslashbusiness.player.PlayerState
 import com.voxyl.overlay.ui.theme.am
 
-object RankColors {
+object BwpRankColors {
 
     val colorsMap = mapOf(
         "owner" to Color(255, 85, 85),
@@ -31,10 +30,10 @@ object RankColors {
         "err" to Color(255, 85, 85)
     )
 
+    fun coloredRank(player: PlayerState) = when {
+        player.isLoading -> buildAnnotatedString { }
 
-    @Composable
-    fun coloredRank(player: PlayerState) = when (player["bwp.role"]?.lowercase() ?: "err") {
-        "youtube" -> {
+        player["bwp.role"]?.lowercase() == "youtube" -> {
             buildAnnotatedString {
                 withStyle(style = SpanStyle(color = colorsMap["youtube"]!!.am)) {
                     append("[")
@@ -43,23 +42,23 @@ object RankColors {
                     append(player["bwp.role"] ?: "ERR")
                 }
                 withStyle(style = SpanStyle(color = colorsMap["youtube"]!!.am)) {
-                    append("]")
+                    append("] ")
                 }
             }
         }
 
+        player["bwp.role"]?.lowercase() == "none" -> buildAnnotatedString { }
+
         else -> {
             buildAnnotatedString {
                 withStyle(style = SpanStyle(color = colorsMap[player["bwp.role"]?.lowercase() ?: "err"]!!.am)) {
-                    append("[${player["bwp.role"] ?: "ERR"}]")
+                    append("[${player["bwp.role"] ?: "ERR"}] ")
                 }
             }
         }
     }
 
-    @Composable
     fun coloredName(player: PlayerState): AnnotatedString = when {
-
         player.isLoading -> buildAnnotatedString {
             withStyle(style = SpanStyle(color = Color.White.am)) {
                 append(player.name)

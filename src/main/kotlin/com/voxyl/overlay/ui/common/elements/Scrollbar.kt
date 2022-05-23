@@ -9,10 +9,12 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.ui.theme.MainColor
 import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.ui.theme.tbsm
 
 @Composable
 fun Modifier.scrollbar(
@@ -42,14 +44,16 @@ fun Modifier.scrollbar(
         val firstVisibleElementIndex = state.layoutInfo.visibleItemsInfo.firstOrNull()?.index
         val needDrawScrollbar = mightBeScrolling || alpha > 0.0f
 
+        val size = this@drawWithContent.size
+
         if (needDrawScrollbar && firstVisibleElementIndex != null) {
-            val elementHeight = (this.size.height / state.layoutInfo.totalItemsCount) - 4
+            val elementHeight = (size.height - 60.tbsm) / state.layoutInfo.totalItemsCount
             val scrollbarOffsetY = firstVisibleElementIndex * elementHeight
-            val scrollbarHeight = state.layoutInfo.visibleItemsInfo.size * elementHeight - 40
+            val scrollbarHeight = state.layoutInfo.visibleItemsInfo.size * elementHeight
 
             drawRect(
                 color = MainColor.value,
-                topLeft = Offset(this.size.width - width.toPx(), scrollbarOffsetY),
+                topLeft = Offset(size.width - width.toPx(), scrollbarOffsetY),
                 size = Size(width.toPx(), scrollbarHeight),
                 alpha = alpha
             )

@@ -10,10 +10,10 @@ import kotlin.math.min
 class Player(
     val name: String,
     uuid: String,
-    private var playerInfoJson: PlayerInfoJson?,
-    private var overallStatsJson: OverallStatsJson?,
-    private var gameStatsJson: GameStatsJson?,
-    private var hypixelStatsJson: HypixelStatsJson?
+    playerInfoJson: PlayerInfoJson?,
+    overallStatsJson: OverallStatsJson?,
+    gameStatsJson: GameStatsJson?,
+    hypixelStatsJson: HypixelStatsJson?
 ) {
 
     val stats = mutableMapOf<String, String>()
@@ -52,6 +52,11 @@ class Player(
 
     init {
         try {
+            val playerJson = hypixelStatsJson?.json?.getAsJsonObject("player")
+
+            stats["hypixel.rank"] = getRank(playerJson)
+            stats["hypixel.rankColor"] = playerJson?.get("rankPlusColor")?.asString.formatAsMCColor()
+
             addStatsFromJsonToStatsMap(
                 hypixelStatsJson?.json
                     ?.getAsJsonObject("player")
@@ -61,7 +66,7 @@ class Player(
             )
 
             stats["bedwars.level"] =
-                stats["bedwars.experience"]?.toInt()?.toHypixelLevel()?.toInt()?.toString() ?: "ERR"
+                stats["bedwars.experience"]?.toInt()?.toHypixelLevel()?.toInt()?.toString() ?: "0"
             stats["bedwars.fkdr"] = calcFkdr(stats)
             stats["bedwars.wlr"] = calcWlr(stats)
         } catch (e: Exception) {
@@ -69,8 +74,28 @@ class Player(
         }
     }
 
-    init {
-//        println(stats)
+    private fun getRank(playerJson: JsonObject?): String {
+        return if (name.lowercase() == "hypixel") {
+            "OWNER"
+        } else if (name.lowercase() == "technoblade") {
+            "PIG+++"
+        } else if (playerJson?.get("rank") != null) {
+            playerJson.get("rank").asString
+        } else if (playerJson?.get("monthlyPackageRank") != null && playerJson.get("monthlyPackageRank").asString != "NONE") {
+            if (playerJson.get("monthlyRankColor").asString == "AQUA") {
+                "BMVP++"
+            } else {
+                "GMVP++"
+            }
+        } else if (playerJson?.get("newPackageRank") != null) {
+            playerJson.get("newPackageRank").asString
+        } else {
+            "NONE"
+        }.replace("_PLUS", "+")
+    }
+
+    private fun String?.formatAsMCColor(): String {
+        return this?.replace("_", "-")?.lowercase() ?: "red"
     }
 
     private fun addStatsFromJsonToStatsMap(jsonObj: JsonObject?, prevKey: String = "") {
@@ -88,7 +113,7 @@ class Player(
     }
 
     private fun calcRealStarsTm(): String {
-        if ((stats["bwp.level"]?.toIntOrNull() ?: return "ERR") <= 100) {
+        if ((stats["bwp.level"]?.toIntOrNull() ?: return "0") <= 100) {
             return stats["bwp.level"]!!
         }
 
@@ -126,15 +151,15 @@ class Player(
     }
 
     private fun calcFkdr(stats: MutableMap<String, String>): String {
-        val fks = stats["bedwars.final_kills_bedwars"]?.toDouble() ?: return "ERR"
-        val fds = stats["bedwars.final_deaths_bedwars"]?.toDouble() ?: return "ERR"
+        val fks = stats["bedwars.final_kills_bedwars"]?.toDouble() ?: return "0"
+        val fds = stats["bedwars.final_deaths_bedwars"]?.toDouble() ?: return "0"
 
         return if (fds == 0.0) fks.toString() else String.format("%.2f", fks / fds)
     }
 
     private fun calcWlr(stats: MutableMap<String, String>): String {
-        val ws = stats["bedwars.wins_bedwars"]?.toDouble() ?: return "ERR"
-        val ls = stats["bedwars.losses_bedwars"]?.toDouble() ?: return "ERR"
+        val ws = stats["bedwars.wins_bedwars"]?.toDouble() ?: return "0"
+        val ls = stats["bedwars.losses_bedwars"]?.toDouble() ?: return "0"
 
         return if (ls == 0.0) ws.toString() else String.format("%.2f", ws / ls)
     }

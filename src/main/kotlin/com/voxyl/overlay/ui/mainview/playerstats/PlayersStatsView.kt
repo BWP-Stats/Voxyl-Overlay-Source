@@ -29,10 +29,10 @@ import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.common.elements.scrollbar
 import com.voxyl.overlay.ui.common.util.requestFocusOnClick
+import com.voxyl.overlay.ui.mainview.playerstats.colors.BwpRankColors
 import com.voxyl.overlay.ui.mainview.playerstats.colors.ErrorString
 import com.voxyl.overlay.ui.mainview.playerstats.colors.LevelColors.coloredLevel
-import com.voxyl.overlay.ui.mainview.playerstats.colors.RankColors.coloredName
-import com.voxyl.overlay.ui.mainview.playerstats.colors.RankColors.coloredRank
+import com.voxyl.overlay.ui.mainview.playerstats.colors.HypixelRankColors
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
@@ -201,11 +201,7 @@ private fun Modifier.selectable(
 @Composable
 private fun getStat(statToShow: String, player: PlayerState) = when {
     statToShow == "name" -> {
-        if (playerIsNotNullSettingIsEnabledAndPlayerHasRank(player)) {
-            coloredRank(player) + " ".toAnnotatedString() + coloredName(player)
-        } else {
-            coloredName(player)
-        }
+        figureOutWhichRankToUseAndIfToShowTheRankPrefixAndThenReturnTheOutputCorrespondingToTheMatchingCondition(player)
     }
 
     statToShow == "bwp.level" && player.player != null -> {
@@ -231,10 +227,20 @@ private fun getStat(statToShow: String, player: PlayerState) = when {
     else -> ErrorString.get()
 }
 
-fun playerIsNotNullSettingIsEnabledAndPlayerHasRank(player: PlayerState): Boolean {
-    return player.player != null
-            && Config[ShowRankPrefix].toBooleanStrictOrNull() != false
-            && !player["bwp.role"].equals("none", true)
+fun figureOutWhichRankToUseAndIfToShowTheRankPrefixAndThenReturnTheOutputCorrespondingToTheMatchingCondition(player: PlayerState): AnnotatedString {
+    return if (Config[ShowRankPrefix] == "false") {
+        if (Config[RankPrefix] == "bwp") {
+            BwpRankColors.coloredName(player)
+        } else {
+            HypixelRankColors.coloredName(player)
+        }
+    } else {
+        if (Config[RankPrefix] == "bwp") {
+            BwpRankColors.coloredRank(player) + BwpRankColors.coloredName(player)
+        } else {
+            HypixelRankColors.coloredRank(player) + HypixelRankColors.coloredName(player)
+        }
+    }
 }
 
 private fun String.toAnnotatedString(): AnnotatedString {

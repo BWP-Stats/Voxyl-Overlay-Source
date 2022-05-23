@@ -26,6 +26,7 @@ import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.Columns
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.clean
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.raw
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
@@ -80,7 +81,7 @@ fun ColumnsSettings() {
                     contentAlignment = Alignment.Center
                 ) {
                     VText(
-                        text = it.clean(),
+                        text = it.clean() + (if (it.raw() in statsWithAdditionalSettings) "*" else ""),
                         textAlign = TextAlign.Center,
                         fontSize = 16.sp
                     )
@@ -95,10 +96,20 @@ fun ColumnsSettings() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(Modifier.weight(1f))
-            VText(
-                "You can drag the columns to reorder them, or click on one to remove/modify it (ᴮ = BWP, ᴴ = Hypixel)",
-                fontSize = 14.sp
-            )
+            Column(
+                Modifier.fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                VText(
+                    "You can drag the columns to reorder them, or right click on one to remove/modify it (ᴮ = BWP, ᴴ = Hypixel)",
+                    fontSize = 15.sp
+                )
+                VText(
+                    "Settings with * have additional settings which you can right click on to access",
+                    fontSize = 11.sp
+                )
+            }
             Spacer(Modifier.weight(2f))
             Button(
                 onClick = {

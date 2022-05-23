@@ -17,7 +17,8 @@ enum class ConfigKeys(val key: String, var defaultValue: String) {
     TitleBarSizeMulti("title_bar_size_multi", "1"),
 
     CenterStats("center_stats", "false"),
-    ShowRankPrefix("show_rank_prefix", "true"),
+    RankPrefix("rank_prefix", "bwp"),
+    ShowRankPrefix("rank_prefix", "true"),
 
     R("r", "130"),
     G("g", "32"),

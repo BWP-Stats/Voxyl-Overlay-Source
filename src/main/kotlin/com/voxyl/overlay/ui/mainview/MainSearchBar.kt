@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.dataslashbusiness.player.Tags
+import com.voxyl.overlay.dataslashbusiness.player.tags.ManuallySearched
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.common.elements.MyTextField
 import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
@@ -41,7 +41,7 @@ fun MainSearchBar(
             queriedName = TextFieldValue()
 
             savedQueriedName.split(" ").filterNot { it.isBlank() }.distinct().forEach {
-                PlayerKindaButNotExactlyViewModel.add(it, cs, Tags.ManuallySearched)
+                PlayerKindaButNotExactlyViewModel.add(it, cs, ManuallySearched)
             }
         } catch (e: Exception) {
             Napier.wtf(e) { "Error adding someone to the KindaButNotExactlyViewModel" }

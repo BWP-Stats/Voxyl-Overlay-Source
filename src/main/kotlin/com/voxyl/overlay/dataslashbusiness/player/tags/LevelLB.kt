@@ -12,5 +12,5 @@ class LevelLB(lvlPos: String) : Tag {
         Tag.TagIcon(this, it, Color(140, 140, 140).am)
     }
 
-    override val desc: String = "$lvlPos on levels lb"
+    override val desc: String = "#$lvlPos on bwp levels lb"
 }

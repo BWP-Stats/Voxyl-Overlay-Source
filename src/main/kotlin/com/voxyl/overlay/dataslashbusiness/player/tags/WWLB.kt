@@ -12,5 +12,5 @@ class WWLB(wwPos: String) : Tag {
         Tag.TagIcon(this, it, Color(122, 95, 6).am)
     }
 
-    override val desc: String = "$wwPos on w-win lb"
+    override val desc: String = "#$wwPos on bwp w-win lb"
 }

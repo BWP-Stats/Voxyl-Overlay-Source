@@ -2,6 +2,7 @@
 
 package com.voxyl.overlay.ui.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.Divider
@@ -9,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -69,12 +71,11 @@ fun SettingsList(
         @Composable { AutoShowAndHideCheckBox(autoHide) } to "QOL AutoShowAndHideCheckBox AutoHide",
         @Composable { AutoShowAndHideDelaySlider(autoHide) } to "QOL AutoShowAndHideDelaySlider AutoHide",
 
-        @Composable { Header("Appearance") } to "OpacitySlider TitleBarSizeSlider CenterStateCheckBox ShowRankPrefixSetting RSlider GSlider BSlider Red Green Blue",
+        @Composable { Header("Appearance") } to "OpacitySlider TitleBarSizeSlider CenterStateCheckBox RSlider GSlider BSlider Red Green Blue",
         @Composable { BackgroundOpacitySlider() } to "Appearance BackgroundOpacitySlider",
         @Composable { OpacitySlider() } to "Appearance OpacitySlider",
         @Composable { TitleBarSizeSlider() } to "Appearance TitleBarSizeSlider",
         @Composable { CenterStatsCheckBox() } to "Appearance CenterStateCheckBox",
-        @Composable { ShowRankPrefixSetting() } to "Appearance ShowRankPrefixSetting",
         @Composable { RSlider() } to "Appearance RSlider Red",
         @Composable { GSlider() } to "Appearance GSlider Green",
         @Composable { BSlider() } to "Appearance BSlider Blue",
@@ -93,10 +94,10 @@ fun SettingsList(
         state = lazyListState,
         modifier = modifier
             .absoluteOffset(y = 60.tbsm.dp)
-            .fillMaxSize()
             .scrollbar(lazyListState)
+            .fillMaxSize()
             .requestFocusOnClick(),
-        contentPadding = PaddingValues(bottom = 75.dp)
+        contentPadding = PaddingValues(bottom = 40.dp)
     ) {
         try {
             items(settings) {

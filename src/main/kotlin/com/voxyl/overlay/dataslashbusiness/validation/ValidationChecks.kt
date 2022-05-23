@@ -1,14 +1,12 @@
-package com.voxyl.overlay.nativelisteners
+package com.voxyl.overlay.dataslashbusiness.validation
 
 import com.voxyl.overlay.dataslashbusiness.events.Tip
 import com.voxyl.overlay.dataslashbusiness.events.Error
 import com.voxyl.overlay.dataslashbusiness.events.Warning
-import com.voxyl.overlay.dataslashbusiness.validation.BwpApiValidator
-import com.voxyl.overlay.dataslashbusiness.validation.HypixelApiKeyValidator
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.EventsToBeDisplayed
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
-import com.voxyl.overlay.settings.misc.Misc
+import com.voxyl.overlay.settings.misc.MiscSettings
 import com.voxyl.overlay.settings.misc.MiscKeys.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -22,10 +20,10 @@ object ValidationChecks {
             launch = false
         }
 
-        if (Misc[FirstTime] != "false") {
+        if (MiscSettings[FirstTime] != "false") {
             EventsToBeDisplayed.add(Tip("You can hover over most of the buttons/icons/tags to see what they do/mean!", 10000))
             EventsToBeDisplayed.add(Tip("You can also right click on added players for more options!", 10000))
-            Misc[FirstTime] = "false"
+            MiscSettings[FirstTime] = "false"
         }
 
         if (!launch) return

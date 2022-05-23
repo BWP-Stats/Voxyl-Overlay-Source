@@ -3,7 +3,7 @@ package com.voxyl.overlay.settings
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
-import com.voxyl.overlay.settings.misc.Misc
+import com.voxyl.overlay.settings.misc.MiscSettings
 
 object Settings {
 
@@ -17,6 +17,6 @@ object Settings {
         StatsToShow.save()
         Config.store(configPath)
         SavedWindowState.store(savedWindowStatePath)
-        Misc.store(miscPath)
+        MiscSettings.store(miscPath)
     }
 }

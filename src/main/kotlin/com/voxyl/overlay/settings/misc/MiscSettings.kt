@@ -5,7 +5,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
-object Misc {
+object MiscSettings {
     private val config by lazy {
         load()
     }
@@ -19,7 +19,7 @@ object Misc {
     }
 
     private fun addPropertiesIfNotPresent(
-        config: Properties = Misc.config,
+        config: Properties = MiscSettings.config,
     ) {
         MiscKeys.values().forEach {
             if (propertyIsNotValid(it, config)) {
@@ -28,7 +28,7 @@ object Misc {
         }
     }
 
-    private fun propertyIsNotValid(key: MiscKeys, config: Properties = Misc.config) =
+    private fun propertyIsNotValid(key: MiscKeys, config: Properties = MiscSettings.config) =
         !config.containsKey(key.key) || config[key.key] == null || config.getProperty(key.key).isBlank()
 
     operator fun get(key: String): String? {

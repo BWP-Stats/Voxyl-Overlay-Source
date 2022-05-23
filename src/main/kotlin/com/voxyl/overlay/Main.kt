@@ -12,13 +12,12 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.voxyl.overlay.dataslashbusiness.events.Info
 import com.voxyl.overlay.dataslashbusiness.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.dataslashbusiness.logfilereader.LogFileReader
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.EventsToBeDisplayed
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
 import com.voxyl.overlay.nativelisteners.NativeListeners
-import com.voxyl.overlay.nativelisteners.ValidationChecks
+import com.voxyl.overlay.dataslashbusiness.validation.ValidationChecks
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*

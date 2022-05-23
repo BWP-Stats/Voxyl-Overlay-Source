@@ -59,7 +59,7 @@ compose.desktop {
             packageName = "Voxyl Overlay"
             packageVersion = "0.0.12"
 
-            modules("java.sql", "java.instrument", "jdk.unsupported")
+            modules("java.sql")
 
             windows {
                 menu = true

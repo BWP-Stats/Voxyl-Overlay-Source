@@ -84,7 +84,7 @@ fun AdditionalSettings(
                 Spacer(modifier = Modifier.size(3.dp))
 
                 Tooltip(
-                    "Does literally nothing"
+                    "Presets (coming soon)"
                 ) {
                     Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MainWhite)
                 }

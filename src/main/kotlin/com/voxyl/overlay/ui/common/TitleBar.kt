@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.settings.Settings
-import com.voxyl.overlay.ui.common.util.requestFocusOnClick
+import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.MainSearchBar
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.ScreenShowing
 import com.voxyl.overlay.ui.settings.SettingsSearchBar

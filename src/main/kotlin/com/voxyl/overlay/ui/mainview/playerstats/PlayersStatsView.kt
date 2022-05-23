@@ -27,8 +27,8 @@ import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhateveri
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.Sort
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
-import com.voxyl.overlay.ui.common.elements.scrollbar
-import com.voxyl.overlay.ui.common.util.requestFocusOnClick
+import com.voxyl.overlay.ui.elements.scrollbar
+import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.mainview.playerstats.colors.BwpRankColors
 import com.voxyl.overlay.ui.mainview.playerstats.colors.ErrorString
 import com.voxyl.overlay.ui.mainview.playerstats.colors.LevelColors.coloredLevel

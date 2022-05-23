@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.common.elements
+package com.voxyl.overlay.ui.elements
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.Slider

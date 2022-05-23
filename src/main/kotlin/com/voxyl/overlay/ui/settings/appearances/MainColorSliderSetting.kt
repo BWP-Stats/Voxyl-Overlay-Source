@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys
 import com.voxyl.overlay.settings.config.ConfigKeys.*
-import com.voxyl.overlay.ui.common.elements.MySlider
+import com.voxyl.overlay.ui.elements.MySlider
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 

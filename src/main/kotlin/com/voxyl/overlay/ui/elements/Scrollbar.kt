@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.common.elements
+package com.voxyl.overlay.ui.elements
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween

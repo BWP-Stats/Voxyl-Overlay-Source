@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.AddYourselfToOverlay
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
-import com.voxyl.overlay.ui.common.elements.*
-import com.voxyl.overlay.ui.common.util.requestFocusOnClick
+import com.voxyl.overlay.ui.elements.*
+import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.settings.appearances.*
 import com.voxyl.overlay.ui.settings.basic.BWPApiKeyTextField
 import com.voxyl.overlay.ui.settings.basic.HypixelApiKeyTextField

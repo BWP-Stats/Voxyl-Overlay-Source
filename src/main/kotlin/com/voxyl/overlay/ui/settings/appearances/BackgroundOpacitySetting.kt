@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.BackgroundOpacity
-import com.voxyl.overlay.ui.common.elements.MySlider
+import com.voxyl.overlay.ui.elements.MySlider
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.bgAlphaMultiplier
 

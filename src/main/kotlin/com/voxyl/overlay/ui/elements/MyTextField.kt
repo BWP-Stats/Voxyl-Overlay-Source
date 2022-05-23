@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalComposeUiApi::class, ExperimentalComposeUiApi::class, ExperimentalComposeUiApi::class)
 
-package com.voxyl.overlay.ui.common.elements
+package com.voxyl.overlay.ui.elements
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material.Icon

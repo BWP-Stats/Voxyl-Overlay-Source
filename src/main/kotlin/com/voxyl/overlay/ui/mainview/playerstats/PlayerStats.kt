@@ -18,7 +18,7 @@ import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhateveri
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
-import com.voxyl.overlay.ui.common.util.requestFocusOnClick
+import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.clean
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText

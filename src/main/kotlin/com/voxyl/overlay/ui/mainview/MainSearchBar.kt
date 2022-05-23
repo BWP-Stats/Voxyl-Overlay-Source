@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.business.player.tags.ManuallySearched
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.ui.common.elements.MyTextField
-import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
-import com.voxyl.overlay.ui.common.elements.onEnterOrEsc
+import com.voxyl.overlay.ui.elements.MyTextField
+import com.voxyl.overlay.ui.elements.MyTrailingIcon
+import com.voxyl.overlay.ui.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
 import com.voxyl.overlay.ui.theme.tbsm

@@ -8,8 +8,8 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
-import com.voxyl.overlay.ui.common.elements.MyCheckbox
-import com.voxyl.overlay.ui.common.elements.MySlider
+import com.voxyl.overlay.ui.elements.MyCheckbox
+import com.voxyl.overlay.ui.elements.MySlider
 import com.voxyl.overlay.ui.theme.VText
 import kotlin.math.roundToInt
 

@@ -24,8 +24,8 @@ import com.voxyl.overlay.business.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.ui.common.elements.ShapeThatIdkTheNameOf
-import com.voxyl.overlay.ui.common.util.requestFocusOnClick
+import com.voxyl.overlay.ui.elements.ShapeThatIdkTheNameOf
+import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.theme.*
 import kotlinx.coroutines.launch
 import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable

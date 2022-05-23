@@ -17,7 +17,7 @@ import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
 import com.voxyl.overlay.settings.config.LogFiles
-import com.voxyl.overlay.ui.common.elements.MyTrailingIcon
+import com.voxyl.overlay.ui.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.settings.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.am

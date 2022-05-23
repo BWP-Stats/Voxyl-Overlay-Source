@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.common.util
+package com.voxyl.overlay.ui.elements.util
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitFirstDown

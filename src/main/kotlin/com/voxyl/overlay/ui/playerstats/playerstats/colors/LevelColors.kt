@@ -7,14 +7,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import com.google.gson.Gson
 import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import com.google.gson.stream.JsonReader
-import com.voxyl.overlay.ui.theme.ErrorColor
 import com.voxyl.overlay.ui.theme.am
 import io.github.aakira.napier.Napier
-import java.io.StringReader
-import kotlin.math.roundToInt
 
 object LevelColors {
 

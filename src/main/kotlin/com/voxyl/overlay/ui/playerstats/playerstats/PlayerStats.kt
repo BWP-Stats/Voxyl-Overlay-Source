@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.mainview.playerstats
+package com.voxyl.overlay.ui.playerstats.playerstats
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

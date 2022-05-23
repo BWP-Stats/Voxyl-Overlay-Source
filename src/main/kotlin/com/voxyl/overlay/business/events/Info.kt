@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.am
 
-class Info(text: String, duration: Long = 5000L) : Event(text, duration) {
+class Info(text: String, duration: Long = 5000L) : PopUp(text, duration) {
     override val color = Color(87, 87, 87, 200).am
     override val icon: @Composable (Modifier) -> Unit = @Composable {
         Icon(

@@ -14,7 +14,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.voxyl.overlay.business.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.business.logfilereader.LogFileReader
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.EventsToBeDisplayed
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
 import com.voxyl.overlay.nativelisteners.NativeListeners
 import com.voxyl.overlay.business.validation.ValidationChecks
@@ -60,7 +60,7 @@ fun main() = application {
         LaunchedEffect(Unit) {
             LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
             HomemadeCache.startAutoClear()
-            EventsToBeDisplayed.start()
+            PopupQueue.start()
             LogFileReader.start()
             Napier.initialize()
             NativeListeners.initialize()

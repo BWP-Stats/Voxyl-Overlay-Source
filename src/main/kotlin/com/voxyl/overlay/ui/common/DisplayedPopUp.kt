@@ -20,35 +20,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.business.events.Event
+import com.voxyl.overlay.business.events.PopUp
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 
-object DisplayedEventState {
-    var show by mutableStateOf(false)
-    var event by mutableStateOf<Event>(Event.empty())
-
-    @JvmName("setEventSafe")
-    fun setEvent(event: Event?) {
-        show = event != null
-        if (event != null) {
-            this.event = event
-        }
-    }
-
-    fun cancel() {
-        setEvent(null)
-        event.cancel()
-    }
-}
-
 @Composable
-fun BoxScope.EventBar() {
+fun BoxScope.PopUpBar() {
     val offset by animateFloatAsState(
-        if (DisplayedEventState.show) -10f else 100f
+        if (DisplayedPopUpState.show) -10f else 100f
     )
 
-    val event = DisplayedEventState.event
+    val event = DisplayedPopUpState.popUp
 
     Row(
         modifier = Modifier.size(400.dp, 50.dp)
@@ -71,7 +53,7 @@ fun BoxScope.EventBar() {
 
         Button(
             onClick = {
-                DisplayedEventState.cancel()
+                DisplayedPopUpState.cancel()
             },
             modifier = Modifier.size(30.dp, 30.dp),
             shape = CircleShape,
@@ -82,7 +64,7 @@ fun BoxScope.EventBar() {
         ) {
             Icon(
                 imageVector = Icons.Filled.Close,
-                contentDescription = "Close Event",
+                contentDescription = "Close Pop-up",
                 tint = MainWhite,
                 modifier = Modifier.requiredSize(30.dp)
             )

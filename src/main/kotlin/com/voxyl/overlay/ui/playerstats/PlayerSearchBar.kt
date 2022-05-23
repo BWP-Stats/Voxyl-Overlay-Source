@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalComposeUiApi::class)
 
-package com.voxyl.overlay.ui.mainview
+package com.voxyl.overlay.ui.playerstats
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -24,7 +24,7 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainSearchBar(
+fun PlayerSearchBar(
     modifier: Modifier = Modifier
 ) {
     var queriedName by remember { mutableStateOf(TextFieldValue()) }

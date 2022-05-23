@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.mainview.playerstats.colors
+package com.voxyl.overlay.ui.playerstats.playerstats.colors
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString

@@ -3,7 +3,7 @@ package com.voxyl.overlay.business.validation
 import com.voxyl.overlay.business.events.Tip
 import com.voxyl.overlay.business.events.Error
 import com.voxyl.overlay.business.events.Warning
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.EventsToBeDisplayed
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
 import com.voxyl.overlay.settings.misc.MiscSettings
@@ -16,13 +16,13 @@ object ValidationChecks {
         var launch = true
 
         if (Config[BwpApiKey] == "" && Config[HypixelApiKey] == "" && Config[LogFilePath] == "" && Config[PlayerName] == "") {
-            EventsToBeDisplayed.add(Tip("Click on the top-left button to set up the overlay!", 10000))
+            PopupQueue.add(Tip("Click on the top-left button to set up the overlay!", 10000))
             launch = false
         }
 
         if (MiscSettings[FirstTime] != "false") {
-            EventsToBeDisplayed.add(Tip("You can hover over most of the buttons/icons/tags to see what they do/mean!", 10000))
-            EventsToBeDisplayed.add(Tip("You can also right click on added players for more options!", 10000))
+            PopupQueue.add(Tip("You can hover over most of the buttons/icons/tags to see what they do/mean!", 10000))
+            PopupQueue.add(Tip("You can also right click on added players for more options!", 10000))
             MiscSettings[FirstTime] = "false"
         }
 
@@ -38,24 +38,24 @@ object ValidationChecks {
         val hypixel = HypixelApiKeyValidator.validateApiKey()
 
         if (bwp == false && hypixel == false) {
-            EventsToBeDisplayed.add(Error("Your API keys are invalid! Please check them and try again!"))
+            PopupQueue.add(Error("Your API keys are invalid! Please check them and try again!"))
             return
         }
 
         if (bwp == null) {
-            EventsToBeDisplayed.add(Warning("The BWP api may be down, or your key may be invalid"))
+            PopupQueue.add(Warning("The BWP api may be down, or your key may be invalid"))
         }
 
         if (bwp == false) {
-            EventsToBeDisplayed.add(Error("Please fill in your BWP api key!"))
+            PopupQueue.add(Error("Please fill in your BWP api key!"))
         }
 
         if (hypixel == null) {
-            EventsToBeDisplayed.add(Warning("The Hypixel api may be down, or your key may be invalid"))
+            PopupQueue.add(Warning("The Hypixel api may be down, or your key may be invalid"))
         }
 
         if (hypixel == false) {
-            EventsToBeDisplayed.add(Error("Your Hypixel api key is invalid!"))
+            PopupQueue.add(Error("Your Hypixel api key is invalid!"))
         }
     }
 }

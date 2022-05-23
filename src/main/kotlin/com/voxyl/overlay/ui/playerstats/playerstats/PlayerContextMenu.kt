@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.mainview.playerstats
+package com.voxyl.overlay.ui.playerstats.playerstats
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

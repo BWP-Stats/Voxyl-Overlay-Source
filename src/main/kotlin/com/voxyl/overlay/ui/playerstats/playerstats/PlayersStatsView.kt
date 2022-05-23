@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.mainview.playerstats
+package com.voxyl.overlay.ui.playerstats.playerstats
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -29,10 +29,10 @@ import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.elements.scrollbar
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.mainview.playerstats.colors.BwpRankColors
-import com.voxyl.overlay.ui.mainview.playerstats.colors.ErrorString
-import com.voxyl.overlay.ui.mainview.playerstats.colors.LevelColors.coloredLevel
-import com.voxyl.overlay.ui.mainview.playerstats.colors.HypixelRankColors
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.BwpRankColors
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.ErrorString
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.LevelColors.coloredLevel
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.HypixelRankColors
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am

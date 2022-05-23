@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
-sealed class Event(val text: String, var duration: Long = 5000L, var cancelled: Boolean = false) {
+sealed class PopUp(val text: String, var duration: Long = 5000L, var cancelled: Boolean = false) {
     abstract val color: Color
     abstract val icon: @Composable (Modifier) -> Unit
 

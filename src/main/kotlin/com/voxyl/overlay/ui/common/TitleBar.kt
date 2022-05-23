@@ -22,7 +22,7 @@ import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.mainview.MainSearchBar
+import com.voxyl.overlay.ui.playerstats.PlayerSearchBar
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.ScreenShowing
 import com.voxyl.overlay.ui.settings.SettingsSearchBar
 import com.voxyl.overlay.ui.theme.*
@@ -43,7 +43,7 @@ fun TitleBar(fws: FrameWindowScope) {
         MainColorSettingsButton()
 
         if (ScreenShowing.screen == "main") {
-            MainSearchBar(Modifier.weight(1f))
+            PlayerSearchBar(Modifier.weight(1f))
         } else {
             SettingsSearchBar(Modifier.weight(1f))
         }

@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.mainview.playerstats.PlayerStats
+import com.voxyl.overlay.ui.playerstats.playerstats.PlayerStats
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.ScreenShowing
 import com.voxyl.overlay.ui.settings.Settings
 import com.voxyl.overlay.ui.theme.bgam
@@ -37,7 +37,7 @@ fun MainScreen(fws: FrameWindowScope) {
             Settings()
         }
 
-        EventBar()
+        PopUpBar()
         AdditionalSettings()
     }
 }

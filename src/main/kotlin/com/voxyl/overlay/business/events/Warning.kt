@@ -8,7 +8,7 @@ import androidx.compose.ui.res.painterResource
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.am
 
-class Warning(text: String, duration: Long = 5000L) : Event(text, duration) {
+class Warning(text: String, duration: Long = 5000L) : PopUp(text, duration) {
     override val color = Color(219, 166, 75, 200).am
     override val icon: @Composable (Modifier) -> Unit = @Composable {
         Icon(

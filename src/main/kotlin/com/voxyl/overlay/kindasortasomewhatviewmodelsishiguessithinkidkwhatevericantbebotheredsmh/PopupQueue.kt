@@ -1,15 +1,36 @@
 package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.voxyl.overlay.business.events.*
-import com.voxyl.overlay.ui.common.DisplayedEventState
 import kotlinx.coroutines.*
 
-object EventsToBeDisplayed {
-    private val _events = mutableStateListOf<Event>()
+object PopupQueue {
+    object Current {
+        var show by mutableStateOf(false)
+        var popUp by mutableStateOf<PopUp>(PopUp.empty())
 
-    val events: List<Event>
-        get() = _events
+        @JvmName("setEventSafe")
+        fun setPopUp(popUp: PopUp?) {
+            show = popUp != null
+            if (popUp != null) {
+                this.popUp = popUp
+            }
+        }
+
+        fun cancel() {
+            setPopUp(null)
+            popUp.cancel()
+        }
+    }
+
+
+    private val _popups = mutableStateListOf<PopUp>()
+
+    val popups: List<PopUp>
+        get() = _popups
 
     private var current: Job? = null
 
@@ -25,17 +46,17 @@ object EventsToBeDisplayed {
                     delay(100)
                 }
 
-                if (_events.isEmpty()) {
+                if (_popups.isEmpty()) {
                     delay(200)
                     continue
                 }
 
-                val event = _events[0]
+                val event = _popups[0]
 
-                DisplayedEventState.setEvent(event)
+                Current.setPopUp(event)
                 current = cs.launch {
                     delay(event.duration)
-                    DisplayedEventState.cancel()
+                    Current.cancel()
                 }
 
                 while (!event.cancelled) {
@@ -52,22 +73,22 @@ object EventsToBeDisplayed {
 
     }
 
-    fun add(event: Event) {
-        _events.add(event)
+    fun add(popUp: PopUp) {
+        _popups.add(popUp)
     }
 
 
     fun filter(tag: String) {
-        if (events.firstOrNull()?.tags?.contains(tag) == true) {
+        if (popups.firstOrNull()?.tags?.contains(tag) == true) {
             endCurrent()
         }
-        _events.filter { tag in it.tags }
+        _popups.filter { tag in it.tags }
     }
 
     fun endCurrent() {
         current?.cancel()
-        DisplayedEventState.cancel()
-        _events -= _events[0]
+        Current.cancel()
+        _popups -= _popups[0]
     }
 
     private suspend fun pauseListener() {
@@ -80,10 +101,10 @@ object EventsToBeDisplayed {
     private fun pause(pause: Boolean) {
         if (pause && !paused) {
             current?.cancel()
-            DisplayedEventState.cancel()
+            Current.cancel()
             paused = true
         } else if (!pause && paused) {
-            events.getOrNull(0)?.cancelled = false
+            popups.getOrNull(0)?.cancelled = false
             paused = false
         }
     }

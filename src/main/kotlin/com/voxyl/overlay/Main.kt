@@ -12,7 +12,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.voxyl.overlay.business.homemadesimplecache.HomemadeCache
+import com.voxyl.overlay.business.homemadecache.HomemadeCache
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel

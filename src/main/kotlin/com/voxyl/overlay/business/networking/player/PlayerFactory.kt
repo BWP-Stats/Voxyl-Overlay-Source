@@ -4,8 +4,8 @@ import com.voxyl.overlay.business.networking.apis.ApiProvider
 import com.voxyl.overlay.business.networking.apis.BWPApi
 import com.voxyl.overlay.business.networking.apis.HypixelApi
 import com.voxyl.overlay.business.networking.apis.MojangApi
-import com.voxyl.overlay.business.networking.valueclasses.*
-import com.voxyl.overlay.business.homemadesimplecache.HomemadeCache
+import com.voxyl.overlay.business.networking.models.*
+import com.voxyl.overlay.business.homemadecache.HomemadeCache
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
 import io.github.aakira.napier.Napier

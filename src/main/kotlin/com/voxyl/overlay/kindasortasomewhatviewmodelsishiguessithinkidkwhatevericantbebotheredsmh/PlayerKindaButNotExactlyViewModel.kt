@@ -2,7 +2,7 @@ package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatever
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.*
-import com.voxyl.overlay.business.homemadesimplecache.HomemadeCache
+import com.voxyl.overlay.business.homemadecache.HomemadeCache
 import com.voxyl.overlay.business.networking.player.*
 import com.voxyl.overlay.business.networking.player.tags.*
 import com.voxyl.overlay.settings.config.Config

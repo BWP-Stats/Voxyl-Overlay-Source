@@ -1,7 +1,7 @@
 package com.voxyl.overlay.business.networking.player
 
 import com.google.gson.JsonObject
-import com.voxyl.overlay.business.networking.valueclasses.*
+import com.voxyl.overlay.business.networking.models.*
 import io.github.aakira.napier.Napier
 import kotlin.math.ceil
 import kotlin.math.min

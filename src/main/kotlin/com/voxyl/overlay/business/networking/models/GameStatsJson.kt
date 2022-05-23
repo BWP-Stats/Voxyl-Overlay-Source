@@ -1,4 +1,4 @@
-package com.voxyl.overlay.business.networking.valueclasses
+package com.voxyl.overlay.business.networking.models
 
 import com.google.gson.JsonObject
 

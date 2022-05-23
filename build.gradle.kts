@@ -55,7 +55,7 @@ compose.desktop {
         mainClass = "$group.overlay.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Msi, TargetFormat.Exe)
+            targetFormats(TargetFormat.Exe, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Voxyl Overlay"
             packageVersion = "0.0.12"
 

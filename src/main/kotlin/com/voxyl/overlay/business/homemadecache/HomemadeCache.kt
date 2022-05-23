@@ -1,4 +1,4 @@
-package com.voxyl.overlay.business.homemadesimplecache
+package com.voxyl.overlay.business.homemadecache
 
 import com.voxyl.overlay.business.networking.player.PlayerState
 import kotlinx.coroutines.*

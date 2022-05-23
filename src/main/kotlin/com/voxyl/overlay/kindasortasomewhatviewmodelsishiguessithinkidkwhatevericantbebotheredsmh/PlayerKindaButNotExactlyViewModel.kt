@@ -34,8 +34,8 @@ object PlayerKindaButNotExactlyViewModel {
                             player = it.data,
                             tags = mutableStateListOf(*tags2)
                         ).also { ps ->
-                            HomemadeCache.add(ps)
                             try {
+                                HomemadeCache.add(ps)
                                 ps.tags += generatePostTags(ps)
                             } catch (e: Exception) {
                                 Napier.wtf(e) { "Failed to generate post tags" }
@@ -87,10 +87,12 @@ object PlayerKindaButNotExactlyViewModel {
         if (lvlLbPos != null) tags += LevelLB(lvlLbPos["position"].asString ?: "")
         if (wwLbPos != null) tags += LevelLB(wwLbPos["position"].asString ?: "")
 
-        if (tags.size == 2) tags = mutableListOf(LevelAndWWLB(
+        if (tags.size == 2) tags = mutableListOf(
+            LevelAndWWLB(
                 lvlLbPos?.get("position")?.asString ?: "",
                 wwLbPos?.get("position")?.asString ?: ""
-        ))
+            )
+        )
         return tags
     }
 

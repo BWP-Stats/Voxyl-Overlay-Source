@@ -68,7 +68,7 @@ fun ColumnsList() {
                         .align(Alignment.CenterHorizontally)
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(modifier = Modifier.size(8.dp))
 
                 DropdownMenuItem({}, enabled = false) {
                     LazyColumn(
@@ -96,7 +96,7 @@ private fun LazyListScope.stat(item: StatsToShow.Stat) {
                     StatsToShow.add(item.raw)
                 }
         ) {
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.size(2.dp))
             VText(
                 item.clean + (if (item.raw in statsWithAdditionalSettings) "*" else ""),
                 fontSize = TextUnit.Unspecified

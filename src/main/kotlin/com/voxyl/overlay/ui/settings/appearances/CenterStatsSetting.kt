@@ -35,7 +35,7 @@ fun CenterStatsCheckBox(modifier: Modifier = Modifier) {
             modifier = Modifier.size(12.dp)
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.size(16.dp))
 
         VText("Center the stats in the columns")
     }

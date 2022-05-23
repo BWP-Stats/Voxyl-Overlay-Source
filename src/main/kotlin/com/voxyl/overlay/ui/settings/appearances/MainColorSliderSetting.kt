@@ -46,11 +46,11 @@ fun MainColorSlider(
             .padding(horizontal = 19.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.size(8.dp))
 
         ColorText(key, color)
 
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.size(10.dp))
 
         MySlider(
             value = color.value,
@@ -67,5 +67,5 @@ fun MainColorSlider(
 @Composable
 private fun ColorText(key: ConfigKeys, color: MutableState<Float>) {
     VText("${key.name}: (${"${color.value.toInt()}".padStart(3, '0')}x)", color = MainWhite, fontSize = 12.sp)
-    Spacer(modifier = Modifier.width(17.dp))
+    Spacer(modifier = Modifier.size(17.dp))
 }

@@ -8,9 +8,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.nativelisteners.ClearPlayersKeyListener
-import com.voxyl.overlay.nativelisteners.KeyListenerForSettings
-import com.voxyl.overlay.nativelisteners.NativeUtil.toCleanKeyCodeString
+import com.voxyl.overlay.business.nativelisteners.ClearPlayersKeyListener
+import com.voxyl.overlay.business.nativelisteners.KeyListenerForSettings
+import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeString
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.ClearPlayersKeybind
 import com.voxyl.overlay.ui.theme.VText
@@ -28,9 +28,9 @@ fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
             .padding(horizontal = 19.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.size(8.dp))
 
-        ClearPlayersKeyText()
+        RefreshPlayersKeyText()
 
         VText(
             text = ClearPlayersKeyListener.paramString.toCleanKeyCodeString(),
@@ -52,8 +52,8 @@ fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ClearPlayersKeyText() {
+private fun RefreshPlayersKeyText() {
     Box(Modifier.width(240.dp)) {
-        VText("Keybind to clear all players in overlay ")
+        VText("Keybind to clear all players in overlay")
     }
 }

@@ -39,7 +39,7 @@ fun PinYourselfToTopCheckbox(addYourself: MutableState<Boolean>, modifier: Modif
             enabled = addYourself.value
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.size(16.dp))
 
         getPinYourselfText(addYourself)
     }

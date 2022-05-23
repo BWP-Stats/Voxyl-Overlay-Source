@@ -1,6 +1,6 @@
 package com.voxyl.overlay.business.validation
 
-import com.voxyl.overlay.business.apis.ApiProvider
+import com.voxyl.overlay.business.networking.apis.ApiProvider
 import com.voxyl.overlay.settings.config.Config
 import retrofit2.HttpException
 

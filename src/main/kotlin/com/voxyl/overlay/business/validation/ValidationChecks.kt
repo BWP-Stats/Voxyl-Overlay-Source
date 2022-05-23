@@ -1,8 +1,8 @@
 package com.voxyl.overlay.business.validation
 
-import com.voxyl.overlay.business.events.Tip
-import com.voxyl.overlay.business.events.Error
-import com.voxyl.overlay.business.events.Warning
+import com.voxyl.overlay.business.validation.popups.Tip
+import com.voxyl.overlay.business.validation.popups.Error
+import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*

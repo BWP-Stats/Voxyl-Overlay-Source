@@ -16,7 +16,7 @@ import com.voxyl.overlay.business.homemadesimplecache.HomemadeCache
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
-import com.voxyl.overlay.nativelisteners.NativeListeners
+import com.voxyl.overlay.business.nativelisteners.NativeListeners
 import com.voxyl.overlay.business.validation.ValidationChecks
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.settings.window.SavedWindowState

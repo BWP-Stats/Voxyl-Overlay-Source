@@ -36,7 +36,7 @@ fun AutoShowAndHideCheckBox(autoHide: MutableState<Boolean>, modifier: Modifier 
             modifier = Modifier.size(12.dp)
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.size(16.dp))
 
         VText("Auto show and hide")
     }
@@ -56,11 +56,11 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
             mutableStateOf(Config[AutoShowAndHideDelay].toFloatOrNull() ?: 5f)
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.size(8.dp))
 
         AutoShowAndHideDelayText(delay)
 
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.size(10.dp))
 
         MySlider(
             value = delay,
@@ -81,8 +81,8 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
 @Composable
 private fun AutoShowAndHideDelayText(delay: Float) = if (delay.toInt() < 10) {
     VText("Auto show and hide delay (${delay.toInt()} sec)")
-    Spacer(modifier = Modifier.width(17.dp))
+    Spacer(modifier = Modifier.size(17.dp))
 } else {
     VText("Auto show and hide delay (${delay.toInt()} sec)")
-    Spacer(modifier = Modifier.width(10.dp))
+    Spacer(modifier = Modifier.size(10.dp))
 }

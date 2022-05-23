@@ -1,6 +1,6 @@
 package com.voxyl.overlay.business.logfilereader
 
-import com.voxyl.overlay.business.events.Error
+import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath

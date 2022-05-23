@@ -29,6 +29,7 @@ import com.voxyl.overlay.ui.settings.basic.PlayerNameTextField
 import com.voxyl.overlay.ui.settings.columns.ColumnsSettings
 import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.OpenCloseKeySetting
+import com.voxyl.overlay.ui.settings.keybinds.RefreshPlayersKeySetting
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
 import com.voxyl.overlay.ui.settings.qol.PinYourselfToTopCheckbox
 import io.github.aakira.napier.Napier
@@ -56,37 +57,48 @@ fun SettingsList(
         mutableStateOf(Config[AutoShowAndHide] != "false")
     }
 
-    val settings = mutableListOf(
-        @Composable { Header("Basic") } to "BasicBWPApiKeyTextFieldHypixelApiKeyTextFieldPlayerNameTextFieldUsernameLogFilePathTextField",
-        @Composable { BWPApiKeyTextField() } to "BasicBWPApiKeyTextField",
-        @Composable { HypixelApiKeyTextField() } to "BasicHypixelApiKeyTextField",
-        @Composable { PlayerNameTextField() } to "BasicPlayerNameTextField Username",
-        @Composable { LogFilePathTextField() } to "BasicLogFilePathTextField",
-        @Composable { Spacer(Modifier.height(10.dp)) } to "NeverGonnaGiveYouUpNeverGonnaLetYouDown",
+    val rawSettings by remember {
+        mutableStateOf(
+            listOf(
+                @Composable { Header("Basic") } to "BasicBWPApiKeyTextFieldHypixelApiKeyTextFieldPlayerNameTextFieldUsernameLogFilePathTextField",
+                @Composable { BWPApiKeyTextField() } to "BasicBWPApiKeyTextField",
+                @Composable { HypixelApiKeyTextField() } to "BasicHypixelApiKeyTextField",
+                @Composable { PlayerNameTextField() } to "BasicPlayerNameTextField Username",
+                @Composable { LogFilePathTextField() } to "BasicLogFilePathTextField",
+                @Composable { Spacer(modifier = Modifier.size(10.dp)) } to "NeverGonnaGiveYouUpNeverGonnaLetYouDown",
 
-        @Composable { Header("QOL") } to "QOLPinYourselfToTopCheckboxAddYourselfToOverlayCheckboxAutoShowAndHideCheckBoxAutoShowAndHideDelaySliderAutoHide",
-        @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOLPinYourselfToTopCheckbox",
-        @Composable { AddYourselfToOverlayCheckbox(addYourself) } to "QOLAddYourselfToOverlayCheckbox",
-        @Composable { AutoShowAndHideCheckBox(autoHide) } to "QOLAutoShowAndHideCheckBoxAutoHide",
-        @Composable { AutoShowAndHideDelaySlider(autoHide) } to "QOLAutoShowAndHideDelaySliderAutoHide",
+                @Composable { Header("QOL") } to "QOLPinYourselfToTopCheckboxAddYourselfToOverlayCheckboxAutoShowAndHideCheckBoxAutoShowAndHideDelaySliderAutoHide",
+                @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOLPinYourselfToTopCheckbox",
+                @Composable { AddYourselfToOverlayCheckbox(addYourself) } to "QOLAddYourselfToOverlayCheckbox",
+                @Composable { AutoShowAndHideCheckBox(autoHide) } to "QOLAutoShowAndHideCheckBoxAutoHide",
+                @Composable { AutoShowAndHideDelaySlider(autoHide) } to "QOLAutoShowAndHideDelaySliderAutoHide",
 
-        @Composable { Header("Appearance") } to "AppearanceOpacitySliderTitleBarSizeSliderCenterStatsCheckBoxRSliderGSliderBSliderRedGreenBlue",
-        @Composable { BackgroundOpacitySlider() } to "AppearanceBackgroundOpacitySlider",
-        @Composable { OpacitySlider() } to "AppearanceOpacitySlider",
-        @Composable { TitleBarSizeSlider() } to "AppearanceTitleBarSizeSlider",
-        @Composable { CenterStatsCheckBox() } to "AppearanceCenterStatsCheckBox",
-        @Composable { RSlider() } to "AppearanceRSliderRed",
-        @Composable { GSlider() } to "AppearanceGSliderGreen",
-        @Composable { BSlider() } to "AppearanceBSliderBlue",
+                @Composable { Header("Appearance") } to "AppearanceOpacitySliderTitleBarSizeSliderCenterStatsCheckBoxRSliderGSliderBSliderRedGreenBlue",
+                @Composable { BackgroundOpacitySlider() } to "AppearanceBackgroundOpacitySlider",
+                @Composable { OpacitySlider() } to "AppearanceOpacitySlider",
+                @Composable { TitleBarSizeSlider() } to "AppearanceTitleBarSizeSlider",
+                @Composable { CenterStatsCheckBox() } to "AppearanceCenterStatsCheckBox",
+                @Composable { RSlider() } to "AppearanceRSliderRed",
+                @Composable { GSlider() } to "AppearanceGSliderGreen",
+                @Composable { BSlider() } to "AppearanceBSliderBlue",
 
-        @Composable { Header("Keybinds") } to "KeybindsOpenCloseKeySettingClearPlayersKeySettingHotkeys",
-        @Composable { OpenCloseKeySetting() } to "KeybindsOpenCloseKeySettingHotkeys",
-        @Composable { ClearPlayersKeySetting() } to "KeybindsClearPlayersKeySettingHotkeys",
+                @Composable { Header("Keybinds") } to "KeybindsOpenCloseKeySettingClearPlayersKeySettingHotkeysRefreshKeybinds",
+                @Composable { OpenCloseKeySetting() } to "KeybindsOpenCloseKeySettingHotkeys",
+                @Composable { ClearPlayersKeySetting() } to "KeybindsClearPlayersKeySettingHotkeys",
+                @Composable { RefreshPlayersKeySetting() } to "KeybindsRefreshPlayersKeySettingHotkeys",
 
-        @Composable { Header("Columns") } to "ColumnsStatsShowRows",
-        @Composable { ColumnsSettings() } to "ColumnsStatsShowRows"
-    ).filter {
-        it.second.contains(queriedSetting.text.replace(" ", ""), true)
+                @Composable { Header("Columns") } to "ColumnsStatsShowRows",
+                @Composable { ColumnsSettings() } to "ColumnsStatsShowRows"
+            )
+        )
+    }
+
+    val filteredSettings = if (queriedSetting.text.isEmpty()) {
+        rawSettings
+    } else {
+        rawSettings.filter {
+            it.second.contains(queriedSetting.text.replace(" ", ""), true)
+        }
     }
 
     LazyColumn(
@@ -99,7 +111,7 @@ fun SettingsList(
         contentPadding = PaddingValues(bottom = 40.dp)
     ) {
         try {
-            items(settings) {
+            items(filteredSettings) {
                 it.first()
             }
         } catch (e: Exception) {
@@ -118,55 +130,4 @@ private fun Header(text: String) {
         VText(text, modifier = Modifier.padding(5.dp))
         Divider(modifier = Modifier.weight(1f).absolutePadding(right = 20.dp), color = MainWhite)
     }
-}
-
-@Composable
-fun SettingsTextField(
-    text: String,
-    value: TextFieldValue,
-    modifier: Modifier = Modifier,
-    placeholder: String = "",
-    onValueChange: (TextFieldValue) -> Unit,
-    doOnEnter: () -> Unit,
-    isValid: (TextFieldValue) -> Boolean = { true },
-    trailingIcon: @Composable (() -> Unit)? = null,
-) {
-    val focusManager = LocalFocusManager.current
-
-    MyTextField(
-        value = value,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .height(50.dp)
-            .onEnterOrEsc(
-                focusManager,
-                doOnEnter,
-                value,
-                isValid
-            ),
-        label = {
-            VText(
-                text = text,
-                modifier = Modifier.absoluteOffset(y = 6.dp),
-                fontSize = 10.sp
-            )
-        },
-        placeholder = {
-            VText(placeholder, alpha = .313f)
-        },
-        onValueChange = {
-            onValueChange(it)
-        },
-        trailingIcon = trailingIcon ?: {
-            MyTrailingIcon(
-                modifier = Modifier
-                    .offset(x = 10.dp, y = 5.dp)
-                    .size(12.dp, 12.dp)
-            ) {
-                if (isValid(value)) doOnEnter()
-            }
-        },
-        isError = !isValid(value)
-    )
 }

@@ -9,10 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.nativelisteners.ClearPlayersKeyListener
-import com.voxyl.overlay.nativelisteners.KeyListenerForSettings
-import com.voxyl.overlay.nativelisteners.NativeUtil.toCleanKeyCodeString
-import com.voxyl.overlay.nativelisteners.OpenCloseKeyListener
+import com.voxyl.overlay.business.nativelisteners.KeyListenerForSettings
+import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeString
+import com.voxyl.overlay.business.nativelisteners.OpenCloseKeyListener
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.OpenAndCloseKeybind
 import com.voxyl.overlay.ui.theme.VText
@@ -30,7 +29,7 @@ fun OpenCloseKeySetting(modifier: Modifier = Modifier) {
             .padding(horizontal = 19.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.size(8.dp))
 
         OpenCloseKeyText()
 

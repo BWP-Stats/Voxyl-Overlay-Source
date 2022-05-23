@@ -131,7 +131,7 @@ fun ColumnsSettings() {
                 )
                 ColumnsList()
             }
-            Spacer(Modifier.width(20.dp))
+            Spacer(modifier = Modifier.size(20.dp))
         }
     }
 

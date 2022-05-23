@@ -22,9 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.business.player.PlayerState
+import com.voxyl.overlay.business.networking.player.PlayerState
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.Sort
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsSort
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.elements.scrollbar
@@ -54,7 +54,7 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyL
     ) {
         try {
             val rawPlayers = PlayerKindaButNotExactlyViewModel.players.toList()
-            var players = Sort.sortPlayersList(rawPlayers)
+            var players = StatsSort.sortPlayersList(rawPlayers)
 
             if (Config[PinYourselfToTop] != "false") {
                 players = players.filter { it.name != Config[PlayerName] }.toMutableList()

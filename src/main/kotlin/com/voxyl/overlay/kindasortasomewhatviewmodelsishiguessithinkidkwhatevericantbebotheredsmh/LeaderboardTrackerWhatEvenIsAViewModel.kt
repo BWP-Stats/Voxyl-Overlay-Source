@@ -1,9 +1,9 @@
 package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
 
 import com.google.gson.JsonObject
-import com.voxyl.overlay.business.apis.ApiProvider
-import com.voxyl.overlay.business.valueclasses.LevelsLeaderboardJson
-import com.voxyl.overlay.business.valueclasses.WWinsLeaderboardJson
+import com.voxyl.overlay.business.networking.apis.ApiProvider
+import com.voxyl.overlay.business.networking.valueclasses.LevelsLeaderboardJson
+import com.voxyl.overlay.business.networking.valueclasses.WWinsLeaderboardJson
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.BwpApiKey
 import io.github.aakira.napier.Napier

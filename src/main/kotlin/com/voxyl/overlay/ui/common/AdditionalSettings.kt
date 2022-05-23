@@ -77,11 +77,11 @@ fun AdditionalSettings(
             ) {
                 AlwaysOnTopButton()
 
-                Spacer(Modifier.height(3.dp))
+                Spacer(modifier = Modifier.size(3.dp))
 
                 ClearPlayersButton()
 
-                Spacer(Modifier.height(3.dp))
+                Spacer(modifier = Modifier.size(3.dp))
 
                 Tooltip(
                     "Does literally nothing"
@@ -89,11 +89,11 @@ fun AdditionalSettings(
                     Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MainWhite)
                 }
 
-                Spacer(Modifier.height(3.dp))
+                Spacer(modifier = Modifier.size(3.dp))
 
                 RefreshAllButton()
 
-                Spacer(Modifier.height(3.dp))
+                Spacer(modifier = Modifier.size(3.dp))
 
                 Tooltip(
                     "Join the Discord for help: gg/fBnfWXSDpu"

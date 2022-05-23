@@ -19,7 +19,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.business.player.PlayerState
+import com.voxyl.overlay.business.networking.player.PlayerState
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText

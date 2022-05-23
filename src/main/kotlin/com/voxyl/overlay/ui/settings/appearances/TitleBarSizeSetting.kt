@@ -26,11 +26,11 @@ fun TitleBarSizeSlider(modifier: Modifier = Modifier) {
             .padding(horizontal = 19.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.size(8.dp))
 
         TitleBarSizeMultiText(titleBarSizeMulti)
 
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.size(10.dp))
 
         MySlider(
             value = titleBarSizeMulti.value,
@@ -51,5 +51,5 @@ fun TitleBarSizeSlider(modifier: Modifier = Modifier) {
 @Composable
 private fun TitleBarSizeMultiText(opacity: Animatable<Float, AnimationVector1D>) {
     VText("Title bar size multi (${String.format("%.2f", opacity.value)}x)")
-    Spacer(modifier = Modifier.width(17.dp))
+    Spacer(modifier = Modifier.size(17.dp))
 }

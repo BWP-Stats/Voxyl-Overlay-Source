@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.Sort
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsSort
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
@@ -49,7 +49,7 @@ fun PlayerStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
                 modifier = Modifier.weight(cellWeight(stat))
                     .clickable {
                         if (stat != "tags") {
-                            Sort.by = stat
+                            StatsSort.by = stat
                         }
                     },
                 horizontalArrangement = if (Config[CenterStats] != "false") Arrangement.Center else Arrangement.Start
@@ -59,14 +59,14 @@ fun PlayerStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
                     fontSize = 15.5.sp,
                     fontWeight = FontWeight.Medium,
                 )
-                if (Sort.by == stat) {
+                if (StatsSort.by == stat) {
                     Icon(
                         Icons.Filled.ArrowDropDown,
                         contentDescription = null,
                         tint = MainWhite,
                         modifier = Modifier
-                            .rotate(if (Sort.ascending) 180f else 0f)
-                            .offset(y = if (Sort.ascending) 1.2.dp else -1.2.dp)
+                            .rotate(if (StatsSort.ascending) 180f else 0f)
+                            .offset(y = if (StatsSort.ascending) 1.2.dp else -1.2.dp)
                     )
                 }
             }

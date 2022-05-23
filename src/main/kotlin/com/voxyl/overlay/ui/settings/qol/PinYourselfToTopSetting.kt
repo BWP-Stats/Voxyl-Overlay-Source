@@ -21,7 +21,7 @@ fun PinYourselfToTopCheckbox(addYourself: MutableState<Boolean>, modifier: Modif
     ) {
 
         var checked by remember {
-            mutableStateOf(Config[PinYourselfToTop].toBooleanStrictOrNull() ?: false)
+            mutableStateOf(Config[PinYourselfToTop] != "true")
         }
 
         MyCheckbox(

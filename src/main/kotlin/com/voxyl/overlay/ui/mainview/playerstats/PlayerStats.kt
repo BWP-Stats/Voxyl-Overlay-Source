@@ -52,7 +52,7 @@ fun PlayerStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
                             Sort.by = stat
                         }
                     },
-                horizontalArrangement = if (Config[CenterStats].toBooleanStrictOrNull() != false) Arrangement.Center else Arrangement.Start
+                horizontalArrangement = if (Config[CenterStats] != "false") Arrangement.Center else Arrangement.Start
             ) {
                 VText(
                     text = stat.clean(),

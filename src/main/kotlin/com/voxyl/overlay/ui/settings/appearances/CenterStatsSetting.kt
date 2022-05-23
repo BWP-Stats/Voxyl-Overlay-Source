@@ -12,7 +12,7 @@ import com.voxyl.overlay.ui.theme.VText
 
 @Composable
 fun CenterStatsCheckBox(modifier: Modifier = Modifier) {
-    var centerStatsHeader by remember { mutableStateOf(Config[CenterStats].toBooleanStrictOrNull() ?: true) }
+    var centerStatsHeader by remember { mutableStateOf(Config[CenterStats] != "false") }
 
     Row(
         modifier = modifier

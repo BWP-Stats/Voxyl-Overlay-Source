@@ -56,7 +56,7 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyL
             val rawPlayers = PlayerKindaButNotExactlyViewModel.players.toList()
             var players = Sort.sortPlayersList(rawPlayers)
 
-            if (Config[PinYourselfToTop].toBooleanStrictOrNull() != false) {
+            if (Config[PinYourselfToTop] != "false") {
                 players = players.filter { it.name != Config[PlayerName] }.toMutableList()
                 players.add(0, rawPlayers.first { it.name == Config[PlayerName] })
             }
@@ -166,7 +166,7 @@ fun RowScope.StatCell(
         VText(
             text = text,
             fontSize = 17.sp,
-            textAlign = if (Config[CenterStats].toBooleanStrictOrNull() != false) TextAlign.Center else null,
+            textAlign = if (Config[CenterStats] != "false") TextAlign.Center else null,
             fontWeight = FontWeight.Medium,
             modifier = modifier
                 .fillMaxSize()

@@ -21,7 +21,7 @@ object Sort {
             }
         }
 
-    private var _ascending = mutableStateOf(Config[SortAsc].toBooleanStrictOrNull() ?: false)
+    private var _ascending = mutableStateOf(Config[SortAsc] == "true")
 
     var ascending
         get() = _ascending.value

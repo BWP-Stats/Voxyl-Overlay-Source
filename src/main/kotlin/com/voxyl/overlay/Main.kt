@@ -46,7 +46,7 @@ fun main() = application {
         transparent = true,
         title = "Voxyl Overlay",
         icon = painterResource("VoxylLogoIcon.ico"),
-        alwaysOnTop = SavedWindowState[IsAlwaysOnTop].toBooleanStrictOrNull() == true,
+        alwaysOnTop = SavedWindowState[IsAlwaysOnTop] == "true",
         state = rememberWindowState(
             size = getPreferredWindowSize(),
             position = getPreferredWindowPosition()

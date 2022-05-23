@@ -25,7 +25,7 @@ fun NameSettings() {
 
 @Composable
 private fun showRankPrefixSetting() {
-    var showRankPrefix by remember { mutableStateOf(Config[ShowRankPrefix].toBooleanStrictOrNull() ?: true) }
+    var showRankPrefix by remember { mutableStateOf(Config[ShowRankPrefix] != "false") }
 
     DropdownMenuItem(onClick = {
         showRankPrefix = !showRankPrefix
@@ -61,11 +61,6 @@ private fun showRankPrefixSetting() {
 @Composable
 private fun whichRankPrefixSetting() {
     var prefix by mutableStateOf(Config[RankPrefix])
-
-    if (prefix != "bwp" && prefix != "hypixel") {
-        prefix = "bwp"
-        Config[RankPrefix] = "bwp"
-    }
 
     DropdownMenuItem(onClick = {
         prefix = if (prefix == "bwp") "hypixel" else "bwp"

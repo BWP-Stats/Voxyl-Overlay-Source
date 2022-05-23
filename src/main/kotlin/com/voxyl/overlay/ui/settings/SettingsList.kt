@@ -51,11 +51,11 @@ fun SettingsList(
     modifier: Modifier = Modifier
 ) {
     val addYourself = remember {
-        mutableStateOf(Config[AddYourselfToOverlay].toBooleanStrictOrNull() ?: true)
+        mutableStateOf(Config[AddYourselfToOverlay] != "false")
     }
 
     val autoHide = remember {
-        mutableStateOf(Config[AutoShowAndHide].toBooleanStrictOrNull() ?: true)
+        mutableStateOf(Config[AutoShowAndHide] != "false")
     }
 
     val settings = mutableListOf(

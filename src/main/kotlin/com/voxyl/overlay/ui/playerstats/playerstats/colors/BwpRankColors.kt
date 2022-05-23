@@ -11,23 +11,23 @@ import com.voxyl.overlay.ui.theme.am
 object BwpRankColors {
 
     val colorsMap = mapOf(
-        "owner" to Color(255, 85, 85),
-        "admin" to Color(255, 85, 85),
-        "manager" to Color(170, 0, 0),
-        "srmod" to Color(255, 255, 85),
-        "dev" to Color(85, 255, 85),
-        "youtube" to Color(255, 85, 85),
-        "head-builde" to Color(170, 0, 170),
-        "builder" to Color(255, 85, 255),
-        "mod" to Color(255, 255, 85),
-        "trainee" to Color(85, 255, 85),
-        "screenshare" to Color(85, 85, 255),
-        "helper" to Color(85, 255, 255),
-        "master" to Color(255, 170, 0),
-        "expert" to Color(85, 85, 255),
-        "adept" to Color(0, 170, 0),
-        "none" to Color(170, 170, 170),
-        "err" to Color(255, 85, 85)
+        "owner" to mcColors["red"]!!,
+        "admin" to mcColors["red"]!!,
+        "manager" to mcColors["dark-red"]!!,
+        "srmod" to mcColors["yellow"]!!,
+        "dev" to mcColors["green"]!!,
+        "youtube" to mcColors["red"]!!,
+        "head-builde" to mcColors["dark-purple"]!!,
+        "builder" to mcColors["light-purple"]!!,
+        "mod" to mcColors["yellow"]!!,
+        "trainee" to mcColors["green"]!!,
+        "screenshare" to mcColors["blue"]!!,
+        "helper" to mcColors["aqua"]!!,
+        "master" to mcColors["gold"]!!,
+        "expert" to mcColors["blue"]!!,
+        "adept" to mcColors["dark-green"]!!,
+        "none" to mcColors["gray"]!!,
+        "err" to mcColors["red"]!!
     )
 
     fun coloredRank(player: PlayerState) = when {

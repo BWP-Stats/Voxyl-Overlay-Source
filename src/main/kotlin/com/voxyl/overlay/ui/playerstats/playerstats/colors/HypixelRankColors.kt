@@ -9,163 +9,144 @@ import com.voxyl.overlay.business.player.PlayerState
 import com.voxyl.overlay.ui.theme.am
 
 object HypixelRankColors {
-
-    val colors = mapOf(
-        "black" to Color(0xFF000000),
-        "dark-blue" to Color(0xFF0000AA),
-        "dark-green" to Color(0xFF00AA00),
-        "dark-aqua" to Color(0xFF00AAAA),
-        "dark-red" to Color(0xFFAA0000),
-        "dark-purple" to Color(0xFFAA00AA),
-        "gold" to Color(0xFFFFAA00),
-        "gray" to Color(0xFFAAAAAA),
-        "dark-gray" to Color(0xFF555555),
-        "blue" to Color(0xFF5555FF),
-        "green" to Color(0xFF55FF55),
-        "aqua" to Color(0xFF55FFFF),
-        "red" to Color(0xFFFF5555),
-        "light-purple" to Color(0xFFFF55FF),
-        "yellow" to Color(0xFFFFFF55),
-        "white" to Color(0xFFFFFFFF)
-    )
-
+    
     val ranks = mapOf(
         "OWNER" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["red"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["red"]!!.am)) {
                     append("[OWNER]")
                 }
             }
-        } to colors["red"]!!),
+        } to mcColors["red"]!!),
 
         "YOUTUBER" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["red"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["red"]!!.am)) {
                     append("[")
                 }
-                withStyle(style = SpanStyle(color = colors["white"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["white"]!!.am)) {
                     append("YOUTUBE")
                 }
-                withStyle(style = SpanStyle(color = colors["red"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["red"]!!.am)) {
                     append("]")
                 }
             }
-        } to colors["red"]!!),
+        } to mcColors["red"]!!),
 
         "GAME_MASTER" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["dark-green"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["dark-green"]!!.am)) {
                     append("[GM]")
                 }
             }
-        } to colors["dark-green"]!!),
+        } to mcColors["dark-green"]!!),
 
         "ADMIN" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["red"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["red"]!!.am)) {
                     append("[ADMIN]")
                 }
             }
-        } to colors["red"]!!),
+        } to mcColors["red"]!!),
 
         "PIG+++" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["light-purple"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["light-purple"]!!.am)) {
                     append("[PIG")
                 }
-                withStyle(style = SpanStyle(color = colors["aqua"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["aqua"]!!.am)) {
                     append("+++")
                 }
-                withStyle(style = SpanStyle(color = colors["light-purple"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["light-purple"]!!.am)) {
                     append("]")
                 }
             }
-        } to colors["light-purple"]!!),
+        } to mcColors["light-purple"]!!),
 
         "GMVP++" to ({ ps: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["gold"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["gold"]!!.am)) {
                     append("[MVP")
                 }
-                withStyle(style = SpanStyle(color = colors[ps["hypixel.rankColor"]]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors[ps["hypixel.rankColor"]]!!.am)) {
                     append("++")
                 }
-                withStyle(style = SpanStyle(color = colors["gold"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["gold"]!!.am)) {
                     append("]")
                 }
             }
-        } to colors["gold"]!!),
+        } to mcColors["gold"]!!),
 
         "BMVP++" to ({ ps: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["aqua"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["aqua"]!!.am)) {
                     append("[MVP")
                 }
-                withStyle(style = SpanStyle(color = colors[ps["hypixel.rankColor"]]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors[ps["hypixel.rankColor"]]!!.am)) {
                     append("++")
                 }
-                withStyle(style = SpanStyle(color = colors["aqua"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["aqua"]!!.am)) {
                     append("]")
                 }
             }
-        } to colors["aqua"]!!),
+        } to mcColors["aqua"]!!),
 
         "MVP+" to ({ ps: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["aqua"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["aqua"]!!.am)) {
                     append("[MVP")
                 }
-                withStyle(style = SpanStyle(color = colors[ps["hypixel.rankColor"]]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors[ps["hypixel.rankColor"]]!!.am)) {
                     append("+")
                 }
-                withStyle(style = SpanStyle(color = colors["aqua"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["aqua"]!!.am)) {
                     append("]")
                 }
             }
-        } to colors["aqua"]!!),
+        } to mcColors["aqua"]!!),
 
         "MVP" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["aqua"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["aqua"]!!.am)) {
                     append("[MVP]")
                 }
             }
-        } to colors["aqua"]!!),
+        } to mcColors["aqua"]!!),
 
         "VIP+" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["green"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["green"]!!.am)) {
                     append("[VIP]")
                 }
-                withStyle(style = SpanStyle(color = colors["yellow"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["yellow"]!!.am)) {
                     append("+")
                 }
             }
-        } to colors["green"]!!),
+        } to mcColors["green"]!!),
 
         "VIP" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["green"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["green"]!!.am)) {
                     append("[VIP]")
                 }
             }
-        } to colors["green"]!!),
+        } to mcColors["green"]!!),
 
         "NONE" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["gray"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["gray"]!!.am)) {
                     append("[NONE]")
                 }
             }
-        } to colors["gray"]!!),
+        } to mcColors["gray"]!!),
 
         "ERR" to ({ _: PlayerState ->
             buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colors["red"]!!.am)) {
+                withStyle(style = SpanStyle(color = mcColors["red"]!!.am)) {
                     append("[ERR]")
                 }
             }
-        } to colors["red"]!!)
+        } to mcColors["red"]!!)
     )
 
 

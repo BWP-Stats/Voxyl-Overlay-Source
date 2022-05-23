@@ -31,7 +31,7 @@ fun MainScreen(fws: FrameWindowScope) {
 
         TitleBar(fws)
 
-        if (ScreenShowing.screen == "main") {
+        if (ScreenShowing.screen == "playerstats") {
             PlayerStats()
         } else {
             Settings()

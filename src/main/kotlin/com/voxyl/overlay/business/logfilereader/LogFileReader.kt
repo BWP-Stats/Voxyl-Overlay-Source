@@ -28,7 +28,9 @@ object LogFileReader {
                 null
             }
         } ?: return@launch Unit.also {
-            if (MiscSettings[FirstTime] != "false") {
+            if (MiscSettings[FirstTime] == "false") {
+                println(MiscSettings[FirstTime])
+
                 PopUpQueue.add(
                     Error(
                         "Error starting log file reader: Log file path may be invalid or inaccessible.",

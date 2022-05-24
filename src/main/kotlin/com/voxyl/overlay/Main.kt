@@ -143,7 +143,7 @@ object DefaultHandler {
     }
 
     @JvmName("getPath1")
-    private fun getPath(path: String = System.getenv("APPDATA") + "/.voverlay/logs/voxyl%g.log"): String {
+    private fun getPath(path: String = "./logs/voxyl%g.log"): String {
         val configFile = File(path)
         configFile.parentFile.mkdirs()
         return configFile.absolutePath

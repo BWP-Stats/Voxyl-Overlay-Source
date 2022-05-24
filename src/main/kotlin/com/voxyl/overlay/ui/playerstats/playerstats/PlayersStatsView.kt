@@ -58,7 +58,10 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyL
 
             if (Config[PinYourselfToTop] != "false") {
                 players = players.filter { it.name != Config[PlayerName] }.toMutableList()
-                players.add(0, rawPlayers.first { it.name == Config[PlayerName] })
+
+                if (players.size != rawPlayers.size) {
+                    players.add(0, rawPlayers.first { it.name == Config[PlayerName] })
+                }
             }
 
             items(items = players) {

@@ -23,7 +23,6 @@ object ValidationChecks {
         if (MiscSettings[FirstTime] != "false") {
             PopUpQueue.add(Tip("You can hover over most of the buttons/icons/tags to see what they do/mean!", 10000))
             PopUpQueue.add(Tip("You can also right click on added players for more options!", 10000))
-            MiscSettings[FirstTime] = "false"
         }
 
         if (!launch) return

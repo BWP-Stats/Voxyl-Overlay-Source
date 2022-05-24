@@ -10,9 +10,9 @@ object Config {
         load()
     }
 
-    private val defaultPath = System.getenv("APPDATA")
+    private const val defaultPath = "./settings/config.properties"
 
-    private fun load(path: String = "$defaultPath/.voverlay/config.properties") = Properties().also {
+    private fun load(path: String = defaultPath) = Properties().also {
         makeConfigFileIfNotPresent()
         it.load(FileInputStream(path))
         addPropertiesIfNotPresent(it)
@@ -55,7 +55,7 @@ object Config {
         return config.getProperty(key.key)?.takeIf { it.isNotBlank() }
     }
 
-    fun store(path: String = "$defaultPath/.voverlay/config.properties") {
+    fun store(path: String = defaultPath) {
         config.store(FileOutputStream(path), null)
     }
 
@@ -63,7 +63,7 @@ object Config {
         return config.getProperty(key) != null && config.getProperty(key) != ""
     }
 
-    private fun makeConfigFileIfNotPresent(path: String = "$defaultPath/.voverlay/config.properties") {
+    private fun makeConfigFileIfNotPresent(path: String = defaultPath) {
         val configFile = File(path)
 
         if (!configFile.exists()) {

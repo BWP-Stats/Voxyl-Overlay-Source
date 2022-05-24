@@ -12,17 +12,15 @@ object SavedWindowState {
         load()
     }
 
-    private val defaultPath = System.getenv("APPDATA")
+    private const val defaultPath = "./settings/window-state.properties"
 
-    private fun load(path: String = "$defaultPath/.voverlay/window-state.properties") = Properties().also {
+    private fun load(path: String = defaultPath) = Properties().also {
         makeConfigFileIfNotPresent()
         it.load(FileInputStream(path))
         addPropertiesIfNotPresent(it)
     }
 
-    private fun addPropertiesIfNotPresent(
-        state: Properties = SavedWindowState.state,
-    ) {
+    private fun addPropertiesIfNotPresent(state: Properties = SavedWindowState.state) {
         SavedWindowStateKeys.values().forEach {
             if (propertyIsntValid(it, state)) {
                 state.setProperty(it.key, it.defaultValue)
@@ -57,7 +55,7 @@ object SavedWindowState {
         return state.getProperty(key.key)?.takeIf { it.isNotBlank() }
     }
 
-    fun store(path: String = "$defaultPath/.voverlay/window-state.properties") {
+    fun store(path: String = defaultPath) {
         updateSavedWindowState()
         state.store(FileOutputStream(path), null)
     }
@@ -74,7 +72,7 @@ object SavedWindowState {
         return state.getProperty(key) != null && state.getProperty(key) != ""
     }
 
-    private fun makeConfigFileIfNotPresent(path: String = "$defaultPath/.voverlay/window-state.properties") {
+    private fun makeConfigFileIfNotPresent(path: String = defaultPath) {
         val configFile = File(path)
 
         if (!configFile.exists()) {

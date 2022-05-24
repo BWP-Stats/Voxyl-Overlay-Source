@@ -4,6 +4,8 @@ import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
+import com.voxyl.overlay.settings.misc.MiscKeys.FirstTime
+import com.voxyl.overlay.settings.misc.MiscSettings
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.FileInputStream
@@ -26,12 +28,14 @@ object LogFileReader {
                 null
             }
         } ?: return@launch Unit.also {
-            PopUpQueue.add(
-                Error(
-                    "Error starting log file reader: Log file path may be invalid or inaccessible.",
-                    10000
-                ).withTags("LogFileError")
-            )
+            if (MiscSettings[FirstTime] != "false") {
+                PopUpQueue.add(
+                    Error(
+                        "Error starting log file reader: Log file path may be invalid or inaccessible.",
+                        10000
+                    ).withTags("LogFileError")
+                )
+            }
         }
 
         read(reader, cs)

@@ -37,8 +37,8 @@ object UpdateChecker {
                     PopUpQueue.add(Info("No new releases found (Current version ${AppInfo.VERSION})"))
                 }
             } catch (e: IndexOutOfBoundsException) {
-                PopUpQueue.add(Error("Error checking for updates: No releases found"))
-                Napier.e("Failed to check for updates; No releases found? ${e.message}")
+                PopUpQueue.add(Error("Error checking for updates; no releases found"))
+                Napier.e("Failed to check for updates; no releases found? ${e.message}")
             } catch (e: Exception) {
                 PopUpQueue.add(Error("Failed to check for updates"))
                 Napier.e("Failed to check for updates; ${e.message}")

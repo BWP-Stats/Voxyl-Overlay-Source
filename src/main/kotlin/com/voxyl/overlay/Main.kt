@@ -12,9 +12,10 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.voxyl.overlay.business.autoupdater.UpdateChecker
 import com.voxyl.overlay.business.homemadecache.HomemadeCache
 import com.voxyl.overlay.business.logfilereader.LogFileReader
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
 import com.voxyl.overlay.business.nativelisteners.NativeListeners
 import com.voxyl.overlay.business.validation.ValidationChecks
@@ -60,11 +61,12 @@ fun main() = application {
         LaunchedEffect(Unit) {
             LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
             HomemadeCache.startAutoClear()
-            PopupQueue.start()
+            PopUpQueue.start()
             LogFileReader.start()
             Napier.initialize()
             NativeListeners.initialize()
             ValidationChecks.runAtStart(cs)
+            UpdateChecker.check(cs)
         }
 
         MainScreen(this)

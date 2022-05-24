@@ -1,7 +1,7 @@
 package com.voxyl.overlay.business.logfilereader
 
 import com.voxyl.overlay.business.validation.popups.Error
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
 import kotlinx.coroutines.*
@@ -20,13 +20,13 @@ object LogFileReader {
         val reader = Config.getOrNullIfBlank(LogFilePath)?.let {
             try {
                 FileInputStream(it).bufferedReader(Charsets.UTF_8).also {
-                    PopupQueue.filter("LogFileError")
+                    PopUpQueue.filter("LogFileError")
                 }
             } catch (e: FileNotFoundException) {
                 null
             }
         } ?: return@launch Unit.also {
-            PopupQueue.add(
+            PopUpQueue.add(
                 Error(
                     "Error starting log file reader: Log file path may be invalid or inaccessible.",
                     10000

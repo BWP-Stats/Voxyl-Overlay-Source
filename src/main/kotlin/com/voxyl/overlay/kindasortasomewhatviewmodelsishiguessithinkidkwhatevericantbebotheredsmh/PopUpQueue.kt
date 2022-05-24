@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import com.voxyl.overlay.business.validation.popups.*
 import kotlinx.coroutines.*
 
-object PopupQueue {
+object PopUpQueue {
     object Current {
         var show by mutableStateOf(false)
         var popUp by mutableStateOf<PopUp>(PopUp.empty())
@@ -85,7 +85,7 @@ object PopupQueue {
         _popups.filter { tag in it.tags }
     }
 
-    fun endCurrent() {
+    private fun endCurrent() {
         current?.cancel()
         Current.cancel()
         _popups -= _popups[0]

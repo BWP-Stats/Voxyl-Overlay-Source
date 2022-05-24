@@ -9,6 +9,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,17 +19,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopupQueue
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 
 @Composable
 fun BoxScope.PopUpBar() {
     val offset by animateFloatAsState(
-        if (PopupQueue.Current.show) -10f else 100f
+        if (PopUpQueue.Current.show) -10f else 100f
     )
 
-    val event = PopupQueue.Current.popUp
+    val event = PopUpQueue.Current.popUp
 
     Row(
         modifier = Modifier.size(400.dp, 50.dp)
@@ -50,8 +51,10 @@ fun BoxScope.PopUpBar() {
         )
 
         Button(
-            onClick = {
-                PopupQueue.Current.cancel()
+            onClick = if (event.isConfirmation) {
+                { event.onConfirmationClick() }
+            } else {
+                { PopUpQueue.Current.cancel() }
             },
             modifier = Modifier.size(30.dp),
             shape = CircleShape,
@@ -61,7 +64,7 @@ fun BoxScope.PopUpBar() {
             elevation = null
         ) {
             Icon(
-                imageVector = Icons.Filled.Close,
+                imageVector = if (event.isConfirmation) Icons.Filled.Check else Icons.Filled.Close,
                 contentDescription = "Close Pop-up",
                 tint = MainWhite,
                 modifier = Modifier.requiredSize(30.dp)

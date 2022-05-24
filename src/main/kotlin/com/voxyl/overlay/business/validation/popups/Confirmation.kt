@@ -8,11 +8,14 @@ import androidx.compose.ui.res.painterResource
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.am
 
-class Tip(text: String, duration: Long = 5000L) : PopUp(text, duration) {
-    override val color = Color(203, 151, 222, 200).am
+class Confirmation(text: String, duration: Long = 5000L, onConfirmation: () -> Unit) : PopUp(text, duration) {
+    override val isConfirmation = true
+    override val onConfirmationClick = onConfirmation
+
+    override val color = Color(107, 214, 110, 200).am
     override val icon: @Composable (Modifier) -> Unit = @Composable {
         Icon(
-            painter = painterResource("icons/lightbulb-multiple-outline.png"),
+            painter = painterResource("icons/help-circle.png"),
             contentDescription = "Close",
             tint = MainWhite,
             modifier = it

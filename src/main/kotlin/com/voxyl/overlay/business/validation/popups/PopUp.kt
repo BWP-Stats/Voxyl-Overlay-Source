@@ -8,6 +8,9 @@ sealed class PopUp(val text: String, var duration: Long = 5000L, var cancelled: 
     abstract val color: Color
     abstract val icon: @Composable (Modifier) -> Unit
 
+    open val isConfirmation = false
+    open val onConfirmationClick: () -> Unit = {}
+
     var tags = listOf<String>()
 
     fun withTags(vararg tags: String) = this.also {

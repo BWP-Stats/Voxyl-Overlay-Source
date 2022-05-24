@@ -2,13 +2,15 @@ import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val overlayVersion = "0.0.13"
+
 plugins {
     kotlin("jvm") version "1.6.10"
     id("org.jetbrains.compose") version "1.1.1"
 }
 
 group = "com.voxyl"
-version = "0.0.9"
+version = overlayVersion
 
 repositories {
     google()
@@ -57,7 +59,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Exe, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Voxyl Overlay"
-            packageVersion = "0.0.12"
+            packageVersion = overlayVersion
 
             modules("java.sql")
 

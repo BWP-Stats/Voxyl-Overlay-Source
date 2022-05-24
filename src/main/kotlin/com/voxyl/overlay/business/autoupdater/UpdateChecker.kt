@@ -6,6 +6,7 @@ import com.voxyl.overlay.business.autoupdater.apis.GitHubApiProvider
 import com.voxyl.overlay.business.validation.popups.Confirmation
 import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.business.validation.popups.Error
+import com.voxyl.overlay.business.validation.popups.Info
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.settings.Settings
 import io.github.aakira.napier.Napier
@@ -21,7 +22,7 @@ import java.io.InputStream
 import kotlin.system.exitProcess
 
 object UpdateChecker {
-    fun check(cs: CoroutineScope) {
+    fun check(cs: CoroutineScope, manuallyChecked: Boolean = false) {
         cs.launch(Dispatchers.IO) {
             try {
                 val latestRelease = GitHubApiProvider.getApi().getReleases().get(0).asJsonObject
@@ -32,8 +33,10 @@ object UpdateChecker {
 
                 if (latestVersion[0] > currentVersion[0] || latestVersion[1] > currentVersion[1] || latestVersion[2] > currentVersion[2]) {
                     queryUpdate(tag, cs)
+                } else if (manuallyChecked) {
+                    PopUpQueue.add(Info("No new releases found (Current version ${AppInfo.VERSION})"))
                 }
-            } catch (e: ArrayIndexOutOfBoundsException) {
+            } catch (e: IndexOutOfBoundsException) {
                 PopUpQueue.add(Error("Error checking for updates: No releases found"))
                 Napier.e("Failed to check for updates; No releases found? ${e.message}")
             } catch (e: Exception) {

@@ -1,6 +1,7 @@
 package com.voxyl.overlay
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -8,10 +9,7 @@ import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowPosition
-import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.window.*
 import com.voxyl.overlay.business.autoupdater.UpdateChecker
 import com.voxyl.overlay.business.homemadecache.HomemadeCache
 import com.voxyl.overlay.business.logfilereader.LogFileReader
@@ -19,6 +17,7 @@ import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhateveri
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
 import com.voxyl.overlay.business.nativelisteners.NativeListeners
 import com.voxyl.overlay.business.validation.ValidationChecks
+import com.voxyl.overlay.info.AppInfo
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
@@ -38,6 +37,11 @@ lateinit var Window: ComposeWindow
 @ExperimentalComposeUiApi
 @Preview
 fun main() = application {
+    val windowState = rememberWindowState(
+        size = getPreferredWindowSize(),
+        position = getPreferredWindowPosition()
+    )
+
     Window(
         onCloseRequest = {
             Settings.storeAll()
@@ -48,10 +52,7 @@ fun main() = application {
         title = "Voxyl Overlay",
         icon = painterResource("VoxylLogoIcon.ico"),
         alwaysOnTop = SavedWindowState[IsAlwaysOnTop] == "true",
-        state = rememberWindowState(
-            size = getPreferredWindowSize(),
-            position = getPreferredWindowPosition()
-        )
+        state = windowState
     ) {
         Window = window
         window.minimumSize = Dimension(400, 200)
@@ -69,7 +70,43 @@ fun main() = application {
             UpdateChecker.check(cs)
         }
 
-        MainScreen(this)
+        VTray(windowState)
+        MainScreen()
+    }
+}
+
+@Composable
+fun ApplicationScope.VTray(windowState: WindowState) = Tray(
+    icon = painterResource("VoxylLogoIcon.ico"),
+    tooltip = "Voxyl Overlay",
+) {
+    val cs = rememberCoroutineScope()
+
+    Item(
+        "Voxyl Overlay (v${AppInfo.VERSION})"
+    ) {}
+
+    Separator()
+
+    Item(
+        "Reset position"
+    ) {
+        windowState.position = WindowPosition(0.dp, 0.dp)
+    }
+
+    Item(
+        "Check for updates"
+    ) {
+        UpdateChecker.check(cs, true)
+    }
+
+    Separator()
+
+    Item(
+        "Exit"
+    ) {
+        Settings.storeAll()
+        exitApplication()
     }
 }
 

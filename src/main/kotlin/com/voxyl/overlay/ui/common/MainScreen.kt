@@ -6,6 +6,7 @@ package com.voxyl.overlay.ui.common
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -22,14 +23,14 @@ import com.voxyl.overlay.ui.theme.bgam
 import com.voxyl.overlay.ui.theme.tbsm
 
 @Composable
-fun MainScreen(fws: FrameWindowScope) {
+fun FrameWindowScope.MainScreen() {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         BackgroundBox()
         TitleBox()
 
-        TitleBar(fws)
+        TitleBar()
 
         if (ScreenShowing.screen == "playerstats") {
             PlayerStats()

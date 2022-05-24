@@ -30,10 +30,10 @@ import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 @Composable
-fun TitleBar(fws: FrameWindowScope) {
+fun FrameWindowScope.TitleBar() {
     VoxylLogoForTitleBar()
 
-    fws.WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
+    WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
 
     Row(
         Modifier

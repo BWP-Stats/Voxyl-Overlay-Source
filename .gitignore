@@ -97,3 +97,6 @@ build/
 /captures
 .externalNativeBuild
 .cxx
+
+settings
+logs

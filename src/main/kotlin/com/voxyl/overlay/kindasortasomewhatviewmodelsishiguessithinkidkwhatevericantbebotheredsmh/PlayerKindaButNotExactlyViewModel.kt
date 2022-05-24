@@ -97,31 +97,51 @@ object PlayerKindaButNotExactlyViewModel {
     }
 
     private fun SnapshotStateList<PlayerState>.remove(name: String) {
-        _players.remove(PlayerState(name))
+        try {
+            _players.remove(PlayerState(name))
+        } catch (e: Exception) {
+            Napier.wtf("Failed to remove player $name from list itself", e)
+        }
     }
 
     fun refresh(name: String, cs: CoroutineScope) {
-        remove(name)
-        add(name, cs)
+        try {
+            remove(name)
+            add(name, cs)
+        } catch (e: Exception) {
+            Napier.wtf("Failed to refresh player $name", e)
+        }
     }
 
     fun refreshAll(cs: CoroutineScope) {
-        val names = _players.map { it.name }
-        removeAll()
-        names.forEach { add(it, cs) }
+        try {
+            val names = _players.map { it.name }
+            removeAll()
+            names.forEach { add(it, cs) }
+        } catch (e: Exception) {
+            Napier.wtf("Failed to refresh all players", e)
+        }
     }
 
     fun remove(name: String) {
-        jobs[name]?.cancel()
-        jobs.remove(name)
-        HomemadeCache.remove(name)
-        _players.remove(name)
+        try {
+            jobs[name]?.cancel()
+            jobs.remove(name)
+            HomemadeCache.remove(name)
+            _players.remove(name)
+        } catch (e: Exception) {
+            Napier.wtf("Failed to remove player $name", e)
+        }
     }
 
     fun removeAll() {
-        jobs.forEach { it.value.cancel() }
-        jobs.clear()
-        HomemadeCache.clear()
-        _players.clear()
+        try {
+            jobs.forEach { it.value.cancel() }
+            jobs.clear()
+            HomemadeCache.clear()
+            _players.clear()
+        } catch (e: Exception) {
+            Napier.wtf("Failed to remove all players", e)
+        }
     }
 }

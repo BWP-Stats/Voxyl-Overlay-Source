@@ -1,6 +1,6 @@
 package com.voxyl.overlay.business.autoupdater
 
-import java.util.*
+import java.util.Locale
 
 object OsCheck {
     fun getOs(): OsType {

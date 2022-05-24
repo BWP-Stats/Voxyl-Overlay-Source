@@ -33,6 +33,9 @@ object UpdateChecker {
                 if (latestVersion[0] > currentVersion[0] || latestVersion[1] > currentVersion[1] || latestVersion[2] > currentVersion[2]) {
                     queryUpdate(tag, cs)
                 }
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                PopUpQueue.add(Error("Error checking for updates: No releases found"))
+                Napier.e("Failed to check for updates; No releases found? ${e.message}")
             } catch (e: Exception) {
                 PopUpQueue.add(Error("Failed to check for updates"))
                 Napier.e("Failed to check for updates; ${e.message}")

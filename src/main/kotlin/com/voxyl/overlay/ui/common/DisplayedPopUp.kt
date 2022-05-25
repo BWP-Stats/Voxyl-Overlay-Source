@@ -1,6 +1,9 @@
 package com.voxyl.overlay.ui.common
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -11,8 +14,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,7 +24,11 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun BoxScope.PopUpBar() {
     val offset by animateFloatAsState(
@@ -32,12 +38,12 @@ fun BoxScope.PopUpBar() {
     val event = PopUpQueue.Current.popUp
 
     Row(
-        modifier = Modifier.size(400.dp, 50.dp)
+        modifier = Modifier.size(400.dp, 62.dp)
             .align(Alignment.BottomCenter)
             .absoluteOffset(y = offset.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(event.color)
-            .padding(horizontal = 10.dp),
+            .absolutePadding(right = 10.dp, left = 10.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         event.icon(Modifier.size(30.dp))
@@ -70,5 +76,53 @@ fun BoxScope.PopUpBar() {
                 modifier = Modifier.requiredSize(30.dp)
             )
         }
+    }
+
+    val elapsedTime = remember { Animatable(1f) }
+
+    val cs = rememberCoroutineScope()
+
+    DisposableEffect(PopUpQueue.Current.show) {
+        cs.launch {
+            elapsedTime.animateTo(0f, animationSpec = tween(
+                durationMillis = event.duration.toInt(),
+                easing = LinearEasing
+            ))
+        }
+
+        onDispose {
+            GlobalScope.launch {
+                elapsedTime.snapTo(1f)
+            }
+        }
+    }
+
+    Box(
+        modifier = Modifier.size(376.dp, 8.dp)
+            .absoluteOffset(y = offset.dp - 6.dp)
+            .align(Alignment.BottomCenter)
+            .clip(RoundedCornerShape(8.dp))
+            .background(
+                event.color.copy(
+                    event.color.alpha / 2f,
+                    (event.color.red + 0.1f).coerceAtMost(1f),
+                    (event.color.green + 0.1f).coerceAtMost(1f),
+                    (event.color.blue + 0.1f).coerceAtMost(1f),
+                )
+            )
+    ) {
+        Box(
+            modifier = Modifier.fillMaxHeight()
+                .fillMaxWidth(elapsedTime.value)
+                .clip(RoundedCornerShape(8.dp))
+                .background(
+                    event.color.copy(
+                        event.color.alpha,
+                        (event.color.red + 0.1f).coerceAtMost(1f),
+                        (event.color.green + 0.1f).coerceAtMost(1f),
+                        (event.color.blue + 0.1f).coerceAtMost(1f),
+                    )
+                )
+        )
     }
 }

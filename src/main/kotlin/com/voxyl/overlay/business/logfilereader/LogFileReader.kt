@@ -33,7 +33,7 @@ object LogFileReader {
 
                 PopUpQueue.add(
                     Error(
-                        "Error starting log file reader: Log file path may be invalid or inaccessible.",
+                        "Error starting log file reader; log file path may be invalid or inaccessible.",
                         10000
                     ).withTags("LogFileError")
                 )

@@ -51,6 +51,8 @@ object PopUpQueue {
                     continue
                 }
 
+                delay(750)
+
                 val event = _popups[0]
 
                 Current.setPopUp(event)
@@ -66,8 +68,6 @@ object PopUpQueue {
                 if (!paused) {
                     endCurrent()
                 }
-
-                delay(1000)
             }
         }
 

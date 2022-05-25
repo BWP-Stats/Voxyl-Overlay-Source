@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.voxyl"
-version = "0.18.3"
+version = "0.18.4"
 
 repositories {
     google()
@@ -17,7 +17,6 @@ repositories {
 }
 
 dependencies {
-    //important thingies
     testImplementation(kotlin("test"))
     implementation(compose.desktop.currentOs)
 
@@ -56,7 +55,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
-            packageName = "Voxyl Overlay"
+            packageName = "VoxylOverlay"
             packageVersion = version as String
 
             modules("java.sql")

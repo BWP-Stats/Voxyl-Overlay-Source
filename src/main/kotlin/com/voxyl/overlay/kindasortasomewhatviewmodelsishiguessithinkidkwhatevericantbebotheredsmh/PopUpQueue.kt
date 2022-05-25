@@ -94,7 +94,7 @@ object PopUpQueue {
     private suspend fun pauseListener() {
         while (true) {
             delay(200)
-            pause(ScreenShowing.screen != "playerstats")
+            pause(ScreenShowing.screenId != "playerstats")
         }
     }
 

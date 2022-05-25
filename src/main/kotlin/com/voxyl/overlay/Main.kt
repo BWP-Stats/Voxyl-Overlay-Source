@@ -37,8 +37,8 @@ lateinit var Window: ComposeWindow
 @Preview
 fun main() = application {
     val windowState = rememberWindowState(
-        size = getPreferredWindowSize(),
-        position = getPreferredWindowPosition()
+        position = getPreferredWindowPosition(),
+        size = getPreferredWindowSize()
     )
 
     Window(
@@ -54,7 +54,7 @@ fun main() = application {
         state = windowState
     ) {
         Window = window.apply {
-            minimumSize = Dimension(400, 200)
+            minimumSize = Dimension(600, 200)
         }
 
         val cs = rememberCoroutineScope()
@@ -81,29 +81,21 @@ fun ApplicationScope.VTray(windowState: WindowState) = Tray(
 ) {
     val cs = rememberCoroutineScope()
 
-    Item(
-        "Voxyl Overlay (v${AppInfo.VERSION})"
-    ) {}
+    Item("Voxyl Overlay (v${AppInfo.VERSION})") {}
 
     Separator()
 
-    Item(
-        "Reset position"
-    ) {
+    Item("Reset position") {
         windowState.position = WindowPosition(0.dp, 0.dp)
     }
 
-    Item(
-        "Check for updates"
-    ) {
+    Item("Check for updates") {
         UpdateChecker.check(cs, true)
     }
 
     Separator()
 
-    Item(
-        "Exit"
-    ) {
+    Item("Exit") {
         Settings.storeAll()
         exitApplication()
     }

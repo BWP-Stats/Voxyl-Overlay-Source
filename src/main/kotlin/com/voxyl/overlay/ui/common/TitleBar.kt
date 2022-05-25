@@ -42,7 +42,7 @@ fun FrameWindowScope.TitleBar() {
     ) {
         MainColorSettingsButton()
 
-        if (ScreenShowing.screen == "playerstats") {
+        if (ScreenShowing.screenId == "playerstats") {
             PlayerSearchBar(Modifier.weight(1f))
         } else {
             SettingsSearchBar(Modifier.weight(1f))
@@ -74,7 +74,7 @@ fun MainColorSettingsButton(modifier: Modifier = Modifier) = TitleBarButton(
     modifier = modifier.absolutePadding(left = 52.tbsm.dp),
     bgColor = mutableStateOf(MainColor.value),
     doOnClick = {
-        ScreenShowing.screen = if (ScreenShowing.screen == "playerstats") "settings" else "playerstats"
+        ScreenShowing.screenId = if (ScreenShowing.screenId == "playerstats") "settings" else "playerstats"
     },
 )
 

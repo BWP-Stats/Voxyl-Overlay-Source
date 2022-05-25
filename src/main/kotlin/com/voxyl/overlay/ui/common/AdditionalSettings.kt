@@ -33,7 +33,7 @@ object AdditionalSettingsState {
     var enabled by mutableStateOf(false)
 }
 
-@ExperimentalComposeUiApi
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AdditionalSettings(
     modifier: Modifier = Modifier,

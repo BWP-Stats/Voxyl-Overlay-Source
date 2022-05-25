@@ -35,33 +35,29 @@ fun BoxScope.PopUpBar() {
         if (PopUpQueue.Current.show) -10f else 100f
     )
 
-    val event = PopUpQueue.Current.popUp
+    val popUp = PopUpQueue.Current.popUp
 
     Row(
         modifier = Modifier.size(400.dp, 62.dp)
             .align(Alignment.BottomCenter)
             .absoluteOffset(y = offset.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(event.color)
+            .background(popUp.color)
             .absolutePadding(right = 10.dp, left = 10.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        event.icon(Modifier.size(30.dp))
+        popUp.icon(Modifier.size(30.dp))
 
         Spacer(modifier = Modifier.size(10.dp))
 
         VText(
-            text = event.text,
+            text = popUp.text,
             fontSize = TextUnit.Unspecified,
             modifier = Modifier.weight(1f)
         )
 
         Button(
-            onClick = if (event.isConfirmation) {
-                { event.onConfirmationClick() }
-            } else {
-                { PopUpQueue.Current.cancel() }
-            },
+            onClick = popUp.onClick,
             modifier = Modifier.size(30.dp),
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
@@ -70,7 +66,7 @@ fun BoxScope.PopUpBar() {
             elevation = null
         ) {
             Icon(
-                imageVector = if (event.isConfirmation) Icons.Filled.Check else Icons.Filled.Close,
+                imageVector = popUp.clickableIcon,
                 contentDescription = "Close Pop-up",
                 tint = MainWhite,
                 modifier = Modifier.requiredSize(30.dp)
@@ -85,7 +81,7 @@ fun BoxScope.PopUpBar() {
     DisposableEffect(PopUpQueue.Current.show) {
         cs.launch {
             elapsedTime.animateTo(0f, animationSpec = tween(
-                durationMillis = event.duration.toInt(),
+                durationMillis = popUp.duration.toInt(),
                 easing = LinearEasing
             ))
         }
@@ -103,11 +99,11 @@ fun BoxScope.PopUpBar() {
             .align(Alignment.BottomCenter)
             .clip(RoundedCornerShape(8.dp))
             .background(
-                event.color.copy(
-                    event.color.alpha / 2f,
-                    (event.color.red + 0.1f).coerceAtMost(1f),
-                    (event.color.green + 0.1f).coerceAtMost(1f),
-                    (event.color.blue + 0.1f).coerceAtMost(1f),
+                popUp.color.copy(
+                    popUp.color.alpha / 2f,
+                    (popUp.color.red + 0.1f).coerceAtMost(1f),
+                    (popUp.color.green + 0.1f).coerceAtMost(1f),
+                    (popUp.color.blue + 0.1f).coerceAtMost(1f),
                 )
             )
     ) {
@@ -116,11 +112,11 @@ fun BoxScope.PopUpBar() {
                 .fillMaxWidth(elapsedTime.value)
                 .clip(RoundedCornerShape(8.dp))
                 .background(
-                    event.color.copy(
-                        event.color.alpha,
-                        (event.color.red + 0.1f).coerceAtMost(1f),
-                        (event.color.green + 0.1f).coerceAtMost(1f),
-                        (event.color.blue + 0.1f).coerceAtMost(1f),
+                    popUp.color.copy(
+                        popUp.color.alpha,
+                        (popUp.color.red + 0.1f).coerceAtMost(1f),
+                        (popUp.color.green + 0.1f).coerceAtMost(1f),
+                        (popUp.color.blue + 0.1f).coerceAtMost(1f),
                     )
                 )
         )

@@ -4,10 +4,13 @@ import com.voxyl.overlay.business.networking.apis.ApiProvider
 import com.voxyl.overlay.business.networking.apis.BWPApi
 import com.voxyl.overlay.business.networking.apis.HypixelApi
 import com.voxyl.overlay.business.networking.apis.MojangApi
-import com.voxyl.overlay.business.networking.models.*
-import com.voxyl.overlay.business.homemadecache.HomemadeCache
+import com.voxyl.overlay.business.networking.models.GameStatsJson
+import com.voxyl.overlay.business.networking.models.HypixelStatsJson
+import com.voxyl.overlay.business.networking.models.OverallStatsJson
+import com.voxyl.overlay.business.networking.models.PlayerInfoJson
 import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.*
+import com.voxyl.overlay.settings.config.ConfigKeys.BwpApiKey
+import com.voxyl.overlay.settings.config.ConfigKeys.HypixelApiKey
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -24,16 +27,6 @@ object PlayerFactory {
         bwpApi: BWPApi = ApiProvider.getBWPApi(),
         hypixelApi: HypixelApi = ApiProvider.getHypixelApi(),
     ): Flow<Status<Player>> = flow {
-
-        if (HomemadeCache[name]?.player != null) {
-            val player = HomemadeCache[name]?.player ?: makePlayer(name)
-
-            if (player is Player) {
-                emit(Status.Loaded(player, name = name))
-            }
-            return@flow
-        }
-
         try {
             emit(Status.Loading(name = name))
 

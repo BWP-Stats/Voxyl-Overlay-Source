@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.voxyl.overlay.business.autoupdater.UpdateChecker
-import com.voxyl.overlay.business.homemadecache.HomemadeCache
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
@@ -54,19 +53,19 @@ fun main() = application {
         alwaysOnTop = SavedWindowState[IsAlwaysOnTop] == "true",
         state = windowState
     ) {
-        Window = window
-        window.minimumSize = Dimension(400, 200)
+        Window = window.apply {
+            minimumSize = Dimension(400, 200)
+        }
 
         val cs = rememberCoroutineScope()
 
         LaunchedEffect(Unit) {
             LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
-            HomemadeCache.startAutoClear()
-            PopUpQueue.start()
-            LogFileReader.start()
-            Napier.initialize()
-            NativeListeners.initialize()
             ValidationChecks.runAtStart(cs)
+            NativeListeners.initialize()
+            PopUpQueue.start()
+            Napier.initialize()
+            LogFileReader.start()
             UpdateChecker.check(cs)
         }
 

@@ -2,7 +2,7 @@ import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val overlayVersion = "0.18.2"
+val overlayVersion = "0.18.3"
 
 plugins {
     kotlin("jvm") version "1.6.10"

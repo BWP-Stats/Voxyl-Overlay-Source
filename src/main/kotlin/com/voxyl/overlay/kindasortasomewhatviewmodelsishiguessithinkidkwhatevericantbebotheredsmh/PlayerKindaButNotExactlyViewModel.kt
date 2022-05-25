@@ -2,7 +2,6 @@ package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatever
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.*
-import com.voxyl.overlay.business.homemadecache.HomemadeCache
 import com.voxyl.overlay.business.networking.player.*
 import com.voxyl.overlay.business.networking.player.tags.*
 import com.voxyl.overlay.settings.config.Config
@@ -35,7 +34,6 @@ object PlayerKindaButNotExactlyViewModel {
                             tags = mutableStateListOf(*tags2)
                         ).also { ps ->
                             try {
-                                HomemadeCache.add(ps)
                                 ps.tags += generatePostTags(ps)
                             } catch (e: Exception) {
                                 Napier.wtf(e) { "Failed to generate post tags" }
@@ -52,9 +50,7 @@ object PlayerKindaButNotExactlyViewModel {
                             name = name,
                             error = it.message ?: "An unexpected error has occurred",
                             tags = mutableStateListOf(*tags2 + Error)
-                        ).also { ps ->
-                            HomemadeCache.add(ps)
-                        }
+                        )
                     }
                 }
             }.launchIn(cs)
@@ -127,7 +123,6 @@ object PlayerKindaButNotExactlyViewModel {
         try {
             jobs[name]?.cancel()
             jobs.remove(name)
-            HomemadeCache.remove(name)
             _players.remove(name)
         } catch (e: Exception) {
             Napier.wtf("Failed to remove player $name", e)
@@ -138,7 +133,6 @@ object PlayerKindaButNotExactlyViewModel {
         try {
             jobs.forEach { it.value.cancel() }
             jobs.clear()
-            HomemadeCache.clear()
             _players.clear()
         } catch (e: Exception) {
             Napier.wtf("Failed to remove all players", e)

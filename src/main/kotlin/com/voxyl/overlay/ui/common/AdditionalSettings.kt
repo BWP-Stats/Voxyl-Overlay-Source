@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
-import com.voxyl.overlay.business.homemadecache.HomemadeCache
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
@@ -146,7 +145,6 @@ fun ClearPlayersButton() {
         Icon(
             Icons.Filled.Clear, contentDescription = null, tint = MainWhite,
             modifier = Modifier.clickable {
-                HomemadeCache.clear()
                 PlayerKindaButNotExactlyViewModel.removeAll()
             }
         )
@@ -163,7 +161,6 @@ fun RefreshAllButton() {
         Icon(
             Icons.Filled.Refresh, contentDescription = null, tint = MainWhite,
             modifier = Modifier.clickable {
-                HomemadeCache.clear()
                 PlayerKindaButNotExactlyViewModel.refreshAll(cs)
             }
         )

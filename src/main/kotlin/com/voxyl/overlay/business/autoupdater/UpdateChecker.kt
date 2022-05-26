@@ -1,6 +1,6 @@
 package com.voxyl.overlay.business.autoupdater
 
-import com.voxyl.overlay.info.AppInfo
+import com.voxyl.overlay.appinfo.AppInfo
 import com.voxyl.overlay.business.autoupdater.OsType.*
 import com.voxyl.overlay.business.autoupdater.apis.GitHubApiProvider
 import com.voxyl.overlay.business.validation.popups.Confirmation

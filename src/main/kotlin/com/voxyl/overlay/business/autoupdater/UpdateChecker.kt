@@ -19,6 +19,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.system.exitProcess
 
 object UpdateChecker {
@@ -31,11 +33,18 @@ object UpdateChecker {
                 val latestVersion = tag.split(".")
                 val currentVersion = AppInfo.VERSION.split(".")
 
-                if (latestVersion[0] > currentVersion[0] || latestVersion[1] > currentVersion[1] || latestVersion[2] > currentVersion[2]) {
+                if (currentVersion < latestVersion) {
                     queryUpdate(tag, cs)
+                    return@launch
                 } else if (manuallyChecked) {
                     PopUpQueue.add(Info("No new releases found (Current version ${AppInfo.VERSION})"))
                 }
+
+                Files.walk(Path.of("./installers"))
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete)
+
             } catch (e: IndexOutOfBoundsException) {
                 PopUpQueue.add(Error("Error checking for updates; no releases found"))
                 Napier.e("Failed to check for updates; no releases found? ${e.message}")
@@ -66,10 +75,10 @@ object UpdateChecker {
                 }
 
                 val assetDownloadResponse =
-                    GitHubApiProvider.getDownload().downloadAsset("v$tag", "Voxyl.Overlay-$tag.$fileType")
+                    GitHubApiProvider.getDownload().downloadAsset("v$tag", "VoxylOverlay-$tag.$fileType")
 
                 val path = saveFile(
-                    assetDownloadResponse.body(), System.getenv("APPDATA") + "\\.voverlay\\Voxyl.Overlay-$tag.$fileType"
+                    assetDownloadResponse.body(), "./installers/Voxyl.Overlay-$tag.$fileType"
                 )
 
                 if (path.isNotBlank()) {
@@ -93,8 +102,11 @@ object UpdateChecker {
 
         try {
             input = body.byteStream()
-            val fos = FileOutputStream(path)
-            fos.use { output ->
+            FileOutputStream(
+                File(path).apply {
+                    parentFile.mkdirs()
+                }
+            ).use { output ->
                 val buffer = ByteArray(4 * 1024) // or other buffer size
                 var read: Int
                 while (input.read(buffer).also { read = it } != -1) {
@@ -122,5 +134,23 @@ object UpdateChecker {
                 PopUpQueue.add(Warning("Installed successfully, but failed to open installer. Please manually open the installer"))
             }
         }
+    }
+
+    private operator fun List<String>.compareTo(latestVersion: List<String>): Int {
+        var i = 0
+        while (i < this.size && i < latestVersion.size) {
+            val thisVersion = this[i].toInt()
+            val latestVersion2 = latestVersion[i].toInt()
+
+            if (thisVersion < latestVersion2) {
+                return -1
+            } else if (thisVersion > latestVersion2) {
+                return 1
+            }
+
+            i++
+        }
+
+        return 0
     }
 }

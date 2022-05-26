@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.voxyl"
-version = "0.18.4"
+version = "0.19.0"
 
 repositories {
     google()
@@ -68,4 +68,23 @@ compose.desktop {
             }
         }
     }
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "com.voxyl.overlay.MainKt"
+    }
+}
+
+tasks.register<Jar>("uberJar") {
+    archiveClassifier.set("uber")
+
+    from(sourceSets.main.get().output)
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
 }

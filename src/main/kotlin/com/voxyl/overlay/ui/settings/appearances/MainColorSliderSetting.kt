@@ -13,7 +13,7 @@ import com.voxyl.overlay.settings.config.ConfigKeys
 import com.voxyl.overlay.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.theme.MainWhite
-import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.elements.VText
 
 @Composable
 fun RSlider(modifier: Modifier = Modifier) {

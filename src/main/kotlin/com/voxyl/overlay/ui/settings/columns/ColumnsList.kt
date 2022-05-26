@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
 import com.voxyl.overlay.ui.theme.MainWhite
-import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.alphaMultiplier
 
 @OptIn(ExperimentalComposeUiApi::class)

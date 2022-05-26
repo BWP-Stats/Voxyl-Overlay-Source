@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.networking.player.PlayerState
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.theme.MainWhite
-import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.alphaMultiplier
 
 @OptIn(ExperimentalComposeUiApi::class)

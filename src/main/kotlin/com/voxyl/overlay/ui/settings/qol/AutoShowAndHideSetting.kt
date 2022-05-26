@@ -10,7 +10,7 @@ import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
 import com.voxyl.overlay.ui.elements.VCheckbox
 import com.voxyl.overlay.ui.elements.VSlider
-import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.elements.VText
 import kotlin.math.roundToInt
 
 @Composable

@@ -28,7 +28,7 @@ import com.voxyl.overlay.ui.playerstats.playerstats.colors.ErrorString
 import com.voxyl.overlay.ui.playerstats.playerstats.colors.HypixelRankColors
 import com.voxyl.overlay.ui.playerstats.playerstats.colors.LevelColors.coloredLevel
 import com.voxyl.overlay.ui.theme.MainWhite
-import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.am
 import com.voxyl.overlay.ui.theme.tbsm
 import io.github.aakira.napier.Napier

@@ -13,7 +13,7 @@ import com.voxyl.overlay.settings.config.ConfigKeys.ShowRankPrefix
 import com.voxyl.overlay.settings.misc.MiscSettings
 import com.voxyl.overlay.ui.elements.VCheckbox
 import com.voxyl.overlay.ui.settings.columns.ColumnSettingsMenuState
-import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.elements.VText
 
 @Composable
 fun NameSettings() {

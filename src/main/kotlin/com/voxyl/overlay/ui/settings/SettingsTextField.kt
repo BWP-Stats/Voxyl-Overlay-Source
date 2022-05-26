@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.ui.elements.VTextField
 import com.voxyl.overlay.ui.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.elements.onEnterOrEsc
-import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.elements.VText
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

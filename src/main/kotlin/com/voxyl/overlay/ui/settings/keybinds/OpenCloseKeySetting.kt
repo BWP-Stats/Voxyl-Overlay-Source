@@ -14,7 +14,7 @@ import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeStrin
 import com.voxyl.overlay.business.nativelisteners.OpenCloseKeyListener
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.OpenAndCloseKeybind
-import com.voxyl.overlay.ui.theme.VText
+import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.am
 import kotlinx.coroutines.launch
 

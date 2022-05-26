@@ -1,12 +1,7 @@
 package com.voxyl.overlay.ui.playerstats.playerstats
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.mouseClickable
 import androidx.compose.material.Divider
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -27,12 +22,11 @@ import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhateveri
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsSort
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.*
-import com.voxyl.overlay.ui.elements.scrollbar
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.playerstats.playerstats.colors.BwpRankColors
 import com.voxyl.overlay.ui.playerstats.playerstats.colors.ErrorString
-import com.voxyl.overlay.ui.playerstats.playerstats.colors.LevelColors.coloredLevel
 import com.voxyl.overlay.ui.playerstats.playerstats.colors.HypixelRankColors
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.LevelColors.coloredLevel
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.am
@@ -42,35 +36,29 @@ import kotlin.math.max
 import kotlin.math.sqrt
 
 @Composable
-fun PlayerStatsView(statsToShow: SnapshotStateList<String>, lazyListState: LazyListState) {
-    LazyColumn(
-        state = lazyListState,
+fun PlayerStatsView(statsToShow: SnapshotStateList<String>) {
+    Column(
         modifier = Modifier
             .absoluteOffset(y = 90.tbsm.dp)
             .fillMaxSize()
-            .scrollbar(lazyListState)
-            .requestFocusOnClick(),
-        contentPadding = PaddingValues(bottom = 50.dp)
+            .verticalScroll(rememberScrollState()),
     ) {
-        try {
-            val rawPlayers = PlayerKindaButNotExactlyViewModel.players.toList()
-            var players = StatsSort.sortPlayersList(rawPlayers)
+        val rawPlayers = PlayerKindaButNotExactlyViewModel.players.toList()
+        var players = StatsSort.sortPlayersList(rawPlayers)
 
-            if (Config[PinYourselfToTop] != "false") {
-                players = players.filter { it.name != Config[PlayerName] }.toMutableList()
+        if (Config[PinYourselfToTop] != "false") {
+            players = players.filter { it.name != Config[PlayerName] }.toMutableList()
 
-                if (players.size != rawPlayers.size) {
-                    players.add(0, rawPlayers.first { it.name == Config[PlayerName] })
-                }
+            if (players.size != rawPlayers.size) {
+                players.add(0, rawPlayers.first { it.name == Config[PlayerName] })
             }
-
-            items(items = players) {
-                PlayersStatsBar(player = it, statsToShow = statsToShow)
-            }
-        } catch (e: Exception) {
-            Napier.wtf(e) { "Error with iterating over the players in PlayersStarsView" }
-            return@LazyColumn
         }
+
+        for (player in players) {
+            PlayersStatsBar(player = player, statsToShow = statsToShow)
+        }
+
+        Spacer(modifier = Modifier.size(115.dp))
     }
 
     PlayerContextMenu()

@@ -26,10 +26,8 @@ import com.voxyl.overlay.ui.theme.tbsm
 
 @Composable
 fun PlayerStats() {
-    val playerStatsLazyListState = rememberLazyListState()
-
     PlayerStatsViewHeader(StatsToShow._stats)
-    PlayerStatsView(StatsToShow._stats, playerStatsLazyListState)
+    PlayerStatsView(StatsToShow._stats)
 }
 
 @Composable

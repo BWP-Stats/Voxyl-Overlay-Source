@@ -2,6 +2,7 @@ package com.voxyl.overlay
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Composer
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -60,13 +61,13 @@ fun main() = application {
         val cs = rememberCoroutineScope()
 
         LaunchedEffect(Unit) {
-            LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
+            Napier.initialize()
             ValidationChecks.runAtStart(cs)
             NativeListeners.initialize()
             PopUpQueue.start()
-            Napier.initialize()
             LogFileReader.start()
             UpdateChecker.check(cs)
+            LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
         }
 
         VTray(windowState)

@@ -4,7 +4,8 @@ import com.voxyl.overlay.Window
 import com.voxyl.overlay.business.networking.player.tags.FromGame
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys
+import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
+import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -50,14 +51,12 @@ object LogFileInterpreter {
     private fun String.toPlayerList() = split(" ", ", ").filterNot { it.isBlank() }.distinct()
 
     private fun autoShowAndHide(cs: CoroutineScope) {
-        if (Config[ConfigKeys.AutoShowAndHide] == "true") {
+        if (Config[AutoShowAndHide] == "true") {
             cs.launch(Dispatchers.Default) {
                 Window.focusableWindowState = false
                 Window.isMinimized = false
                 Window.focusableWindowState = true
-                println(Config[ConfigKeys.AutoShowAndHideDelay].toLongOrNull() ?: 5000)
-                println(Config[ConfigKeys.AutoShowAndHideDelay])
-                delay(Config[ConfigKeys.AutoShowAndHideDelay].toLongOrNull() ?: 5000)
+                delay(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
                 Window.isMinimized = true
             }
         }

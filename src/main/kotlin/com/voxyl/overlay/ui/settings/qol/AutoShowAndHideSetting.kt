@@ -72,7 +72,7 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
             valueRange = 3f..15f,
             steps = 12,
             onValueChangeFinished = {
-                Config[AutoShowAndHideDelay] = delay.toString()
+                Config[AutoShowAndHideDelay] = (delay.roundToInt() * 1000).toString()
             },
         )
     }

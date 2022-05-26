@@ -41,7 +41,7 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>) {
         modifier = Modifier
             .absoluteOffset(y = 90.tbsm.dp)
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
     ) {
         val rawPlayers = PlayerKindaButNotExactlyViewModel.players.toList()
         var players = StatsSort.sortPlayersList(rawPlayers)

@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
@@ -103,7 +104,9 @@ fun ColumnsSettings() {
             ) {
                 VText(
                     "You can drag the columns to reorder them, or right click on one to remove/modify it (ᴮ = BWP, ᴴ = Hypixel)",
-                    fontSize = 15.sp
+                    fontSize = 15.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 VText(
                     "Settings with * have additional settings which you can right click on to access",
@@ -116,7 +119,7 @@ fun ColumnsSettings() {
                     ColumnsListState.show = true
                 },
                 modifier = Modifier
-                    .size(42.dp),
+                    .requiredSize(42.dp),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color(.2f, .2f, .2f, .3f).am
                 ),

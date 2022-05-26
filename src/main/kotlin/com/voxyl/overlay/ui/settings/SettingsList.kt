@@ -108,14 +108,10 @@ fun SettingsList(
             .scrollbar(lazyListState)
             .fillMaxSize()
             .requestFocusOnClick(),
-        contentPadding = PaddingValues(bottom = 40.dp)
+        contentPadding = PaddingValues(bottom = 70.dp)
     ) {
-        try {
-            items(filteredSettings) {
-                it.first()
-            }
-        } catch (e: Exception) {
-            Napier.wtf(e) { "Error rendering settings list" }
+        items(filteredSettings) {
+            it.first()
         }
     }
 }

@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.Opacity
-import com.voxyl.overlay.ui.elements.MySlider
+import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.alphaMultiplier
 
@@ -26,7 +26,7 @@ fun OpacitySlider(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.size(10.dp))
 
-        MySlider(
+        VSlider(
             value = alphaMultiplier.value,
             onValueChange = {
                 alphaMultiplier.value = it

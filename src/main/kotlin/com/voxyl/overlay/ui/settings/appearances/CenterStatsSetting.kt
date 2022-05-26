@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.CenterStats
-import com.voxyl.overlay.ui.elements.MyCheckbox
+import com.voxyl.overlay.ui.elements.VCheckbox
 import com.voxyl.overlay.ui.theme.VText
 
 @Composable
@@ -21,7 +21,7 @@ fun CenterStatsCheckBox(modifier: Modifier = Modifier) {
             .padding(horizontal = 30.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        MyCheckbox(
+        VCheckbox(
             checked = centerStatsHeader,
             onCheckedChange = {
                 if (it) {

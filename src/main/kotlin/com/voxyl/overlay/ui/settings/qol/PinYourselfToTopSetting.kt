@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.PinYourselfToTop
-import com.voxyl.overlay.ui.elements.MyCheckbox
+import com.voxyl.overlay.ui.elements.VCheckbox
 import com.voxyl.overlay.ui.theme.VText
 
 @Composable
@@ -24,7 +24,7 @@ fun PinYourselfToTopCheckbox(addYourself: MutableState<Boolean>, modifier: Modif
             mutableStateOf(Config[PinYourselfToTop] != "true")
         }
 
-        MyCheckbox(
+        VCheckbox(
             checked = checked && addYourself.value,
             onCheckedChange = {
                 if (it) {

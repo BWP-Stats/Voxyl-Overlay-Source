@@ -8,8 +8,8 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
-import com.voxyl.overlay.ui.elements.MyCheckbox
-import com.voxyl.overlay.ui.elements.MySlider
+import com.voxyl.overlay.ui.elements.VCheckbox
+import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.theme.VText
 import kotlin.math.roundToInt
 
@@ -22,7 +22,7 @@ fun AutoShowAndHideCheckBox(autoHide: MutableState<Boolean>, modifier: Modifier 
             .padding(horizontal = 30.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        MyCheckbox(
+        VCheckbox(
             checked = autoHide.value,
             onCheckedChange = {
                 if (it) {
@@ -62,7 +62,7 @@ fun AutoShowAndHideDelaySlider(autoHide: MutableState<Boolean>, modifier: Modifi
 
         Spacer(modifier = Modifier.size(10.dp))
 
-        MySlider(
+        VSlider(
             value = delay,
             onValueChange = {
                 delay = it.roundToInt().toFloat()

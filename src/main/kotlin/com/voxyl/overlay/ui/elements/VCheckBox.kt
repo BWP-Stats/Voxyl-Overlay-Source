@@ -9,7 +9,7 @@ import com.voxyl.overlay.ui.theme.*
 
 
 @Composable
-fun MyCheckbox(
+fun VCheckbox(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,

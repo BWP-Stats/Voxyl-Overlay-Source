@@ -11,7 +11,7 @@ import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.RankPrefix
 import com.voxyl.overlay.settings.config.ConfigKeys.ShowRankPrefix
 import com.voxyl.overlay.settings.misc.MiscSettings
-import com.voxyl.overlay.ui.elements.MyCheckbox
+import com.voxyl.overlay.ui.elements.VCheckbox
 import com.voxyl.overlay.ui.settings.columns.ColumnSettingsMenuState
 import com.voxyl.overlay.ui.theme.VText
 
@@ -37,7 +37,7 @@ private fun showRankPrefixSetting() {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MyCheckbox(
+            VCheckbox(
                 checked = showRankPrefix,
                 onCheckedChange = {
                     if (it) {

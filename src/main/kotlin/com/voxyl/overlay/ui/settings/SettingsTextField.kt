@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.ui.elements.MyTextField
+import com.voxyl.overlay.ui.elements.VTextField
 import com.voxyl.overlay.ui.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.theme.VText
@@ -27,7 +27,7 @@ fun SettingsTextField(
 ) {
     val focusManager = LocalFocusManager.current
 
-    MyTextField(
+    VTextField(
         value = value,
         modifier = modifier
             .fillMaxWidth()

@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys
 import com.voxyl.overlay.settings.config.ConfigKeys.*
-import com.voxyl.overlay.ui.elements.MySlider
+import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.VText
 
@@ -52,7 +52,7 @@ fun MainColorSlider(
 
         Spacer(modifier = Modifier.size(10.dp))
 
-        MySlider(
+        VSlider(
             value = color.value,
             onValueChange = {
                 color.value = it

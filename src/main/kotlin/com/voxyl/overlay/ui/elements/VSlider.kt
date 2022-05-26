@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import com.voxyl.overlay.ui.theme.*
 
 @Composable
-fun MySlider(
+fun VSlider(
     value: Float,
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.business.networking.player.tags.ManuallySearched
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.ui.elements.MyTextField
+import com.voxyl.overlay.ui.elements.VTextField
 import com.voxyl.overlay.ui.elements.MyTrailingIcon
 import com.voxyl.overlay.ui.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.theme.VText
@@ -49,7 +49,7 @@ fun PlayerSearchBar(
     }
 
 
-    MyTextField(
+    VTextField(
         value = queriedName,
         onValueChange = {
             queriedName = it

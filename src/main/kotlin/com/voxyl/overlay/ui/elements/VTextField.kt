@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.voxyl.overlay.ui.theme.*
 
 @Composable
-fun MyTextField(
+fun VTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,

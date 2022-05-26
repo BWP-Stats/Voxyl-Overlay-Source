@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.ui.elements.MyTextField
+import com.voxyl.overlay.ui.elements.VTextField
 import com.voxyl.overlay.ui.theme.VText
 import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
 import com.voxyl.overlay.ui.theme.tbsm
@@ -32,7 +32,7 @@ fun SettingsSearchBar(
     var focused by remember { mutableStateOf(false) }
     val cs = rememberCoroutineScope()
 
-    MyTextField(
+    VTextField(
         value = queriedSetting,
         onValueChange = {
             queriedSetting = it

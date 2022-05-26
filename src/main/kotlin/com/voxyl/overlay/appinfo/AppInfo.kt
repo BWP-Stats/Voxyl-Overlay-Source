@@ -1,5 +1,5 @@
 package com.voxyl.overlay.appinfo
 
 object AppInfo {
-    const val VERSION = "0.19.1"
+    const val VERSION = "0.19.3"
 }

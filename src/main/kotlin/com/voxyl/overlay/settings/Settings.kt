@@ -23,7 +23,7 @@ object Settings {
         MiscSettings.store(miscPath)
     }
 
-    fun deleteTempFile() {
+    private fun deleteTempFile() {
         val tempDirPath = File(System.getProperty("java.io.tmpdir"))
         val tempDir = File(tempDirPath, "voverlay")
         tempDir.deleteRecursively()

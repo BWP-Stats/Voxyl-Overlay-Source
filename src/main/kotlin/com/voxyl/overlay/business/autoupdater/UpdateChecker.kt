@@ -15,6 +15,8 @@ object UpdateChecker {
     fun check(cs: CoroutineScope, manuallyChecked: Boolean = false) {
         cs.launch(Dispatchers.IO) {
             try {
+                deleteInstallerDirectory()
+
                 val latestRelease = GitHubApiProvider.getApi().getReleases().get(0).asJsonObject
                 val tag = latestRelease.get("tag_name").asString.trim('v')
 
@@ -37,16 +39,9 @@ object UpdateChecker {
         }
     }
 
-    fun restoreSettingsFromPreviousVersion() {
-        val tempDirPath = File(System.getProperty("java.io.tmpdir"))
-        val tempDir = File(tempDirPath, "voverlay")
-
-        if (!tempDir.exists()) {
-            println("No previous settings found")
-            return
-        }
-
-        Settings.loadAll(tempDir.absolutePath)
+    private fun deleteInstallerDirectory() {
+        val installerDir = File("./installers")
+        installerDir.deleteRecursively()
     }
 
     private fun queryUpdate(tag: String, cs: CoroutineScope) {

@@ -2,7 +2,6 @@ package com.voxyl.overlay
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Composer
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -11,15 +10,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.voxyl.overlay.business.autoupdater.UpdateChecker
-import com.voxyl.overlay.business.logfilereader.LogFileReader
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
-import com.voxyl.overlay.business.nativelisteners.NativeListeners
-import com.voxyl.overlay.business.validation.ValidationChecks
 import com.voxyl.overlay.appinfo.AppInfo
 import com.voxyl.overlay.business.autoupdater.AutoUpdater
-import com.voxyl.overlay.business.autoupdater.AutoUpdater.saveSettingsToTemp
+import com.voxyl.overlay.business.autoupdater.UpdateChecker
+import com.voxyl.overlay.business.logfilereader.LogFileReader
+import com.voxyl.overlay.business.nativelisteners.NativeListeners
+import com.voxyl.overlay.business.validation.ValidationChecks
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
+import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
@@ -41,7 +39,7 @@ lateinit var Window: ComposeWindow
 fun main() = application {
 
     Settings.loadAll()
-    UpdateChecker.restoreSettingsFromPreviousVersion()
+    AutoUpdater.restoreSettingsFromTemp()
 
     val windowState = rememberWindowState(
         position = getPreferredWindowPosition(),

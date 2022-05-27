@@ -41,7 +41,19 @@ object AutoUpdater {
         }
     }
 
-    fun saveSettingsToTemp() {
+    fun restoreSettingsFromTemp() {
+        val tempDirPath = File(System.getProperty("java.io.tmpdir"))
+        val tempDir = File(tempDirPath, "voverlay")
+
+        if (!tempDir.exists()) {
+            println("No previous settings found")
+            return
+        }
+
+        Settings.loadAll(tempDir.absolutePath)
+    }
+
+    private fun saveSettingsToTemp() {
         val tempDirPath = File(System.getProperty("java.io.tmpdir"))
         val tempDir = File(tempDirPath, "voverlay")
 
@@ -79,7 +91,7 @@ object AutoUpdater {
                     parentFile.mkdirs()
                 }
             ).use { output ->
-                val buffer = ByteArray(4 * 1024) // or other buffer size
+                val buffer = ByteArray(4 * 1024)
                 var read: Int
                 while (input.read(buffer).also { read = it } != -1) {
                     output.write(buffer, 0, read)

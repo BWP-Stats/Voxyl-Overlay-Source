@@ -107,44 +107,28 @@ object PlayerKindaButNotExactlyViewModel {
     }
 
     private fun SnapshotStateList<PlayerState>.remove(name: String) {
-        try {
-            _players.remove(PlayerState(name))
-        } catch (e: Exception) {
-            Napier.wtf("Failed to remove player $name from list itself", e)
-        }
+        _players.remove(PlayerState(name))
     }
 
     fun refreshAll(cs: CoroutineScope) {
-        try {
-            val players = _players.map {
-                it.name to it.tags.toList()
-            }
-            removeAll()
-            players.forEach {
-                add(it.first, cs, *it.second.toTypedArray())
-            }
-        } catch (e: Exception) {
-            Napier.wtf("Failed to refresh all players", e)
+        val players = _players.map {
+            it.name to it.tags.toList()
+        }
+        removeAll()
+        players.forEach {
+            add(it.first, cs, *it.second.toTypedArray())
         }
     }
 
     fun remove(name: String) {
-        try {
-            jobs[name]?.cancel()
-            jobs.remove(name)
-            _players.remove(name)
-        } catch (e: Exception) {
-            Napier.wtf("Failed to remove player $name", e)
-        }
+        jobs[name]?.cancel()
+        jobs.remove(name)
+        _players.remove(name)
     }
 
     fun removeAll() {
-        try {
-            jobs.forEach { it.value.cancel() }
-            jobs.clear()
-            _players.clear()
-        } catch (e: Exception) {
-            Napier.wtf("Failed to remove all players", e)
-        }
+        jobs.forEach { it.value.cancel() }
+        jobs.clear()
+        _players.clear()
     }
 }

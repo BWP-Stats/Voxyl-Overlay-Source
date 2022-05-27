@@ -96,10 +96,5 @@ build/
 .externalNativeBuild
 .cxx
 
-*.properties
-logs/voxyl0.log.lck
-*.msi
-installers/
-settings/config.properties
-settings/misc.properties
-settings/window-state.properties
+/settings/
+/logs/

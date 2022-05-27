@@ -96,5 +96,7 @@ build/
 .externalNativeBuild
 .cxx
 
-/settings/
+settings/config.properties
+settings/misc.properties
+settings/window-state.properties
 /logs/

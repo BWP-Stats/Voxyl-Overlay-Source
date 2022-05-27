@@ -24,6 +24,7 @@ import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.elements.ShapeThatIdkTheNameOf
+import com.voxyl.overlay.ui.elements.Tooltip
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.theme.*
@@ -182,34 +183,5 @@ fun AdditionalSettingsBox(modifier: Modifier = Modifier, content: @Composable Bo
             .requestFocusOnClick()
     ) {
         content()
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun Tooltip(
-    desc: String,
-    icon: @Composable () -> Unit
-) {
-    TooltipArea(
-        tooltip = {
-            Surface(
-                color = Color(60, 60, 60, 50).am,
-                shape = RoundedCornerShape(4.dp)
-            ) {
-                VText(
-                    text = desc,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(10.dp)
-                )
-            }
-        },
-        delayMillis = 600,
-        tooltipPlacement = TooltipPlacement.CursorPoint(
-            alignment = Alignment.BottomEnd,
-            offset = DpOffset(10.dp, 12.dp)
-        )
-    ) {
-        icon()
     }
 }

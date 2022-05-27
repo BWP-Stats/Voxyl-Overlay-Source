@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.voxyl"
-version = "0.22.4"
+version = "0.22.5"
 
 repositories {
     google()

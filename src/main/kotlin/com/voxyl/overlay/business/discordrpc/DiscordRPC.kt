@@ -4,10 +4,12 @@ import com.voxyl.overlay.business.networking.player.Player
 import com.voxyl.overlay.business.networking.player.PlayerFactory
 import com.voxyl.overlay.business.networking.player.Status
 import com.voxyl.overlay.business.validation.popups.Error
+import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.settings.config.Config
 import de.jcm.discordgamesdk.Core
 import de.jcm.discordgamesdk.CreateParams
+import de.jcm.discordgamesdk.GameSDKException
 import de.jcm.discordgamesdk.activity.Activity
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
@@ -25,45 +27,52 @@ object DiscordRPC {
 
         if (!initCore()) return
 
-        CreateParams().use { params ->
-            params.clientID = 979760216612675654L
-            params.flags = CreateParams.getDefaultFlags()
-            Core(params).use { core ->
-                var i = 300000
+        try {
+            CreateParams().use { params ->
+                params.clientID = 979760216612675654L
+                params.flags = CreateParams.Flags.toLong(CreateParams.Flags.NO_REQUIRE_DISCORD)
+                Core(params).use { core ->
+                    var i = 300000
 
-                while (true) {
-                    if (i == 300000) {
-                        getPlayerStats(cs)
+                    while (true) {
+                        if (i == 300000) {
+                            getPlayerStats(cs)
 
-                        while (wait) {
-                            delay(100)
-                        }
-
-                        Activity().use { activity ->
-                            if (player != null) {
-                                activity.details = "${player?.get("name")}'s bwp stats:"
-                                activity.state = "${player?.get("bwp.level")}✫ | ${player?.get("bwp.kills")} kills"
-                            } else {
-                                activity.details = ".gg/fBnfWXSDpu"
-                                activity.state = ""
+                            while (wait) {
+                                delay(100)
                             }
 
-                            activity.timestamps().start = Instant.now()
+                            Activity().use { activity ->
+                                if (player != null) {
+                                    activity.details = "${player?.get("name")}'s bwp stats:"
+                                    activity.state = "${player?.get("bwp.level")}✫ | ${player?.get("bwp.kills")} kills"
+                                } else {
+                                    activity.details = ".gg/fBnfWXSDpu"
+                                    activity.state = ""
+                                }
 
-                            activity.assets().largeImage = "logo1024"
+                                activity.timestamps().start = Instant.now()
 
-                            core.activityManager().updateActivity(activity)
+                                activity.assets().largeImage = "logo1024"
+
+                                core.activityManager().updateActivity(activity)
+                            }
+
+                            i = 0
                         }
 
-                        i = 0
+                        core.runCallbacks()
+
+                        delay(2000)
+
+                        i += 2000
                     }
-
-                    core.runCallbacks()
-                    delay(2000)
-
-                    i += 2000
                 }
             }
+        } catch (e: GameSDKException) {
+            Napier.e("Error running callbacks", e)
+            PopUpQueue.add(Warning("Overlay must be restarted after opening discord to show Discord Rich Presence"))
+            return
         }
     }
 

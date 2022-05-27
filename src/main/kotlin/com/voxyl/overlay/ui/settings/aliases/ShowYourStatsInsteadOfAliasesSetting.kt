@@ -36,6 +36,12 @@ fun ShowYourStatsInsteadOfAliasesCheckBox(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        VText("Show your main account's stats (The one you entered higher up) instead of the alias's stats")
+        var name = "The one you entered higher up"
+
+        if (Config["player_name"] != null && Config["player_name"] != "" && Config["player_name"]!!.matches(Regex("\\w{1,16}"))) {
+            name = Config["player_name"]!!
+        }
+
+        VText("Show your main account ($name)'s stats instead of the alias's stats")
     }
 }

@@ -4,6 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -31,6 +34,8 @@ fun PlayerNameTextField() {
         name = TextFieldValue()
     }
 
+    println(name.text + " |")
+
     SettingsTextField(
         text = getNameLabel(name, isValidName(name)),
         value = name,
@@ -42,7 +47,7 @@ fun PlayerNameTextField() {
                 painter = painterResource("icons/eye.png"),
                 contentDescription = null,
                 modifier = Modifier
-                    .offset(x = (-4).dp, y = 5.dp)
+                    .offset(x = -18.dp, y = 5.dp)
                     .size(12.dp, 12.dp)
                     .pointerHoverIcon(
                         icon = PointerIconDefaults.Hand
@@ -54,10 +59,20 @@ fun PlayerNameTextField() {
             )
             VTrailingIcon(
                 modifier = Modifier
-                    .offset(x = 10.dp, y = 5.dp)
+                    .offset(x = -4.dp, y = 5.dp)
                     .size(12.dp, 12.dp)
             ) {
                 if (isValidName(name)) doOnEnter()
+            }
+            VTrailingIcon(
+                icon = Icons.Filled.Close,
+                modifier = Modifier
+                    .offset(x = 10.dp, y = 5.dp)
+                    .size(12.dp, 12.dp)
+            ) {
+                Config[PlayerName] = ""
+                name = TextFieldValue(" ")
+                name = TextFieldValue("")
             }
         }
     )

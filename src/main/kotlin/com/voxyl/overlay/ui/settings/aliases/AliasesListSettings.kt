@@ -24,14 +24,19 @@ import com.voxyl.overlay.ui.theme.am
 fun AliasesTextField() {
     var alias by remember { mutableStateOf(TextFieldValue()) }
 
-    val aliases = remember { (Config["aliases"]?.split(",")?.filter { it != "" } ?: listOf()).toMutableStateList() }
+    var aliases = remember { (Config["aliases"]?.split(",")?.filter { it != "" } ?: listOf()).toMutableStateList() }
+
+    if (!aliases.any { it.lowercase() == Config["player_name"]?.lowercase() }) {
+        if (Config["player_name"] != null && Config["player_name"] != "" && Config["player_name"]!!.matches(Regex("\\w{1,16}"))) {
+            aliases.add(Config["player_name"]!!)
+        }
+    }
 
     val doOnEnter = doOnEnter@{
         if (!isValidName(alias)) return@doOnEnter
 
-        if (!aliases.contains(alias.text)) {
-            aliases.add(alias.text)
-        }
+        aliases.add(alias.text)
+        aliases = aliases.distinct().toMutableStateList()
 
         Config["aliases"] = aliases.joinToString(",")
 

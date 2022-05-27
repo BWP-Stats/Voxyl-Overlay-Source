@@ -95,3 +95,7 @@ build/
 /captures
 .externalNativeBuild
 .cxx
+*.properties
+*.properties
+logs/voxyl0.log.lck
+*.msi

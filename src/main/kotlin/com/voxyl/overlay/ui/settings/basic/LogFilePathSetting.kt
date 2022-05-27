@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -15,6 +17,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.settings.config.ConfigKeys
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
 import com.voxyl.overlay.settings.config.LogFiles
 import com.voxyl.overlay.ui.elements.VTrailingIcon
@@ -59,7 +62,7 @@ fun LogFilePathTextField() {
                 painter = painterResource("icons/eye.png"),
                 contentDescription = null,
                 modifier = Modifier
-                    .offset(x = (-4).dp, y = 5.dp)
+                    .offset(x = -18.dp, y = 5.dp)
                     .size(12.dp, 12.dp)
                     .pointerHoverIcon(
                         icon = PointerIconDefaults.Hand
@@ -71,16 +74,26 @@ fun LogFilePathTextField() {
             )
             VTrailingIcon(
                 modifier = Modifier
-                    .offset(x = 10.dp, y = 5.dp)
+                    .offset(x = -4.dp, y = 5.dp)
                     .size(12.dp, 12.dp)
             ) {
                 if (isValidLogFilePath(logFilePath)) doOnEnter()
+            }
+            VTrailingIcon(
+                icon = Icons.Filled.Close,
+                modifier = Modifier
+                    .offset(x = 10.dp, y = 5.dp)
+                    .size(12.dp, 12.dp)
+            ) {
+                Config[LogFilePath] = ""
+                logFilePath = TextFieldValue(" ")
+                logFilePath = TextFieldValue("")
             }
         }
     )
 }
 
-fun autofillLogFilePath(logFilePath: TextFieldValue, autoFillLogPath: (String) -> Unit) {
+private fun autofillLogFilePath(logFilePath: TextFieldValue, autoFillLogPath: (String) -> Unit) {
     val autofilledFilePath = when (logFilePath.text.lowercase()) {
         "badlion" -> LogFiles.Badlion.path
         "lunar" -> LogFiles.Lunar.path
@@ -90,7 +103,7 @@ fun autofillLogFilePath(logFilePath: TextFieldValue, autoFillLogPath: (String) -
     autoFillLogPath(autofilledFilePath)
 }
 
-fun getLogFilePathLabel(logFilePath: TextFieldValue, isValid: Boolean) =
+private fun getLogFilePathLabel(logFilePath: TextFieldValue, isValid: Boolean) =
     if (logFilePath.text.isNotBlank() && !isValid)
         "Please enter a valid log file path"
     else if (Config[LogFilePath].isBlank())
@@ -98,4 +111,4 @@ fun getLogFilePathLabel(logFilePath: TextFieldValue, isValid: Boolean) =
     else
         "Enter your log file path (${Config[LogFilePath]})"
 
-fun isValidLogFilePath(tfv: TextFieldValue) = tfv.text.contains(".log")
+private fun isValidLogFilePath(tfv: TextFieldValue) = tfv.text.contains(".log")

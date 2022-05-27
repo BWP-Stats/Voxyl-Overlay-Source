@@ -13,17 +13,21 @@ import androidx.compose.ui.window.*
 import com.voxyl.overlay.appinfo.AppInfo
 import com.voxyl.overlay.business.autoupdater.AutoUpdater
 import com.voxyl.overlay.business.autoupdater.UpdateChecker
+import com.voxyl.overlay.business.discordrpc.DiscordRPC
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.business.nativelisteners.NativeListeners
 import com.voxyl.overlay.business.validation.ValidationChecks
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.settings.Settings
+import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
 import com.voxyl.overlay.ui.common.MainScreen
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.awt.Dimension
 import java.io.File
 import java.util.logging.ConsoleHandler
@@ -72,6 +76,12 @@ fun main() = application {
             LogFileReader.start()
             UpdateChecker.check(cs)
             LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
+
+            if (Config["show_discord_rp"] != "false") {
+                cs.launch(Dispatchers.IO) {
+                    DiscordRPC.`try`(cs)
+                }
+            }
         }
 
         VTray(windowState)

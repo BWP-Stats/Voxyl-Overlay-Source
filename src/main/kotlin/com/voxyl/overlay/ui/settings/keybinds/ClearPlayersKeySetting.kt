@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.nativelisteners.ClearPlayersKeyListener
 import com.voxyl.overlay.business.nativelisteners.KeyListenerForSettings
 import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeString
+import com.voxyl.overlay.business.nativelisteners.OpenCloseKeyListener
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.ClearPlayersKeybind
 import com.voxyl.overlay.ui.elements.VText
@@ -32,8 +33,7 @@ fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
 
         RefreshPlayersKeyText()
 
-        VText(
-            text = ClearPlayersKeyListener.paramString.toCleanKeyCodeString(),
+        Box(
             modifier = Modifier
                 .background(Color(0f, 0f, 0f, .3f).am)
                 .clickable {
@@ -46,8 +46,14 @@ fun ClearPlayersKeySetting(modifier: Modifier = Modifier) {
                         Config[ClearPlayersKeybind] = ClearPlayersKeyListener.paramString
                     }
                 }
-                .padding(10.dp)
-        )
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ) {
+            VText(
+                text = ClearPlayersKeyListener.paramString.toCleanKeyCodeString(),
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+        }
     }
 }
 

@@ -29,6 +29,7 @@ import com.voxyl.overlay.ui.settings.qol.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.theme.*
 import com.voxyl.overlay.ui.settings.basic.PlayerNameTextField
 import com.voxyl.overlay.ui.settings.columns.ColumnsSettings
+import com.voxyl.overlay.ui.settings.discordrp.ShowDiscordRPCheckbox
 import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.OpenCloseKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.RefreshPlayersKeySetting
@@ -92,6 +93,9 @@ fun SettingsList(
                 @Composable { Header("Aliases (Shift + scroll to scroll through your aliases when many are present)") } to "AliasesNicksNicknamesAltAccounts",
                 @Composable { ShowYourStatsInsteadOfAliasesCheckBox() } to "ShowYourStatsInsteadOfAliasesCheckBox",
                 @Composable { AliasesTextField() } to "AliasesNicksNicknamesAltAccounts",
+
+                @Composable { Header("Discord Rich Presence") } to "DiscordRichPresenceDiscordRPC",
+                @Composable { ShowDiscordRPCheckbox() } to "DiscordRichPresenceDiscordRPC",
 
                 @Composable { Header("Columns") } to "ColumnsStatsShowRows",
                 @Composable { ColumnsSettings() } to "ColumnsStatsShowRows"

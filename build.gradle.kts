@@ -8,12 +8,13 @@ plugins {
 }
 
 group = "com.voxyl"
-version = "0.21.3"
+version = "0.22.4"
 
 repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven { setUrl("https://jitpack.io") }
 }
 
 dependencies {
@@ -38,6 +39,8 @@ dependencies {
 
     //drag 'n' drop reordering
     implementation("org.burnoutcrew.composereorderable:reorderable:0.7.4")
+
+    implementation("com.github.JnCrMx:discord-game-sdk4j:0.5.5")
 }
 
 tasks.test {

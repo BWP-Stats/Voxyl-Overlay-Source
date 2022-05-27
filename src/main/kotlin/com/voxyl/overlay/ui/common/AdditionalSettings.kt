@@ -96,7 +96,7 @@ fun AdditionalSettings(
                 Spacer(modifier = Modifier.size(3.dp))
 
                 Tooltip(
-                    "Join the Discord for help: gg/fBnfWXSDpu"
+                    "Join the Discord for help: .gg/fBnfWXSDpu"
                 ) {
                     Icon(Icons.Filled.Info, contentDescription = null, tint = MainWhite)
                 }

@@ -33,8 +33,7 @@ fun OpenCloseKeySetting(modifier: Modifier = Modifier) {
 
         OpenCloseKeyText()
 
-        VText(
-            text = OpenCloseKeyListener.paramString.toCleanKeyCodeString(),
+        Box(
             modifier = Modifier
                 .background(Color(0f, 0f, 0f, .3f).am)
                 .clickable {
@@ -47,8 +46,14 @@ fun OpenCloseKeySetting(modifier: Modifier = Modifier) {
                         Config[OpenAndCloseKeybind] = OpenCloseKeyListener.paramString
                     }
                 }
-                .padding(10.dp)
-        )
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ) {
+            VText(
+                text = OpenCloseKeyListener.paramString.toCleanKeyCodeString(),
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+        }
     }
 }
 

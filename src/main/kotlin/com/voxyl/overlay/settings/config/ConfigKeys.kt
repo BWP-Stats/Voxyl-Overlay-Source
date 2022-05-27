@@ -35,4 +35,6 @@ enum class ConfigKeys(val key: String, var defaultValue: String) {
 
     Aliases("aliases", ""),
     ShowYourStatsInsteadOfAliases("show_your_stats_instead_of_aliases", "false"),
+
+    ShowDiscordRP("show_discord_rp", "true"),
 }

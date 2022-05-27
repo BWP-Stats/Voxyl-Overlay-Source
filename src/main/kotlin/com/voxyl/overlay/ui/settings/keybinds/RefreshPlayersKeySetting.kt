@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.voxyl.overlay.business.nativelisteners.ClearPlayersKeyListener
 import com.voxyl.overlay.business.nativelisteners.RefreshPlayersKeyListener
 import com.voxyl.overlay.business.nativelisteners.KeyListenerForSettings
 import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeString
@@ -32,8 +33,7 @@ fun RefreshPlayersKeySetting(modifier: Modifier = Modifier) {
 
         RefreshPlayersKeyText()
 
-        VText(
-            text = RefreshPlayersKeyListener.paramString.toCleanKeyCodeString(),
+        Box(
             modifier = Modifier
                 .background(Color(0f, 0f, 0f, .3f).am)
                 .clickable {
@@ -46,8 +46,14 @@ fun RefreshPlayersKeySetting(modifier: Modifier = Modifier) {
                         Config[RefreshPlayersKeybind] = RefreshPlayersKeyListener.paramString
                     }
                 }
-                .padding(10.dp)
-        )
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ) {
+            VText(
+                text = RefreshPlayersKeyListener.paramString.toCleanKeyCodeString(),
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+        }
     }
 }
 

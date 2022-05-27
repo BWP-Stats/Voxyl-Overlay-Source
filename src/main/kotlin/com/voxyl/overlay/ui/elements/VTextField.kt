@@ -42,6 +42,7 @@ fun VTextField(
         errorCursorColor = ErrorColor,
     ),
     trailingIcon: @Composable() (() -> Unit)? = null,
+    leadingIcon: @Composable() (() -> Unit)? = null,
     singleLine: Boolean = true,
     isError: Boolean = false,
     textStyle: TextStyle = TextStyle(fontFamily = Fonts.nunito()),
@@ -54,6 +55,7 @@ fun VTextField(
         label = label,
         colors = colors,
         trailingIcon = trailingIcon,
+        leadingIcon = leadingIcon,
         singleLine = singleLine,
         isError = isError,
         textStyle = textStyle,
@@ -62,7 +64,7 @@ fun VTextField(
 }
 
 @Composable
-fun MyTrailingIcon(
+fun VTrailingIcon(
     icon: ImageVector = Icons.Filled.Done,
     tint: Color = MainWhite.copy(alpha = .313f).am,
     modifier: Modifier = Modifier,

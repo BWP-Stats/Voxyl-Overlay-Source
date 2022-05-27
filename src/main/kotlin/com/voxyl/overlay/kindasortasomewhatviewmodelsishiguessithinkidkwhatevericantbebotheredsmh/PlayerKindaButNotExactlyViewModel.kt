@@ -20,9 +20,17 @@ object PlayerKindaButNotExactlyViewModel {
 
     private var jobs = mutableMapOf<String, Job>()
 
-    fun add(name: String, cs: CoroutineScope, vararg tags: Tag) {
+    fun add(rawName: String, cs: CoroutineScope, vararg tags: Tag) {
+
+        val name = if (
+            Config["aliases"]?.lowercase()?.split(",")
+                ?.contains(rawName.lowercase()) == true && Config["show_your_stats_instead_of_aliases"] == "true"
+        ) Config[PlayerName] else rawName
+
         try {
-            val tags2 = (listOf(*tags) + generatePreTags(name)).toTypedArray()
+            val tags2 = (listOf(*tags) + generatePreTags(name, rawName))
+                .distinctBy { tag -> tag.javaClass }
+                .toMutableStateList()
 
             jobs[name] = PlayerFactory.makePlayer(name).onEach {
                 _players += when (it) {
@@ -31,10 +39,10 @@ object PlayerKindaButNotExactlyViewModel {
                         PlayerState(
                             name = (it.data as Player)["name"] ?: name,
                             player = it.data,
-                            tags = mutableStateListOf(*tags2)
+                            tags = tags2
                         ).also { ps ->
                             try {
-                                ps.tags += generatePostTags(ps)
+                                ps.tags += generatePostTags(ps).distinctBy { tag -> tag.javaClass }
                             } catch (e: Exception) {
                                 Napier.wtf(e) { "Failed to generate post tags" }
                             }
@@ -42,14 +50,15 @@ object PlayerKindaButNotExactlyViewModel {
                     }
                     is Status.Loading -> {
                         _players.remove(name)
-                        PlayerState(name = name, isLoading = true, tags = mutableStateListOf(*tags2))
+                        println(jobs.size)
+                        PlayerState(name = name, isLoading = true, tags = tags2)
                     }
                     is Status.Error -> {
                         _players.remove(name)
                         PlayerState(
                             name = name,
                             error = it.message ?: "An unexpected error has occurred",
-                            tags = mutableStateListOf(*tags2 + Error)
+                            tags = (tags2 + Error).distinctBy { tag -> tag.javaClass }.toMutableStateList()
                         )
                     }
                 }
@@ -63,10 +72,15 @@ object PlayerKindaButNotExactlyViewModel {
 
     private val devNames = listOf("ambmt", "_lightninq", "vitroid", "firestarad", "sirjosh3917", "hero_of_gb", "rezcwa")
 
-    private fun generatePreTags(name: String): MutableList<Tag> {
+    private fun generatePreTags(name: String, rawName: String): MutableList<Tag> {
         val tags = mutableListOf<Tag>()
 
-        if (name.equals(Config[PlayerName], true)) tags += You
+        if (
+            name.equals(Config[PlayerName], true) || Config["aliases"]?.lowercase()?.split(",")
+                ?.contains(rawName.lowercase()) == true
+        ) {
+            tags += You
+        }
         if (name.lowercase() == "ambmt") tags += Ambmt
         if (name.lowercase() in devNames) tags += VoxylDev
         if (name.lowercase() == "carburettor") tags += OverlayDev
@@ -100,20 +114,15 @@ object PlayerKindaButNotExactlyViewModel {
         }
     }
 
-    fun refresh(name: String, cs: CoroutineScope) {
-        try {
-            remove(name)
-            add(name, cs)
-        } catch (e: Exception) {
-            Napier.wtf("Failed to refresh player $name", e)
-        }
-    }
-
     fun refreshAll(cs: CoroutineScope) {
         try {
-            val names = _players.map { it.name }
+            val players = _players.map {
+                it.name to it.tags.toList()
+            }
             removeAll()
-            names.forEach { add(it, cs) }
+            players.forEach {
+                add(it.first, cs, *it.second.toTypedArray())
+            }
         } catch (e: Exception) {
             Napier.wtf("Failed to refresh all players", e)
         }

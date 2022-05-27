@@ -9,7 +9,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.ui.elements.VTextField
-import com.voxyl.overlay.ui.elements.MyTrailingIcon
+import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.elements.VText
 
@@ -24,6 +24,7 @@ fun SettingsTextField(
     doOnEnter: () -> Unit,
     isValid: (TextFieldValue) -> Boolean = { true },
     trailingIcon: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -53,7 +54,7 @@ fun SettingsTextField(
             onValueChange(it)
         },
         trailingIcon = trailingIcon ?: {
-            MyTrailingIcon(
+            VTrailingIcon(
                 modifier = Modifier
                     .offset(x = 10.dp, y = 5.dp)
                     .size(12.dp, 12.dp)
@@ -61,6 +62,7 @@ fun SettingsTextField(
                 if (isValid(value)) doOnEnter()
             }
         },
+        leadingIcon = leadingIcon,
         isError = !isValid(value)
     )
 }

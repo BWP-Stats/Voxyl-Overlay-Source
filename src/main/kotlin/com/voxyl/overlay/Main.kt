@@ -18,6 +18,8 @@ import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhateveri
 import com.voxyl.overlay.business.nativelisteners.NativeListeners
 import com.voxyl.overlay.business.validation.ValidationChecks
 import com.voxyl.overlay.appinfo.AppInfo
+import com.voxyl.overlay.business.autoupdater.AutoUpdater
+import com.voxyl.overlay.business.autoupdater.AutoUpdater.saveSettingsToTemp
 import com.voxyl.overlay.settings.Settings
 import com.voxyl.overlay.settings.window.SavedWindowState
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
@@ -37,6 +39,10 @@ lateinit var Window: ComposeWindow
 @ExperimentalComposeUiApi
 @Preview
 fun main() = application {
+
+    Settings.loadAll()
+    UpdateChecker.restoreSettingsFromPreviousVersion()
+
     val windowState = rememberWindowState(
         position = getPreferredWindowPosition(),
         size = getPreferredWindowSize()

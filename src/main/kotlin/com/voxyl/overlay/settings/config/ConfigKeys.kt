@@ -31,5 +31,8 @@ enum class ConfigKeys(val key: String, var defaultValue: String) {
     SortBy("sort_by", "name"),
     SortAsc("sort_asc", "false"),
 
-    Columns("columns", "tags,bwp.level,name,bwp.wins,bwp.kills,bwp.finals")
+    Columns("columns", "tags,bwp.level,name,bwp.wins,bwp.kills,bwp.finals"),
+
+    Aliases("aliases", ""),
+    ShowYourStatsInsteadOfAliases("show_your_stats_instead_of_aliases", "false"),
 }

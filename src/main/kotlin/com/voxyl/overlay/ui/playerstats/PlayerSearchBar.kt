@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.business.networking.player.tags.ManuallySearched
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.elements.VTextField
-import com.voxyl.overlay.ui.elements.MyTrailingIcon
+import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
@@ -89,7 +89,7 @@ fun PlayerSearchBar(
             )
         },
         trailingIcon = {
-            MyTrailingIcon(
+            VTrailingIcon(
                 modifier = Modifier
                     .offset(x = 10.dp, y = 5.dp)
                     .size(12.dp, 12.dp)

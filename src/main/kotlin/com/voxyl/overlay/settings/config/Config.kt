@@ -3,19 +3,18 @@ package com.voxyl.overlay.settings.config
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.util.Properties
+import java.util.*
 
 object Config {
-    private val config by lazy {
-        load()
-    }
+    lateinit var config: Properties
 
     private const val defaultPath = "./settings/config.properties"
 
-    private fun load(path: String = defaultPath) = Properties().also {
-        makeConfigFileIfNotPresent()
-        it.load(FileInputStream(path))
-        addPropertiesIfNotPresent(it)
+    fun load(path: String = defaultPath) {
+        config = Properties()
+        makeConfigFileIfNotPresent(path)
+        config.load(FileInputStream(path))
+        addPropertiesIfNotPresent(config)
     }
 
     private fun addPropertiesIfNotPresent(

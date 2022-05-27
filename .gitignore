@@ -71,9 +71,7 @@ gradle-app.setting
 ## File-based project format:
 *.iws
 
-## Plugin-specific files:
-
-# IntelliJ
+# Intelli
 /out/
 
 # mpeltonen/sbt-idea plugin
@@ -97,6 +95,3 @@ build/
 /captures
 .externalNativeBuild
 .cxx
-
-settings
-logs

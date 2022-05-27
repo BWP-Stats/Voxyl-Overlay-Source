@@ -14,7 +14,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.BwpApiKey
-import com.voxyl.overlay.ui.elements.MyTrailingIcon
+import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.settings.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.am
@@ -53,7 +53,7 @@ fun BWPApiKeyTextField() {
                     },
                 tint = MainWhite.copy(alpha = .313f).am
             )
-            MyTrailingIcon(
+            VTrailingIcon(
                 modifier = Modifier
                     .offset(x = 10.dp, y = 5.dp)
                     .size(12.dp, 12.dp)
@@ -64,7 +64,7 @@ fun BWPApiKeyTextField() {
     )
 }
 
-fun getBwpApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
+private fun getBwpApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
     if (apiKey.text.isNotBlank() && !isValid)
         "API key must be 32 chars and contain only letters & numbers"
     else if (Config[BwpApiKey].isBlank())
@@ -72,4 +72,4 @@ fun getBwpApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
     else
         "Enter your BWP API key (${Config[BwpApiKey].substring(0, 11) + "*".repeat(22)})"
 
-fun isValidBwpApiKey(tfv: TextFieldValue) = tfv.text.matches(Regex("[a-zA-Z0-9]{32}"))
+private fun isValidBwpApiKey(tfv: TextFieldValue) = tfv.text.matches(Regex("[a-zA-Z0-9]{32}"))

@@ -12,7 +12,7 @@ object GitHubApiProvider {
             .build()
             .create(GitHubApi::class.java)
 
-    fun getDownload(): GitHubDownloader =
+    fun getDownloader(): GitHubDownloader =
         Retrofit.Builder()
             .baseUrl("https://github.com/")
             .addConverterFactory(ScalarsConverterFactory.create())

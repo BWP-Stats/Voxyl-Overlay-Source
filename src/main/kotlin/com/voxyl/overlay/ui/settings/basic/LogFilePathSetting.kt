@@ -17,7 +17,7 @@ import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
 import com.voxyl.overlay.settings.config.LogFiles
-import com.voxyl.overlay.ui.elements.MyTrailingIcon
+import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.settings.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.theme.am
@@ -69,7 +69,7 @@ fun LogFilePathTextField() {
                     },
                 tint = MainWhite.copy(alpha = .313f).am
             )
-            MyTrailingIcon(
+            VTrailingIcon(
                 modifier = Modifier
                     .offset(x = 10.dp, y = 5.dp)
                     .size(12.dp, 12.dp)

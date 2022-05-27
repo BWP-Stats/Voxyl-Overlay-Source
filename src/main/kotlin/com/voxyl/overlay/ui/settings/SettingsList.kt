@@ -18,6 +18,8 @@ import com.voxyl.overlay.settings.config.ConfigKeys.AddYourselfToOverlay
 import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
 import com.voxyl.overlay.ui.elements.*
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
+import com.voxyl.overlay.ui.settings.aliases.AliasesTextField
+import com.voxyl.overlay.ui.settings.aliases.ShowYourStatsInsteadOfAliasesCheckBox
 import com.voxyl.overlay.ui.settings.appearances.*
 import com.voxyl.overlay.ui.settings.basic.BWPApiKeyTextField
 import com.voxyl.overlay.ui.settings.basic.HypixelApiKeyTextField
@@ -86,6 +88,10 @@ fun SettingsList(
                 @Composable { OpenCloseKeySetting() } to "KeybindsOpenCloseKeySettingHotkeys",
                 @Composable { ClearPlayersKeySetting() } to "KeybindsClearPlayersKeySettingHotkeys",
                 @Composable { RefreshPlayersKeySetting() } to "KeybindsRefreshPlayersKeySettingHotkeys",
+
+                @Composable { Header("Aliases (Shift + scroll to scroll through your aliases when many are present)") } to "AliasesNicksNicknamesAltAccounts",
+                @Composable { ShowYourStatsInsteadOfAliasesCheckBox() } to "ShowYourStatsInsteadOfAliasesCheckBox",
+                @Composable { AliasesTextField() } to "AliasesNicksNicknamesAltAccounts",
 
                 @Composable { Header("Columns") } to "ColumnsStatsShowRows",
                 @Composable { ColumnsSettings() } to "ColumnsStatsShowRows"

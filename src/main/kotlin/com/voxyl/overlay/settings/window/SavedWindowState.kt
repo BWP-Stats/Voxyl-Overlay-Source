@@ -8,16 +8,15 @@ import java.util.*
 import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
 
 object SavedWindowState {
-    private val state by lazy {
-        load()
-    }
+    lateinit var state: Properties
 
     private const val defaultPath = "./settings/window-state.properties"
 
-    private fun load(path: String = defaultPath) = Properties().also {
-        makeConfigFileIfNotPresent()
-        it.load(FileInputStream(path))
-        addPropertiesIfNotPresent(it)
+    fun load(path: String = defaultPath) {
+        state = Properties()
+        makeConfigFileIfNotPresent(path)
+        state.load(FileInputStream(path))
+        addPropertiesIfNotPresent(state)
     }
 
     private fun addPropertiesIfNotPresent(state: Properties = SavedWindowState.state) {

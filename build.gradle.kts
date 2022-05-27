@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.voxyl"
-version = "0.19.5"
+version = "0.21.0"
 
 repositories {
     google()
@@ -70,6 +70,7 @@ compose.desktop {
     }
 }
 
+/*
 tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "com.voxyl.overlay.MainKt"
@@ -87,4 +88,4 @@ tasks.register<Jar>("uberJar") {
     from({
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
-}
+}*/

@@ -40,6 +40,7 @@ dependencies {
     //drag 'n' drop reordering
     implementation("org.burnoutcrew.composereorderable:reorderable:0.7.4")
 
+    //discord rpc
     implementation("com.github.JnCrMx:discord-game-sdk4j:0.5.5")
 }
 

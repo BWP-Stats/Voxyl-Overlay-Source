@@ -34,8 +34,6 @@ fun PlayerNameTextField() {
         name = TextFieldValue()
     }
 
-    println(name.text + " |")
-
     SettingsTextField(
         text = getNameLabel(name, isValidName(name)),
         value = name,

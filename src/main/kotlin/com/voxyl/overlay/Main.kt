@@ -108,6 +108,10 @@ fun ApplicationScope.VTray(windowState: WindowState) = Tray(
         UpdateChecker.check(cs, true)
     }
 
+    Item("Refresh Discord RPC") {
+        DiscordRPC.refresh(cs)
+    }
+
     Separator()
 
     Item("Exit") {

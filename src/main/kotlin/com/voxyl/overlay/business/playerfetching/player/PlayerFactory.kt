@@ -1,5 +1,9 @@
+@file:Suppress("SpellCheckingInspection")
+
 package com.voxyl.overlay.business.playerfetching.player
 
+import com.google.gson.JsonObject
+import com.voxyl.overlay.business.NetworkingUtils
 import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
 import com.voxyl.overlay.business.playerfetching.apis.BWPApi
 import com.voxyl.overlay.business.playerfetching.apis.HypixelApi
@@ -15,99 +19,51 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 
-//TODO: Overhaul the API fetching system when there is time; currently it's a mess
+typealias DR = Deferred<Response<JsonObject>>
+
 object PlayerFactory {
-    fun makePlayer(
-        name: String,
-        bwpApiKey: String = Config[BwpApiKey],
-        hypixelApiKey: String = Config[HypixelApiKey],
-        bwpApi: BWPApi = ApiProvider.getBWPApi(),
-        hypixelApi: HypixelApi = ApiProvider.getHypixelApi(),
-    ): Flow<ResponseStatus<Player>> = flow {
+    fun makePlayer(name: String): Flow<ResponseStatus<Player>> = flow {
         try {
             emit(ResponseStatus.Loading(name = name))
 
             val uuid = getUUID(name)
-            val deferredHypixelStats = getHypixelStats(uuid, hypixelApiKey, hypixelApi)
-            val deferredBwpStats = getBWPStats(uuid, bwpApiKey, bwpApi)
 
-            val hypixelStats = try {
-                deferredHypixelStats.await()
-            } catch (e: Exception) {
-                Napier.e("Failed to get Hypixel stats for $name; ${e.localizedMessage}")
-                null
-            }
+            val stats = queryStatsApis(uuid, Config[BwpApiKey], Config[HypixelApiKey])
 
-            val info = try {
-                deferredBwpStats.info.await()
-            } catch (e: Exception) {
-                Napier.e("Failed to get BWP info for $name; ${e.localizedMessage}")
-                null
-            }
+            val hypixel = validatedHypixelResponse(stats, name)
+            val overall = validatedOverallResponse(stats, name)
+            val game = validatedGameResponse(stats, name)
+            val info = validatedInfoResponse(stats, name)
 
-            val overall = try {
-                deferredBwpStats.overall.await()
-            } catch (e: Exception) {
-                Napier.e("Failed to get BWP overall for $name; ${e.localizedMessage}")
-                null
-            }
+            if (hypixel == null && (overall == null || game == null || info == null))
+                throw IOException("Failed to get fetch stats from both APIs for $name")
 
-            val game = try {
-                deferredBwpStats.game.await()
-            } catch (e: Exception) {
-                Napier.e("Failed to get BWP game for $name; ${e.localizedMessage}")
-                null
-            }
+            emit(ResponseStatus.Loaded(Player(name, uuid, info, overall, game, hypixel), name = name))
 
-            if ((hypixelStats == null || hypixelStats.json["success"].asString == "false")
-                && ((info == null || info.json["success"].asString == "false")
-                        || (overall == null || overall.json["success"].asString == "false")
-                        || (game == null || game.json["success"].asString == "false"))
-            ) throw IOException("Failed to get fetch stats from both APIs for $name")
-
-            emit(ResponseStatus.Loaded(Player(name, uuid, info, overall, game, hypixelStats), name = name))
-
-        } catch (e: HttpException) {
-            Napier.e("HttpException for '$name'; " + e.localizedMessage)
-            emit(
-                ResponseStatus.Error(
-                    e.localizedMessage ?: "An unexpected error occurred trying to reach an API for '$name'",
-                    name = name
-                )
-            )
         } catch (e: IOException) {
-            Napier.e("IOException for '$name'; " + e.localizedMessage)
-            emit(
-                ResponseStatus.Error(
-                    e.localizedMessage ?: "IOException for '$name'; either your wifi or an API is down",
-                    name = name
-                )
-            )
+            val msg = e.localizedMessage ?: "IOException for '$name'; either your wifi or an API is down"
+            emit(ResponseStatus.Error(msg, name = name))
         }
     }
 
     private suspend fun getUUID(name: String, mojangApi: MojangApi = ApiProvider.getMojangApi()): String {
-        return withContext(Dispatchers.IO) {
-            try {
-                val uuid = mojangApi.getUUID(name)
-                    .substringAfterLast(":")
-                    .trim('"', '}')
-                    .untrimUUID()
+        val response = mojangApi.getUUID(name)
 
-                if (!uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".toRegex())) {
-                    throw IOException("'$name' doesn't exist or UUID api is down")
-                }
-
-                return@withContext uuid
-            } catch (e: NullPointerException) {
-                throw IOException("UUID null for $name")
-            } catch (e: Exception) {
-                throw IOException("UUID api is down? " + e.localizedMessage)
-            }
+        if (response.isSuccessful) {
+            return response.body()
+                ?.substringAfterLast(":")
+                ?.trim('"', '}')
+                ?.untrimUUID()
+                ?.validateUUID()
+                ?: throw IOException("UUID null or invalid for $name; HTTP ${response.code()}")
+                    .also { Napier.e(it.localizedMessage) }
         }
+
+        Napier.e("Failed to get UUID for $name; ${formattedError(response)}}")
+        throw IOException("Failed to get UUID for $name; ${formattedError(response)}")
     }
 
     private fun String.untrimUUID(): String {
@@ -117,29 +73,66 @@ object PlayerFactory {
             .replaceRange(23, 23, "-")
     }
 
-    private data class DeferredBWPStats(
-        val overall: Deferred<OverallStatsJson>,
-        val info: Deferred<PlayerInfoJson>,
-        val game: Deferred<GameStatsJson>
-    )
+    private fun String.validateUUID(): String? {
+        return if (this.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".toRegex())) this else null
+    }
 
-    private suspend fun getBWPStats(uuid: String, apiKey: String, bwpApi: BWPApi): DeferredBWPStats {
+    private suspend fun queryStatsApis(uuid: String, bwpKey: String, hypixKey: String): Map<String, DR> {
         return withContext(Dispatchers.IO) {
-            DeferredBWPStats(
-                async(SupervisorJob()) { OverallStatsJson(bwpApi.getOverallStats(uuid, apiKey).body()!!) },
-                async(SupervisorJob()) { PlayerInfoJson(bwpApi.getPlayerInfo(uuid, apiKey)) },
-                async(SupervisorJob()) { GameStatsJson(bwpApi.getGameStats(uuid, apiKey)) }
+            mapOf(
+                "hypixel" to async { ApiProvider.getHypixelApi().getStats(uuid, hypixKey) },
+                "overall" to async { ApiProvider.getBWPApi().getOverallStats(uuid, bwpKey) },
+                "game" to async { ApiProvider.getBWPApi().getGameStats(uuid, bwpKey) },
+                "info" to async { ApiProvider.getBWPApi().getPlayerInfo(uuid, bwpKey) }
             )
         }
     }
-    
-    private suspend fun getHypixelStats(
-        uuid: String,
-        apiKey: String,
-        hypixelApi: HypixelApi
-    ): Deferred<HypixelStatsJson> {
-        return withContext(Dispatchers.IO) {
-            async(SupervisorJob()) { HypixelStatsJson(hypixelApi.getStats(uuid, apiKey)) }
+
+    private suspend fun validatedHypixelResponse(deferred: Map<String, DR>, name: String): HypixelStatsJson? {
+        val response = deferred["hypixel"]!!.await()
+
+        if (response.isSuccessful) {
+            return response.body()?.let { HypixelStatsJson(it) }
         }
+
+        Napier.e("Failed to get Hypixel stats for $name; ${formattedError(response)}")
+        return null
+    }
+
+    private suspend fun validatedOverallResponse(deferred: Map<String, DR>, name: String): OverallStatsJson? {
+        val response = deferred["overall"]!!.await()
+
+        if (response.isSuccessful) {
+            return response.body()?.let { OverallStatsJson(it) }
+        }
+
+        Napier.e("Failed to get overall BWP stats for $name; ${formattedError(response)}")
+        return null
+    }
+
+    private suspend fun validatedGameResponse(deferred: Map<String, DR>, name: String): GameStatsJson? {
+        val response = deferred["game"]!!.await()
+
+        if (response.isSuccessful) {
+            return response.body()?.let { GameStatsJson(it) }
+        }
+
+        Napier.e("Failed to get game BWP stats for $name; ${formattedError(response)}")
+        return null
+    }
+
+    private suspend fun validatedInfoResponse(deferred: Map<String, DR>, name: String): PlayerInfoJson? {
+        val response = deferred["info"]!!.await()
+
+        if (response.isSuccessful) {
+            return response.body()?.let { PlayerInfoJson(it) }
+        }
+
+        Napier.e("Failed to get BWP player info for $name; ${formattedError(response)}")
+        return null
+    }
+
+    private fun formattedError(response: Response<*>): String {
+        return "${response.code()}, ${NetworkingUtils.stringifyError(response)}"
     }
 }

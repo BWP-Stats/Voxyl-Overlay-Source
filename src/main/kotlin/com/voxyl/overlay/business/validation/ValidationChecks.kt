@@ -32,9 +32,9 @@ object ValidationChecks {
         }
     }
 
-    suspend fun validateApiKeys() {
-        val bwp = BwpApiValidator.validateApiKey()
-        val hypixel = HypixelApiKeyValidator.validateApiKey()
+    private suspend fun validateApiKeys() {
+        val bwp = BwpApiValidator.isValid()
+        val hypixel = HypixelApiKeyValidator.isValid()
 
         if (bwp == false && hypixel == false) {
             PopUpQueue.add(Error("Your API keys are invalid! Please check them and try again!"))
@@ -46,7 +46,7 @@ object ValidationChecks {
         }
 
         if (bwp == false) {
-            PopUpQueue.add(Error("Please fill in your BWP api key!"))
+            PopUpQueue.add(Error("Your BWP api key is invalid!"))
         }
 
         if (hypixel == null) {

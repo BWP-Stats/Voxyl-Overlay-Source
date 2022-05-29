@@ -5,9 +5,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
-import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHideDelay
 import com.voxyl.overlay.ui.elements.VCheckbox
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText

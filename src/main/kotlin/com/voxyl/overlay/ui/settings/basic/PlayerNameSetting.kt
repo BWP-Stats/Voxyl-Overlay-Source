@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -15,8 +14,8 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.PlayerName
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.PlayerName
 import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.settings.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhite

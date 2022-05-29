@@ -1,4 +1,4 @@
-package com.voxyl.overlay.settings.misc
+package com.voxyl.overlay.business.settings.misc
 
 import java.io.File
 import java.io.FileInputStream

@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener
 import com.voxyl.overlay.Window
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.OpenAndCloseKeybind
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.OpenAndCloseKeybind
 
 object OpenCloseKeyListener : NativeKeyListener {
     var paramString by mutableStateOf(

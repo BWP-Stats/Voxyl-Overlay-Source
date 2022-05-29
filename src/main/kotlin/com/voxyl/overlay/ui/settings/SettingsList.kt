@@ -9,13 +9,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.AddYourselfToOverlay
-import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.AddYourselfToOverlay
+import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHide
 import com.voxyl.overlay.ui.elements.*
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.settings.aliases.AliasesTextField
@@ -35,7 +32,6 @@ import com.voxyl.overlay.ui.settings.keybinds.OpenCloseKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.RefreshPlayersKeySetting
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
 import com.voxyl.overlay.ui.settings.qol.PinYourselfToTopCheckbox
-import io.github.aakira.napier.Napier
 
 @Composable
 fun Settings(

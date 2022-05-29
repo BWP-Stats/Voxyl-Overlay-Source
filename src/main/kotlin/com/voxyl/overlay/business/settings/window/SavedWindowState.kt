@@ -1,11 +1,11 @@
-package com.voxyl.overlay.settings.window
+package com.voxyl.overlay.business.settings.window
 
 import com.voxyl.overlay.Window
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
-import com.voxyl.overlay.settings.window.SavedWindowStateKeys.*
+import com.voxyl.overlay.business.settings.window.SavedWindowStateKeys.*
 
 object SavedWindowState {
     lateinit var state: Properties

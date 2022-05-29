@@ -2,10 +2,10 @@ package com.voxyl.overlay.business.logfilereader
 
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
-import com.voxyl.overlay.settings.misc.MiscKeys.FirstTime
-import com.voxyl.overlay.settings.misc.MiscSettings
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.LogFilePath
+import com.voxyl.overlay.business.settings.misc.MiscKeys.FirstTime
+import com.voxyl.overlay.business.settings.misc.MiscSettings
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.FileInputStream

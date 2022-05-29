@@ -2,9 +2,9 @@ package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatever
 
 import androidx.compose.runtime.mutableStateOf
 import com.voxyl.overlay.business.playerfetching.player.PlayerState
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.SortAsc
-import com.voxyl.overlay.settings.config.ConfigKeys.SortBy
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.SortAsc
+import com.voxyl.overlay.business.settings.config.ConfigKeys.SortBy
 
 object StatsSort {
     private var _by = mutableStateOf(Config[SortBy])

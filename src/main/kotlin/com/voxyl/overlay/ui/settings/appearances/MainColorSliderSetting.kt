@@ -8,9 +8,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys
-import com.voxyl.overlay.settings.config.ConfigKeys.*
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys
+import com.voxyl.overlay.business.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.theme.MainWhite
 import com.voxyl.overlay.ui.elements.VText

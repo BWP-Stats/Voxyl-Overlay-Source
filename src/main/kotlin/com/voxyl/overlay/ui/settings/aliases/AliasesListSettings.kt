@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.settings.SettingsTextField

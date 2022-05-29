@@ -4,7 +4,9 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -38,6 +40,7 @@ fun VText(
     style: TextStyle = LocalTextStyle.current,
     alpha: Float = 1f
 ) {
+
     Text(
         text = text,
         modifier = modifier,

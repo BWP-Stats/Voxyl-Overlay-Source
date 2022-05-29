@@ -8,12 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.business.nativelisteners.ClearPlayersKeyListener
 import com.voxyl.overlay.business.nativelisteners.RefreshPlayersKeyListener
 import com.voxyl.overlay.business.nativelisteners.KeyListenerForSettings
 import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeString
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.RefreshPlayersKeybind
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.RefreshPlayersKeybind
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.am
 import kotlinx.coroutines.launch

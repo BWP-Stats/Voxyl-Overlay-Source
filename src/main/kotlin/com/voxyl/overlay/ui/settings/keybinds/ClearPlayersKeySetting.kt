@@ -11,9 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.nativelisteners.ClearPlayersKeyListener
 import com.voxyl.overlay.business.nativelisteners.KeyListenerForSettings
 import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeString
-import com.voxyl.overlay.business.nativelisteners.OpenCloseKeyListener
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.ClearPlayersKeybind
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.ClearPlayersKeybind
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.am
 import kotlinx.coroutines.launch

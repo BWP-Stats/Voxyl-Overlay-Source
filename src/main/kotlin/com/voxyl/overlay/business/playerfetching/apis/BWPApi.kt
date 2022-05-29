@@ -1,6 +1,7 @@
 package com.voxyl.overlay.business.playerfetching.apis
 
 import com.google.gson.JsonObject
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -12,7 +13,7 @@ interface BWPApi {
     suspend fun getPlayerInfo(@Path("uuid") uuid: String, @Query("api") apiKey: String): JsonObject
 
     @GET("player/stats/overall/{uuid}")
-    suspend fun getOverallStats(@Path("uuid") uuid: String, @Query("api") apiKey: String): JsonObject
+    suspend fun getOverallStats(@Path("uuid") uuid: String, @Query("api") apiKey: String): Response<JsonObject>
 
     @GET("/player/stats/game/{uuid}")
     suspend fun getGameStats(@Path("uuid") uuid: String, @Query("api") apiKey: String): JsonObject
@@ -30,4 +31,10 @@ interface BWPApi {
         @Query("type") type: String = "weightedwins",
         @Query("num") number: String = "100"
     ): JsonObject
+}
+
+suspend fun main() {
+    val api = ApiProvider.getBWPApi()
+    val playerInfo = api.getOverallStats("e21d44c5-c1fd-4119-b55c-5baced12fd6e", "HhtTKOr5nIvl8adDZMtaLAjsBhClrmvp")
+    println(playerInfo.body())
 }

@@ -1,7 +1,7 @@
 package com.voxyl.overlay.business.validation
 
 import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
-import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.business.settings.config.Config
 import retrofit2.HttpException
 
 object HypixelApiKeyValidator {

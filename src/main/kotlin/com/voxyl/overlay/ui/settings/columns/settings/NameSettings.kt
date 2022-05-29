@@ -7,10 +7,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.RankPrefix
-import com.voxyl.overlay.settings.config.ConfigKeys.ShowRankPrefix
-import com.voxyl.overlay.settings.misc.MiscSettings
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.RankPrefix
+import com.voxyl.overlay.business.settings.config.ConfigKeys.ShowRankPrefix
+import com.voxyl.overlay.business.settings.misc.MiscSettings
 import com.voxyl.overlay.ui.elements.VCheckbox
 import com.voxyl.overlay.ui.settings.columns.ColumnSettingsMenuState
 import com.voxyl.overlay.ui.elements.VText

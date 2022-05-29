@@ -5,8 +5,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.BackgroundOpacity
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.BackgroundOpacity
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.bgAlphaMultiplier
@@ -32,7 +32,7 @@ fun BackgroundOpacitySlider(modifier: Modifier = Modifier) {
                 bgAlphaMultiplier.value = it
             },
             modifier = Modifier.fillMaxWidth(),
-            valueRange = .3f..3f,
+            valueRange = 0f..3f,
             onValueChangeFinished = {
                 Config[BackgroundOpacity] = bgAlphaMultiplier.value.toString()
             },

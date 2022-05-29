@@ -4,10 +4,10 @@ import com.voxyl.overlay.business.validation.popups.Tip
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.*
-import com.voxyl.overlay.settings.misc.MiscSettings
-import com.voxyl.overlay.settings.misc.MiscKeys.*
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.*
+import com.voxyl.overlay.business.settings.misc.MiscSettings
+import com.voxyl.overlay.business.settings.misc.MiscKeys.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

@@ -1,8 +1,8 @@
 package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
 
 import androidx.compose.runtime.toMutableStateList
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.Columns
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.Columns
 import java.util.*
 
 object StatsToShow {

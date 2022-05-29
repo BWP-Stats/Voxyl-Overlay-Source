@@ -5,8 +5,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.Opacity
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.Opacity
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.alphaMultiplier

@@ -16,10 +16,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.logfilereader.LogFileReader
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys
-import com.voxyl.overlay.settings.config.ConfigKeys.LogFilePath
-import com.voxyl.overlay.settings.config.LogFiles
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.LogFilePath
+import com.voxyl.overlay.business.settings.config.LogFiles
 import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.settings.SettingsTextField
 import com.voxyl.overlay.ui.theme.MainWhite

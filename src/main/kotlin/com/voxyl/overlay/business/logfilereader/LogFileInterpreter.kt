@@ -3,9 +3,9 @@ package com.voxyl.overlay.business.logfilereader
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.business.playerfetching.player.tags.FromGame
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHideDelay
-import com.voxyl.overlay.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHideDelay
+import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

@@ -8,6 +8,7 @@ object ApiProvider {
     fun getBWPApi(): BWPApi =
         Retrofit.Builder()
             .baseUrl("https://api.voxyl.net")
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(BWPApi::class.java)
@@ -15,6 +16,7 @@ object ApiProvider {
     fun getHypixelApi(): HypixelApi =
         Retrofit.Builder()
             .baseUrl("https://api.hypixel.net")
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HypixelApi::class.java)

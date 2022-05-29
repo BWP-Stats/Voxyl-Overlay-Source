@@ -8,9 +8,9 @@ import com.voxyl.overlay.business.playerfetching.models.GameStatsJson
 import com.voxyl.overlay.business.playerfetching.models.HypixelStatsJson
 import com.voxyl.overlay.business.playerfetching.models.OverallStatsJson
 import com.voxyl.overlay.business.playerfetching.models.PlayerInfoJson
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.BwpApiKey
-import com.voxyl.overlay.settings.config.ConfigKeys.HypixelApiKey
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.BwpApiKey
+import com.voxyl.overlay.business.settings.config.ConfigKeys.HypixelApiKey
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -64,8 +64,8 @@ object PlayerFactory {
 
             if ((hypixelStats == null || hypixelStats.json["success"].asString == "false")
                 && ((info == null || info.json["success"].asString == "false")
-                || (overall == null || overall.json["success"].asString == "false")
-                || (game == null || game.json["success"].asString == "false"))
+                        || (overall == null || overall.json["success"].asString == "false")
+                        || (game == null || game.json["success"].asString == "false"))
             ) throw IOException("Failed to get fetch stats from both APIs for $name")
 
             emit(ResponseStatus.Loaded(Player(name, uuid, info, overall, game, hypixelStats), name = name))
@@ -126,13 +126,13 @@ object PlayerFactory {
     private suspend fun getBWPStats(uuid: String, apiKey: String, bwpApi: BWPApi): DeferredBWPStats {
         return withContext(Dispatchers.IO) {
             DeferredBWPStats(
-                async(SupervisorJob()) { OverallStatsJson(bwpApi.getOverallStats(uuid, apiKey)) },
+                async(SupervisorJob()) { OverallStatsJson(bwpApi.getOverallStats(uuid, apiKey).body()!!) },
                 async(SupervisorJob()) { PlayerInfoJson(bwpApi.getPlayerInfo(uuid, apiKey)) },
                 async(SupervisorJob()) { GameStatsJson(bwpApi.getGameStats(uuid, apiKey)) }
             )
         }
     }
-
+    
     private suspend fun getHypixelStats(
         uuid: String,
         apiKey: String,

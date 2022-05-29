@@ -1,4 +1,4 @@
-package com.voxyl.overlay.settings.config
+package com.voxyl.overlay.business.settings.config
 
 enum class ConfigKeys(val key: String, var defaultValue: String) {
     HypixelApiKey("hypixel_api_key", ""),

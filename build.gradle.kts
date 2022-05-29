@@ -1,6 +1,7 @@
 import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
     kotlin("jvm") version "1.6.10"
@@ -45,6 +46,8 @@ dependencies {
 
     //discord rpc
     implementation("com.github.JnCrMx:discord-game-sdk4j:0.5.5")
+
+    implementation("cc.popkorn:popkorn:2.2.0")
 }
 
 tasks.test {

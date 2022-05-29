@@ -1,4 +1,4 @@
-package com.voxyl.overlay.settings.config
+package com.voxyl.overlay.business.settings.config
 
 enum class LogFiles(val path: String) {
 

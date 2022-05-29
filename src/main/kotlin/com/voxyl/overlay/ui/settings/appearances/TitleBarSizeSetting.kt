@@ -8,8 +8,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.TitleBarSizeMulti
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.TitleBarSizeMulti
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.theme.titleBarSizeMulti

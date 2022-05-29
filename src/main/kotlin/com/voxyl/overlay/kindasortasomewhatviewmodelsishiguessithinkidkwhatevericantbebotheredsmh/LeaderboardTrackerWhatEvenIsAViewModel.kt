@@ -4,8 +4,8 @@ import com.google.gson.JsonObject
 import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
 import com.voxyl.overlay.business.playerfetching.models.LevelsLeaderboardJson
 import com.voxyl.overlay.business.playerfetching.models.WWinsLeaderboardJson
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.BwpApiKey
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.BwpApiKey
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 

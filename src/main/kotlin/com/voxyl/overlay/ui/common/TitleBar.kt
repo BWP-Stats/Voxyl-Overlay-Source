@@ -20,7 +20,7 @@ import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.Window
-import com.voxyl.overlay.settings.Settings
+import com.voxyl.overlay.business.settings.Settings
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.playerstats.PlayerSearchBar
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.ScreenShowing

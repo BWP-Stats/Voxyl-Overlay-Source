@@ -4,8 +4,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.*
 import com.voxyl.overlay.business.playerfetching.player.*
 import com.voxyl.overlay.business.playerfetching.player.tags.*
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.PlayerName
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.PlayerName
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn

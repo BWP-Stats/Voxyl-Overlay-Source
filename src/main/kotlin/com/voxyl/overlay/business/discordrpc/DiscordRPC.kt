@@ -6,7 +6,7 @@ import com.voxyl.overlay.business.playerfetching.player.ResponseStatus
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
-import com.voxyl.overlay.settings.config.Config
+import com.voxyl.overlay.business.settings.config.Config
 import de.jcm.discordgamesdk.Core
 import de.jcm.discordgamesdk.CreateParams
 import de.jcm.discordgamesdk.GameSDKException

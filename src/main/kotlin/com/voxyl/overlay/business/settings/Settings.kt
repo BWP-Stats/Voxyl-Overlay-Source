@@ -1,10 +1,10 @@
-package com.voxyl.overlay.settings
+package com.voxyl.overlay.business.settings
 
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.window.SavedWindowState
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.window.SavedWindowState
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
-import com.voxyl.overlay.settings.misc.MiscKeys.FirstTime
-import com.voxyl.overlay.settings.misc.MiscSettings
+import com.voxyl.overlay.business.settings.misc.MiscKeys.FirstTime
+import com.voxyl.overlay.business.settings.misc.MiscSettings
 import java.io.File
 
 object Settings {

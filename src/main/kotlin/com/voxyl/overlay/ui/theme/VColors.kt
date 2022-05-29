@@ -3,12 +3,12 @@ package com.voxyl.overlay.ui.theme
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import com.voxyl.overlay.settings.config.Config
-import com.voxyl.overlay.settings.config.ConfigKeys.R
-import com.voxyl.overlay.settings.config.ConfigKeys.G
-import com.voxyl.overlay.settings.config.ConfigKeys.B
-import com.voxyl.overlay.settings.config.ConfigKeys.Opacity
-import com.voxyl.overlay.settings.config.ConfigKeys.BackgroundOpacity
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.ConfigKeys.R
+import com.voxyl.overlay.business.settings.config.ConfigKeys.G
+import com.voxyl.overlay.business.settings.config.ConfigKeys.B
+import com.voxyl.overlay.business.settings.config.ConfigKeys.Opacity
+import com.voxyl.overlay.business.settings.config.ConfigKeys.BackgroundOpacity
 import kotlin.math.roundToInt
 
 var alphaMultiplier = mutableStateOf(Config[Opacity].toFloatOrNull() ?: 1f)

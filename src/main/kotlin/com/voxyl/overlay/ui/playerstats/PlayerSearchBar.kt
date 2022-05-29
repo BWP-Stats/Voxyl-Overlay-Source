@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.business.networking.player.tags.ManuallySearched
+import com.voxyl.overlay.business.playerfetching.player.tags.ManuallySearched
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
 import com.voxyl.overlay.ui.elements.VTextField
 import com.voxyl.overlay.ui.elements.VTrailingIcon

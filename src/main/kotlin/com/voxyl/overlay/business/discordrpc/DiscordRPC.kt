@@ -1,19 +1,16 @@
 package com.voxyl.overlay.business.discordrpc
 
-import com.voxyl.overlay.business.networking.player.Player
-import com.voxyl.overlay.business.networking.player.PlayerFactory
-import com.voxyl.overlay.business.networking.player.Status
+import com.voxyl.overlay.business.playerfetching.player.Player
+import com.voxyl.overlay.business.playerfetching.player.PlayerFactory
+import com.voxyl.overlay.business.playerfetching.player.ResponseStatus
 import com.voxyl.overlay.business.validation.popups.Error
-import com.voxyl.overlay.business.validation.popups.Info
 import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import com.voxyl.overlay.settings.config.Config
 import de.jcm.discordgamesdk.Core
 import de.jcm.discordgamesdk.CreateParams
-import de.jcm.discordgamesdk.DiscordEventAdapter
 import de.jcm.discordgamesdk.GameSDKException
 import de.jcm.discordgamesdk.activity.Activity
-import de.jcm.discordgamesdk.user.DiscordUser
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
@@ -25,9 +22,9 @@ object DiscordRPC {
     private val startTime = Instant.now()
     private var player: Player? = null
 
-    suspend fun `try`(cs: CoroutineScope) {
+    fun start(cs: CoroutineScope) = cs.launch (Dispatchers.IO){
 
-        if (!initCore()) return
+        if (!initCore()) return@launch
 
         try {
             val params = CreateParams().apply {
@@ -74,7 +71,7 @@ object DiscordRPC {
         } catch (e: GameSDKException) {
             Napier.e("Error running callbacks", e)
             PopUpQueue.add(Warning("Overlay must be restarted after opening discord to show Discord Rich Presence"))
-            return
+            return@launch
         }
     }
 
@@ -100,10 +97,10 @@ object DiscordRPC {
     fun refresh(cs: CoroutineScope) {
         try {
             PlayerFactory.makePlayer(Config["player_name"] ?: "").onEach {
-                if (it is Status.Loaded) {
+                if (it is ResponseStatus.Loaded) {
                     player = it.data as Player
                 }
-                if (it is Status.Error) {
+                if (it is ResponseStatus.Error) {
                     player = null
                 }
             }.launchIn(cs)

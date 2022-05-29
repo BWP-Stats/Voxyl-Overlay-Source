@@ -5,7 +5,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import com.voxyl.overlay.business.networking.player.PlayerState
+import com.voxyl.overlay.business.playerfetching.player.PlayerState
 import com.voxyl.overlay.ui.theme.am
 
 object BwpRankColors {

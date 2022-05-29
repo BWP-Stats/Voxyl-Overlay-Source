@@ -2,8 +2,8 @@ package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatever
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.*
-import com.voxyl.overlay.business.networking.player.*
-import com.voxyl.overlay.business.networking.player.tags.*
+import com.voxyl.overlay.business.playerfetching.player.*
+import com.voxyl.overlay.business.playerfetching.player.tags.*
 import com.voxyl.overlay.settings.config.Config
 import com.voxyl.overlay.settings.config.ConfigKeys.PlayerName
 import io.github.aakira.napier.Napier
@@ -28,13 +28,13 @@ object PlayerKindaButNotExactlyViewModel {
         ) Config[PlayerName] else rawName
 
         try {
-            val tags2 = (listOf(*tags) + generatePreTags(name, rawName))
+            val tags2 = (listOf(*tags) + TagGenerator.generatePreTags(name, rawName))
                 .distinctBy { tag -> tag.javaClass }
                 .toMutableStateList()
 
             jobs[name] = PlayerFactory.makePlayer(name).onEach {
                 _players += when (it) {
-                    is Status.Loaded -> {
+                    is ResponseStatus.Loaded -> {
                         _players.remove(name)
                         PlayerState(
                             name = (it.data as Player)["name"] ?: name,
@@ -42,18 +42,17 @@ object PlayerKindaButNotExactlyViewModel {
                             tags = tags2
                         ).also { ps ->
                             try {
-                                ps.tags += generatePostTags(ps).distinctBy { tag -> tag.javaClass }
+                                ps.tags += TagGenerator.generatePostTags(ps).distinctBy { tag -> tag.javaClass }
                             } catch (e: Exception) {
                                 Napier.wtf(e) { "Failed to generate post tags" }
                             }
                         }
                     }
-                    is Status.Loading -> {
+                    is ResponseStatus.Loading -> {
                         _players.remove(name)
-                        println(jobs.size)
                         PlayerState(name = name, isLoading = true, tags = tags2)
                     }
-                    is Status.Error -> {
+                    is ResponseStatus.Error -> {
                         _players.remove(name)
                         PlayerState(
                             name = name,
@@ -66,44 +65,8 @@ object PlayerKindaButNotExactlyViewModel {
         } catch (e: Exception) {
             jobs[name]?.cancel()
             _players.remove(name)
-            Napier.wtf(e) { "Failed to add player $name" }
+            Napier.wtf(e) { "Failed to add player $name (in PVM)" }
         }
-    }
-
-    private val devNames = listOf("ambmt", "_lightninq", "vitroid", "firestarad", "sirjosh3917", "hero_of_gb", "rezcwa")
-
-    private fun generatePreTags(name: String, rawName: String): MutableList<Tag> {
-        val tags = mutableListOf<Tag>()
-
-        if (
-            name.equals(Config[PlayerName], true) || Config["aliases"]?.lowercase()?.split(",")
-                ?.contains(rawName.lowercase()) == true
-        ) {
-            tags += You
-        }
-        if (name.lowercase() == "ambmt") tags += Ambmt
-        if (name.lowercase() in devNames) tags += VoxylDev
-        if (name.lowercase() == "carburettor") tags += OverlayDev
-
-        return tags
-    }
-
-    private fun generatePostTags(player: PlayerState): MutableList<Tag> {
-        var tags = mutableListOf<Tag>()
-
-        val lvlLbPos = LeaderboardTrackerWhatEvenIsAViewModel.findInLevelLB(player["uuid"]!!)
-        val wwLbPos = LeaderboardTrackerWhatEvenIsAViewModel.findInWWLB(player["uuid"]!!)
-
-        if (lvlLbPos != null) tags += LevelLB(lvlLbPos["position"].asString ?: "")
-        if (wwLbPos != null) tags += LevelLB(wwLbPos["position"].asString ?: "")
-
-        if (tags.size == 2) tags = mutableListOf(
-            LevelAndWWLB(
-                lvlLbPos?.get("position")?.asString ?: "",
-                wwLbPos?.get("position")?.asString ?: ""
-            )
-        )
-        return tags
     }
 
     private fun SnapshotStateList<PlayerState>.remove(name: String) {

@@ -22,7 +22,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
 
     //discord rpc potential replacement
-    implementation("dev.cbyrne:kdiscordipc:1.0.0")
+//    implementation("dev.cbyrne:kdiscordipc:1.0.0")
 
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")

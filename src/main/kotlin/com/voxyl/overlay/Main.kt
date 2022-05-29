@@ -78,9 +78,7 @@ fun main() = application {
             LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
 
             if (Config["show_discord_rp"] != "false") {
-                cs.launch(Dispatchers.IO) {
-                    DiscordRPC.`try`(cs)
-                }
+                DiscordRPC.start(cs)
             }
         }
 

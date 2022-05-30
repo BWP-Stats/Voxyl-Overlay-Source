@@ -5,13 +5,21 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object ApiProvider {
-    fun getBWPApi(): BWPApi =
+    fun getActualBwpApi(): BwpApi =
         Retrofit.Builder()
             .baseUrl("https://api.voxyl.net")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(BWPApi::class.java)
+            .create(ActualBwpApi::class.java)
+
+    fun getBackupBwpApi(): BwpApi =
+        Retrofit.Builder()
+            .baseUrl("https://voxyl-api.herokuapp.com")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(BackupBwpApi::class.java)
 
     fun getHypixelApi(): HypixelApi =
         Retrofit.Builder()

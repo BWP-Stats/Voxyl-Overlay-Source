@@ -37,4 +37,6 @@ enum class ConfigKeys(val key: String, var defaultValue: String) {
     ShowYourStatsInsteadOfAliases("show_your_stats_instead_of_aliases", "false"),
 
     ShowDiscordRP("show_discord_rp", "true"),
+
+    UseBackupBwpApi("use_backup_bwp_api", "true"),
 }

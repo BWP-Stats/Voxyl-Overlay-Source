@@ -19,4 +19,8 @@ object NetworkingUtils {
         val type = object : TypeToken<JsonObject>() {}.type
         return gson.fromJson(response.errorBody()!!.charStream(), type)
     }
+
+    fun formattedError(response: Response<*>): String {
+        return "${response.code()}, ${stringifyError(response)}"
+    }
 }

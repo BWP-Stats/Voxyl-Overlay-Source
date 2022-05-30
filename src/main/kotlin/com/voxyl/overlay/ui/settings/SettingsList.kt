@@ -18,13 +18,10 @@ import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.settings.aliases.AliasesTextField
 import com.voxyl.overlay.ui.settings.aliases.ShowYourStatsInsteadOfAliasesCheckBox
 import com.voxyl.overlay.ui.settings.appearances.*
-import com.voxyl.overlay.ui.settings.basic.BWPApiKeyTextField
-import com.voxyl.overlay.ui.settings.basic.HypixelApiKeyTextField
-import com.voxyl.overlay.ui.settings.basic.LogFilePathTextField
+import com.voxyl.overlay.ui.settings.basic.*
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideCheckBox
 import com.voxyl.overlay.ui.settings.qol.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.theme.*
-import com.voxyl.overlay.ui.settings.basic.PlayerNameTextField
 import com.voxyl.overlay.ui.settings.columns.ColumnsSettings
 import com.voxyl.overlay.ui.settings.discordrp.ShowDiscordRPCheckbox
 import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting
@@ -59,12 +56,13 @@ fun SettingsList(
     val rawSettings by remember {
         mutableStateOf(
             listOf(
-                @Composable { Header("Basic") } to "BasicBWPApiKeyTextFieldHypixelApiKeyTextFieldPlayerNameTextFieldUsernameLogFilePathTextField",
+                @Composable { Header("Basic") } to "BasicBWPApiKeyTextFieldHypixelApiKeyTextFieldPlayerNameTextFieldUsernameLogFilePathTextFieldBackupApiKey",
                 @Composable { BWPApiKeyTextField() } to "BasicBWPApiKeyTextField",
                 @Composable { HypixelApiKeyTextField() } to "BasicHypixelApiKeyTextField",
                 @Composable { PlayerNameTextField() } to "BasicPlayerNameTextField Username",
                 @Composable { LogFilePathTextField() } to "BasicLogFilePathTextField",
                 @Composable { Spacer(modifier = Modifier.size(10.dp)) } to "NeverGonnaGiveYouUpNeverGonnaLetYouDown",
+                @Composable { UseBackupBwpApiCheckbox() } to "BackupApiKey",
 
                 @Composable { Header("QOL") } to "QOLPinYourselfToTopCheckboxAddYourselfToOverlayCheckboxAutoShowAndHideCheckBoxAutoShowAndHideDelaySliderAutoHide",
                 @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOLPinYourselfToTopCheckbox",

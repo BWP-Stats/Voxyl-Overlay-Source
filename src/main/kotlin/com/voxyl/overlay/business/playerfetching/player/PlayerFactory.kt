@@ -5,6 +5,7 @@ package com.voxyl.overlay.business.playerfetching.player
 import com.google.gson.JsonObject
 import com.voxyl.overlay.business.NetworkingUtils
 import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
+import com.voxyl.overlay.business.playerfetching.apis.BwpApi
 import com.voxyl.overlay.business.playerfetching.apis.MojangApi
 import com.voxyl.overlay.business.playerfetching.models.GameStatsJson
 import com.voxyl.overlay.business.playerfetching.models.HypixelStatsJson
@@ -13,8 +14,6 @@ import com.voxyl.overlay.business.playerfetching.models.PlayerInfoJson
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.BwpApiKey
 import com.voxyl.overlay.business.settings.config.ConfigKeys.HypixelApiKey
-import com.voxyl.overlay.business.validation.popups.Warning
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -23,12 +22,6 @@ import retrofit2.Response
 import java.io.IOException
 
 typealias DR = Deferred<Response<JsonObject>>
-
-suspend fun main() {
-    println(
-        ApiProvider.getHypixelApi().getStats("a", "7da9a8c4-7e7d-493f-ba33-f3f326302299").headers()
-    )
-}
 
 object PlayerFactory {
     fun makePlayer(name: String): Flow<ResponseStatus<Player>> = flow {
@@ -62,8 +55,8 @@ object PlayerFactory {
                 ?: throw IOException("UUID null or invalid for $name; HTTP ${response.code()}").also { Napier.e(it.localizedMessage) }
         }
 
-        Napier.e("Failed to get UUID for $name; ${formattedError(response)}}")
-        throw IOException("Failed to get UUID for $name; ${formattedError(response)}")
+        Napier.e("Failed to get UUID for $name; ${NetworkingUtils.formattedError(response)}}")
+        throw IOException("Failed to get UUID for $name; ${NetworkingUtils.formattedError(response)}")
     }
 
     private fun String.untrimUUID(): String {
@@ -78,10 +71,14 @@ object PlayerFactory {
     private suspend fun queryStatsApis(uuid: String, bwpKey: String, hypixKey: String): Map<String, DR> {
         return withContext(Dispatchers.IO) {
             mapOf("hypixel" to async { ApiProvider.getHypixelApi().getStats(uuid, hypixKey) },
-                "overall" to async { ApiProvider.getBWPApi().getOverallStats(uuid, bwpKey) },
-                "game" to async { ApiProvider.getBWPApi().getGameStats(uuid, bwpKey) },
-                "info" to async { ApiProvider.getBWPApi().getPlayerInfo(uuid, bwpKey) })
+                "overall" to async { getBwpApi().getOverallStats(uuid, bwpKey) },
+                "game" to async { getBwpApi().getGameStats(uuid, bwpKey) },
+                "info" to async { getBwpApi().getPlayerInfo(uuid, bwpKey) })
         }
+    }
+
+    private fun getBwpApi(): BwpApi {
+        return if (Config["use_backup_bwp_api"] != "false") ApiProvider.getBackupBwpApi() else ApiProvider.getActualBwpApi()
     }
 
     private suspend fun validatedHypixelResponse(deferred: Map<String, DR>, name: String): HypixelStatsJson? {
@@ -91,7 +88,7 @@ object PlayerFactory {
             return response.body()?.let { HypixelStatsJson(it) }
         }
 
-        Napier.e("Failed to get Hypixel stats for $name; ${formattedError(response)}")
+        Napier.e("Failed to get Hypixel stats for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 
@@ -102,7 +99,7 @@ object PlayerFactory {
             return response.body()?.let { OverallStatsJson(it) }
         }
 
-        Napier.e("Failed to get overall BWP stats for $name; ${formattedError(response)}")
+        Napier.e("Failed to get overall BWP stats for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 
@@ -113,7 +110,7 @@ object PlayerFactory {
             return response.body()?.let { GameStatsJson(it) }
         }
 
-        Napier.e("Failed to get game BWP stats for $name; ${formattedError(response)}")
+        Napier.e("Failed to get game BWP stats for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 
@@ -124,11 +121,7 @@ object PlayerFactory {
             return response.body()?.let { PlayerInfoJson(it) }
         }
 
-        Napier.e("Failed to get BWP player info for $name; ${formattedError(response)}")
+        Napier.e("Failed to get BWP player info for $name; ${NetworkingUtils.formattedError(response)}")
         return null
-    }
-
-    private fun formattedError(response: Response<*>): String {
-        return "${response.code()}, ${NetworkingUtils.stringifyError(response)}"
     }
 }

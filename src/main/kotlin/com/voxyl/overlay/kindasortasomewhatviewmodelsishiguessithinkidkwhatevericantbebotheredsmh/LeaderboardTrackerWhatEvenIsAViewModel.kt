@@ -23,13 +23,13 @@ object LeaderboardTrackerWhatEvenIsAViewModel {
 
     fun updateLevelLB(cs: CoroutineScope) = cs.launch(Dispatchers.IO) {
         _levelLB = LevelsLeaderboardJson(
-            ApiProvider.getBWPApi().getLevelLeaderboard(Config[BwpApiKey]).body()!!
+            ApiProvider.getActualBwpApi().getLevelLeaderboard(Config[BwpApiKey]).body()!!
         )
     }
 
     fun updateWWinsLB(cs: CoroutineScope) = cs.launch(Dispatchers.IO) {
         _wwLB = WWinsLeaderboardJson(
-            ApiProvider.getBWPApi().getWWLeaderboard(Config[BwpApiKey]).body()!!
+            ApiProvider.getActualBwpApi().getWWLeaderboard(Config[BwpApiKey]).body()!!
         )
     }
 

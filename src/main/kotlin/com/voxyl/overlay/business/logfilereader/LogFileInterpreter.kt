@@ -15,6 +15,8 @@ object LogFileInterpreter {
     fun interpret(line: String, cs: CoroutineScope) {
         checkForBwpGameStart(line, cs)
         checkForHypixelGameStart(line, cs)
+        checkForPlayerFinalKilled(line)
+        checkForPlayerLeftBWP(line)
     }
 
     private fun checkForBwpGameStart(line: String, cs: CoroutineScope) {
@@ -46,6 +48,28 @@ object LogFileInterpreter {
         if ("       The winning team is " !in line) return
 
         PlayerKindaButNotExactlyViewModel.removeAll()
+    }
+
+    private fun checkForPlayerFinalKilled(line: String) {
+        if (" [CHAT] " !in line) return
+        if (!line.endsWith(" FINAL KILL!")) return
+
+        println("|${line.substringAfter("[CHAT] ").substringBefore(" ")}| ")
+
+        PlayerKindaButNotExactlyViewModel.remove(
+            line.substringAfter("[CHAT] ").substringBefore(" ")
+        )
+    }
+
+    private fun checkForPlayerLeftBWP(line: String) {
+        if (" [CHAT] " !in line) return
+        if (!line.endsWith(" has left the game!")) return
+
+        println("|${line.substringAfter("[CHAT] ").substringBefore(" ")}| ")
+
+        PlayerKindaButNotExactlyViewModel.remove(
+            line.substringAfter("[CHAT] ").substringBefore(" ")
+        )
     }
 
     private fun String.toPlayerList() = split(" ", ", ").filterNot { it.isBlank() }.distinct()

@@ -1,9 +1,6 @@
 package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import com.voxyl.overlay.business.validation.popups.*
 import kotlinx.coroutines.*
 
@@ -27,14 +24,14 @@ object PopUpQueue {
     }
 
 
-    private val _popups = mutableStateListOf<PopUp>()
+    private var _popups = mutableStateListOf<PopUp>()
 
     val popups: List<PopUp>
         get() = _popups
 
     private var current: Job? = null
 
-    private var paused = false
+    var paused = false
 
     @OptIn(DelicateCoroutinesApi::class)
     fun start(cs: CoroutineScope = GlobalScope) {
@@ -77,12 +74,11 @@ object PopUpQueue {
         _popups.add(popUp)
     }
 
-
     fun filter(tag: String) {
         if (popups.firstOrNull()?.tags?.contains(tag) == true) {
             endCurrent()
         }
-        _popups.filter { tag in it.tags }
+        _popups = _popups.filter { tag in it.tags }.toMutableStateList()
     }
 
     private fun endCurrent() {

@@ -22,7 +22,7 @@ object LogFileReader {
         val reader = Config.getOrNullIfBlank(LogFilePath)?.let {
             try {
                 FileInputStream(it).bufferedReader(Charsets.UTF_8).also {
-                    PopUpQueue.filter("LogFileError")
+                    PopUpQueue.filter("log_file_error")
                 }
             } catch (e: FileNotFoundException) {
                 null
@@ -33,7 +33,7 @@ object LogFileReader {
                     Error(
                         "Error starting log file reader; log file path may be invalid or inaccessible.",
                         10000
-                    ).withTags("LogFileError")
+                    ).withTags("log_file_error")
                 )
             }
         }

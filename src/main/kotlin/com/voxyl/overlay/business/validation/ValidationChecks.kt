@@ -41,12 +41,14 @@ object ValidationChecks {
             return
         }
 
-        if (bwp == null) {
-            PopUpQueue.add(Warning("The BWP api may be down, or your key may be invalid"))
-        }
+        if (Config[UseBackupBwpApi] != "false") {
+            if (bwp == null) {
+                PopUpQueue.add(Warning("The BWP api may be down, or your key may be invalid"))
+            }
 
-        if (bwp == false) {
-            PopUpQueue.add(Error("Your BWP api key is invalid!"))
+            if (bwp == false) {
+                PopUpQueue.add(Error("Your BWP api key is invalid!"))
+            }
         }
 
         if (hypixel == null) {

@@ -18,6 +18,8 @@ object Settings {
         if (deleteTempFile) deleteTempFile()
         MiscSettings[FirstTime] = "false"
         StatsToShow.save()
+
+
         Config.store(configPath)
         SavedWindowState.store(savedWindowStatePath)
         MiscSettings.store(miscPath)

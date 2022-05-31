@@ -56,6 +56,13 @@ object SavedWindowState {
 
     fun store(path: String = defaultPath) {
         updateSavedWindowState()
+
+        val configFile = File(path)
+        if (!configFile.exists()) {
+            configFile.parentFile.mkdirs()
+            configFile.createNewFile()
+        }
+
         state.store(FileOutputStream(path), null)
     }
 

@@ -3,25 +3,26 @@ package com.voxyl.overlay.business.playerfetching.apis
 import com.google.gson.JsonObject
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BackupBwpApi : BwpApi {
     @GET("/info")
     override suspend fun getPlayerInfo(
         @Query("uuid") uuid: String,
-        apiKey: String
+        @Query("") apiKey: String
     ): Response<JsonObject>
 
     @GET("/overall")
     override suspend fun getOverallStats(
         @Query("uuid") uuid: String,
-        apiKey: String
+        @Query("") apiKey: String
     ): Response<JsonObject>
 
     @GET("/game")
     override suspend fun getGameStats(
         @Query("uuid") uuid: String,
-        apiKey: String
+        @Query("") apiKey: String
     ): Response<JsonObject>
 
     @GET("/level")

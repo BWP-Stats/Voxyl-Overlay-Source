@@ -55,6 +55,12 @@ object Config {
     }
 
     fun store(path: String = defaultPath) {
+        val configFile = File(path)
+        if (!configFile.exists()) {
+            configFile.parentFile.mkdirs()
+            configFile.createNewFile()
+        }
+
         config.store(FileOutputStream(path), null)
     }
 

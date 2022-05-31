@@ -60,7 +60,9 @@ object PlayerFactory {
     }
 
     private fun String.untrimUUID(): String {
-        return this.replaceRange(8, 8, "-").replaceRange(13, 13, "-").replaceRange(18, 18, "-")
+        return this.replaceRange(8, 8, "-")
+            .replaceRange(13, 13, "-")
+            .replaceRange(18, 18, "-")
             .replaceRange(23, 23, "-")
     }
 
@@ -85,6 +87,11 @@ object PlayerFactory {
         val response = deferred["hypixel"]!!.await()
 
         if (response.isSuccessful) {
+            if (response.body()?.get("player")?.isJsonNull == true) {
+                Napier.e("Failed to get Hypixel stats for $name; Player was null")
+                return null
+            }
+
             return response.body()?.let { HypixelStatsJson(it) }
         }
 
@@ -99,7 +106,7 @@ object PlayerFactory {
             return response.body()?.let { OverallStatsJson(it) }
         }
 
-        Napier.e("Failed to get overall BWP stats for $name; ${NetworkingUtils.formattedError(response)}")
+        Napier.e("Failed to get BWP overall stats for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 
@@ -110,7 +117,7 @@ object PlayerFactory {
             return response.body()?.let { GameStatsJson(it) }
         }
 
-        Napier.e("Failed to get game BWP stats for $name; ${NetworkingUtils.formattedError(response)}")
+        Napier.e("Failed to get BWP game stats for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 

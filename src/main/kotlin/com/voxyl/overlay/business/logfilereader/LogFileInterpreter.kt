@@ -54,8 +54,6 @@ object LogFileInterpreter {
         if (" [CHAT] " !in line) return
         if (!line.endsWith(" FINAL KILL!")) return
 
-        println("|${line.substringAfter("[CHAT] ").substringBefore(" ")}| ")
-
         PlayerKindaButNotExactlyViewModel.remove(
             line.substringAfter("[CHAT] ").substringBefore(" ")
         )
@@ -64,8 +62,6 @@ object LogFileInterpreter {
     private fun checkForPlayerLeftBWP(line: String) {
         if (" [CHAT] " !in line) return
         if (!line.endsWith(" has left the game!")) return
-
-        println("|${line.substringAfter("[CHAT] ").substringBefore(" ")}| ")
 
         PlayerKindaButNotExactlyViewModel.remove(
             line.substringAfter("[CHAT] ").substringBefore(" ")

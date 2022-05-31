@@ -7,10 +7,6 @@ import retrofit2.Response
 
 object NetworkingUtils {
     fun stringifyError(response: Response<*>): JsonObject? {
-        if (response.isSuccessful) {
-            throw IllegalStateException("Response was successful; no error body expected")
-        }
-
         if (response.errorBody() == null) {
             return null
         }
@@ -21,6 +17,6 @@ object NetworkingUtils {
     }
 
     fun formattedError(response: Response<*>): String {
-        return "${response.code()}, ${stringifyError(response)}"
+        return "HTTP ${response.code()}, ${stringifyError(response)}"
     }
 }

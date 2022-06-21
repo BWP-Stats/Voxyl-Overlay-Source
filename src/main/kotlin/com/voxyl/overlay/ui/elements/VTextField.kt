@@ -21,7 +21,7 @@ import androidx.compose.ui.input.pointer.PointerIconDefaults
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
-import com.voxyl.overlay.ui.theme.*
+import com.voxyl.overlay.controllers.common.ui.*
 
 @Composable
 fun VTextField(

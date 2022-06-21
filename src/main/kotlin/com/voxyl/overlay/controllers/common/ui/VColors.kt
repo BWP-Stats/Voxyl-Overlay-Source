@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.theme
+package com.voxyl.overlay.controllers.common.ui
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

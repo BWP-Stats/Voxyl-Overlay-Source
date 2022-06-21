@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.playerfetching.player.PlayerState
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.controllers.playerstats.Players
+import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.alphaMultiplier
+import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -79,7 +79,7 @@ fun PlayerContextMenu() {
                 }
 
                 DropdownMenuItem(onClick = {
-                    PlayerKindaButNotExactlyViewModel.remove(PlayerContextMenuState.player?.name ?: "")
+                    Players.remove(PlayerContextMenuState.player?.name ?: "")
                     PlayerContextMenuState.show = false
                 }) {
                     VText("Remove", fontSize = TextUnit.Unspecified)

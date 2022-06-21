@@ -1,7 +1,7 @@
 package com.voxyl.overlay.business.logfilereader
 
 import com.voxyl.overlay.business.validation.popups.Error
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
+import com.voxyl.overlay.controllers.common.PopUpQueue
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.LogFilePath
 import com.voxyl.overlay.business.settings.misc.MiscKeys.FirstTime

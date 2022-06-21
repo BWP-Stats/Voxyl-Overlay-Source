@@ -5,7 +5,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
+import com.voxyl.overlay.controllers.common.PopUpQueue
 
 sealed class PopUp(val text: String, var duration: Long = 5000L, var cancelled: Boolean = false) {
     abstract val color: Color

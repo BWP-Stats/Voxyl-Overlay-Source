@@ -5,7 +5,7 @@ import com.voxyl.overlay.business.autoupdater.apis.GitHubApiProvider
 import com.voxyl.overlay.business.validation.popups.Confirmation
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Info
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
+import com.voxyl.overlay.controllers.common.PopUpQueue
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import java.io.File

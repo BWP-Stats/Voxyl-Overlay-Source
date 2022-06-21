@@ -9,7 +9,7 @@ import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.Opacity
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.alphaMultiplier
+import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
 
 @Composable
 fun OpacitySlider(modifier: Modifier = Modifier) {

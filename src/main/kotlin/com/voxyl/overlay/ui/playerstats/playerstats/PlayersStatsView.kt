@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.business.playerfetching.player.PlayerState
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsSort
+import com.voxyl.overlay.controllers.playerstats.Players
+import com.voxyl.overlay.controllers.playerstats.StatsSort
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.*
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
@@ -26,10 +26,10 @@ import com.voxyl.overlay.ui.playerstats.playerstats.colors.BwpRankColors
 import com.voxyl.overlay.ui.playerstats.playerstats.colors.ErrorString
 import com.voxyl.overlay.ui.playerstats.playerstats.colors.HypixelRankColors
 import com.voxyl.overlay.ui.playerstats.playerstats.colors.LevelColors.coloredLevel
-import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.am
-import com.voxyl.overlay.ui.theme.tbsm
+import com.voxyl.overlay.controllers.common.ui.am
+import com.voxyl.overlay.controllers.common.ui.tbsm
 import io.github.aakira.napier.Napier
 import kotlin.math.max
 import kotlin.math.sqrt
@@ -42,7 +42,7 @@ fun PlayerStatsView(statsToShow: SnapshotStateList<String>) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        val rawPlayers = PlayerKindaButNotExactlyViewModel.players.toList()
+        val rawPlayers = Players.players.toList()
         var players = StatsSort.sortPlayersList(rawPlayers)
 
         if (Config[PinYourselfToTop] != "false") {
@@ -244,7 +244,7 @@ fun cellWeight(stat: String) = when (stat) {
 
 fun calcTagCellWeight(): Float {
     return try {
-        val tagLengths = PlayerKindaButNotExactlyViewModel.players.map {
+        val tagLengths = Players.players.map {
             "--".repeat(it.tags.size)
         }
 
@@ -259,7 +259,7 @@ fun calcTagCellWeight(): Float {
 
 fun calcRegularCellWeight(stat: String): Float {
     return try {
-        val stats = PlayerKindaButNotExactlyViewModel.players.map {
+        val stats = Players.players.map {
             it[stat] ?: ""
         }
 

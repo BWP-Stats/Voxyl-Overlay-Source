@@ -1,4 +1,4 @@
-package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
+package com.voxyl.overlay.controllers.playerstats
 
 import androidx.compose.runtime.toMutableStateList
 import com.voxyl.overlay.business.settings.config.Config

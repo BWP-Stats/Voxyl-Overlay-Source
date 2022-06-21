@@ -3,7 +3,7 @@ package com.voxyl.overlay.business.playerfetching.player.tags
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.controllers.common.ui.am
 
 class LevelLB(lvlPos: String) : Tag {
     override val name: String = "account-star.png"

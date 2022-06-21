@@ -1,7 +1,7 @@
 package com.voxyl.overlay.business.playerfetching.player
 
 import com.voxyl.overlay.business.playerfetching.player.tags.*
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
+import com.voxyl.overlay.controllers.playerstats.LeaderboardTracker
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys
 
@@ -25,8 +25,8 @@ object TagGenerator {
     fun generatePostTags(player: PlayerState): MutableList<Tag> {
         var tags = mutableListOf<Tag>()
 
-        val lvlLbPos = LeaderboardTrackerWhatEvenIsAViewModel.findInLevelLB(player["uuid"]!!)
-        val wwLbPos = LeaderboardTrackerWhatEvenIsAViewModel.findInWWLB(player["uuid"]!!)
+        val lvlLbPos = LeaderboardTracker.findInLevelLB(player["uuid"]!!)
+        val wwLbPos = LeaderboardTracker.findInWWLB(player["uuid"]!!)
 
         if (lvlLbPos != null) tags += LevelLB(lvlLbPos["position"].asString ?: "")
         if (wwLbPos != null) tags += LevelLB(wwLbPos["position"].asString ?: "")

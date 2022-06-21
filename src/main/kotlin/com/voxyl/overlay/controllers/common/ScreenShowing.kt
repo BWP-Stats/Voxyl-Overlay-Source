@@ -1,4 +1,4 @@
-package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
+package com.voxyl.overlay.controllers.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +23,6 @@ object ScreenShowing {
             }
             else -> {}
         }
-
 
     var screen by mutableStateOf<@Composable () -> Unit>({ PlayerStats() })
         private set

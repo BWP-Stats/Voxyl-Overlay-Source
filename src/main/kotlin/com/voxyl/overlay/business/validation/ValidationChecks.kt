@@ -3,7 +3,7 @@ package com.voxyl.overlay.business.validation
 import com.voxyl.overlay.business.validation.popups.Tip
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Warning
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
+import com.voxyl.overlay.controllers.common.PopUpQueue
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.*
 import com.voxyl.overlay.business.settings.misc.MiscSettings

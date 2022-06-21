@@ -18,8 +18,8 @@ import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.HypixelApiKey
 import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.settings.SettingsTextField
-import com.voxyl.overlay.ui.theme.MainWhite
-import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.controllers.common.ui.MainWhite
+import com.voxyl.overlay.controllers.common.ui.am
 
 
 @ExperimentalComposeUiApi

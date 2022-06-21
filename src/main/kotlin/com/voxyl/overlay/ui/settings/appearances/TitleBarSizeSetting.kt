@@ -12,7 +12,7 @@ import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.TitleBarSizeMulti
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.titleBarSizeMulti
+import com.voxyl.overlay.controllers.common.ui.titleBarSizeMulti
 import kotlinx.coroutines.launch
 
 @Composable

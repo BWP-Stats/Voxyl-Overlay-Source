@@ -17,7 +17,7 @@ import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.settings.SettingsTextField
-import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.controllers.common.ui.am
 
 @ExperimentalComposeUiApi
 @Composable

@@ -14,7 +14,7 @@ import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeStrin
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.ClearPlayersKeybind
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.controllers.common.ui.am
 import kotlinx.coroutines.launch
 
 @Composable

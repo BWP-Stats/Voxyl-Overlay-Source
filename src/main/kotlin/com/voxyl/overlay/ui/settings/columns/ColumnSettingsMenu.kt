@@ -19,12 +19,12 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.clean
+import com.voxyl.overlay.controllers.playerstats.StatsToShow
+import com.voxyl.overlay.controllers.playerstats.StatsToShow.clean
 import com.voxyl.overlay.ui.settings.columns.settings.NameSettings
-import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.alphaMultiplier
+import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

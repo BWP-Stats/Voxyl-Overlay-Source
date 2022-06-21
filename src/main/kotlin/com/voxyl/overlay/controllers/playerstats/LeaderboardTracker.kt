@@ -1,4 +1,4 @@
-package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
+package com.voxyl.overlay.controllers.playerstats
 
 import com.google.gson.JsonObject
 import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
@@ -9,7 +9,7 @@ import com.voxyl.overlay.business.settings.config.ConfigKeys.BwpApiKey
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 
-object LeaderboardTrackerWhatEvenIsAViewModel {
+object LeaderboardTracker {
     private var _levelLB: LevelsLeaderboardJson? = null
     private var _wwLB: WWinsLeaderboardJson? = null
 

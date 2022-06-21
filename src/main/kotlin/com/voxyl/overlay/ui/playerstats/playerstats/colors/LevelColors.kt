@@ -1,13 +1,12 @@
 package com.voxyl.overlay.ui.playerstats.playerstats.colors
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import com.google.gson.Gson
 import com.google.gson.JsonArray
-import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.controllers.common.ui.am
 import io.github.aakira.napier.Napier
 
 object LevelColors {

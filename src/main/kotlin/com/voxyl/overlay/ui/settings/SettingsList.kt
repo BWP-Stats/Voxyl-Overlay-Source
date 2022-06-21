@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.AddYourselfToOverlay
 import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.controllers.common.ui.MainWhite
+import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.ui.elements.*
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.settings.aliases.AliasesTextField
@@ -21,7 +23,6 @@ import com.voxyl.overlay.ui.settings.appearances.*
 import com.voxyl.overlay.ui.settings.basic.*
 import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideCheckBox
 import com.voxyl.overlay.ui.settings.qol.AddYourselfToOverlayCheckbox
-import com.voxyl.overlay.ui.theme.*
 import com.voxyl.overlay.ui.settings.columns.ColumnsSettings
 import com.voxyl.overlay.ui.settings.discordrp.ShowDiscordRPCheckbox
 import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting

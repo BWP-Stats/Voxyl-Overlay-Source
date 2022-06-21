@@ -25,12 +25,12 @@ import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.Columns
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.clean
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow.raw
-import com.voxyl.overlay.ui.theme.MainWhite
+import com.voxyl.overlay.controllers.playerstats.StatsToShow
+import com.voxyl.overlay.controllers.playerstats.StatsToShow.clean
+import com.voxyl.overlay.controllers.playerstats.StatsToShow.raw
+import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.controllers.common.ui.am
 import org.burnoutcrew.reorderable.*
 
 @OptIn(ExperimentalFoundationApi::class)

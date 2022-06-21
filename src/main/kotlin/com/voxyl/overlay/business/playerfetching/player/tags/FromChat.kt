@@ -3,7 +3,7 @@ package com.voxyl.overlay.business.playerfetching.player.tags
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.voxyl.overlay.ui.theme.am
+import com.voxyl.overlay.controllers.common.ui.am
 
 object FromChat : Tag {
     override val name: String = "chat.png"

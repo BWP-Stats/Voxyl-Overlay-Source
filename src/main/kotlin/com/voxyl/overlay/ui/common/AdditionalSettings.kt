@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.business.settings.window.SavedWindowState
 import com.voxyl.overlay.business.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
+import com.voxyl.overlay.controllers.common.ui.*
+import com.voxyl.overlay.controllers.playerstats.Players
 import com.voxyl.overlay.ui.elements.ShapeThatIdkTheNameOf
 import com.voxyl.overlay.ui.elements.Tooltip
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.theme.*
 import kotlinx.coroutines.launch
 import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 
@@ -142,7 +142,7 @@ fun ClearPlayersButton() {
         Icon(
             Icons.Filled.Clear, contentDescription = null, tint = MainWhite,
             modifier = Modifier.clickable {
-                PlayerKindaButNotExactlyViewModel.removeAll()
+                Players.removeAll()
             }
         )
     }
@@ -158,7 +158,7 @@ fun RefreshAllButton() {
         Icon(
             Icons.Filled.Refresh, contentDescription = null, tint = MainWhite,
             modifier = Modifier.clickable {
-                PlayerKindaButNotExactlyViewModel.refreshAll(cs)
+                Players.refreshAll(cs)
             }
         )
     }

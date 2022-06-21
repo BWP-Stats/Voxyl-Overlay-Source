@@ -5,7 +5,9 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.voxyl.overlay.ui.theme.*
+import com.voxyl.overlay.controllers.common.ui.MainColor
+import com.voxyl.overlay.controllers.common.ui.MainWhite
+import com.voxyl.overlay.controllers.common.ui.am
 
 
 @Composable

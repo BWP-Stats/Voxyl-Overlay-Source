@@ -23,9 +23,9 @@ import com.voxyl.overlay.Window
 import com.voxyl.overlay.business.settings.Settings
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.playerstats.PlayerSearchBar
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.ScreenShowing
+import com.voxyl.overlay.controllers.common.ScreenShowing
+import com.voxyl.overlay.controllers.common.ui.*
 import com.voxyl.overlay.ui.settings.SettingsSearchBar
-import com.voxyl.overlay.ui.theme.*
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
@@ -62,7 +62,7 @@ fun VoxylLogoForTitleBar() {
         modifier = Modifier
             .size(60.tbsm.dp)
             .requestFocusOnClick(),
-        painter = painterResource("VoxylLogoForTitleBar.png"),
+        painter = painterResource("logos/VoxylLogoForTitleBar.png"),
         contentDescription = null,
         alpha = .8f.amf,
         colorFilter = ColorFilter.tint(MainColor.value.copy(alpha = 1f), BlendMode.SrcIn)

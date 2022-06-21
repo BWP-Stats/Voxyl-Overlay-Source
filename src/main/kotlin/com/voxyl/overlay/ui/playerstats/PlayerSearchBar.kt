@@ -12,14 +12,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.business.playerfetching.player.tags.ManuallySearched
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
+import com.voxyl.overlay.controllers.playerstats.Players
 import com.voxyl.overlay.ui.elements.VTextField
 import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.elements.onEnterOrEsc
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.defaultTitleBarSizeMulti
-import com.voxyl.overlay.ui.theme.tbsm
-import com.voxyl.overlay.ui.theme.titleBarSizeMulti
+import com.voxyl.overlay.controllers.common.ui.defaultTitleBarSizeMulti
+import com.voxyl.overlay.controllers.common.ui.tbsm
+import com.voxyl.overlay.controllers.common.ui.titleBarSizeMulti
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
@@ -41,7 +41,7 @@ fun PlayerSearchBar(
             queriedName = TextFieldValue()
 
             savedQueriedName.split(" ").filterNot { it.isBlank() }.distinct().forEach {
-                PlayerKindaButNotExactlyViewModel.add(it, cs, ManuallySearched)
+                Players.add(it, cs, ManuallySearched)
             }
         } catch (e: Exception) {
             Napier.wtf(e) { "Error adding someone to the KindaButNotExactlyViewModel" }

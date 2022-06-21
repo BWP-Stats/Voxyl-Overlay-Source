@@ -1,4 +1,4 @@
-package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
+package com.voxyl.overlay.controllers.playerstats
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.*
@@ -11,7 +11,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-object PlayerKindaButNotExactlyViewModel {
+object Players {
 
     private var _players = mutableStateListOf<PlayerState>()
 
@@ -23,8 +23,11 @@ object PlayerKindaButNotExactlyViewModel {
     fun add(rawName: String, cs: CoroutineScope, vararg tags: Tag) {
 
         val name = if (
-            Config["aliases"]?.lowercase()?.split(",")
-                ?.contains(rawName.lowercase()) == true && Config["show_your_stats_instead_of_aliases"] == "true"
+            Config["aliases"]
+                ?.lowercase()
+                ?.split(",")
+                ?.contains(rawName.lowercase()) == true
+            && Config["show_your_stats_instead_of_aliases"] == "true"
         ) Config[PlayerName] else rawName
 
         try {

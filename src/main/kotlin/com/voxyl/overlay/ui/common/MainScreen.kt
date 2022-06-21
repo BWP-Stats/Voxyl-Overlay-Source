@@ -12,12 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.ScreenShowing
+import com.voxyl.overlay.controllers.common.ScreenShowing
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.playerstats.playerstats.PlayerStats
-import com.voxyl.overlay.ui.settings.Settings
-import com.voxyl.overlay.ui.theme.bgam
-import com.voxyl.overlay.ui.theme.tbsm
+import com.voxyl.overlay.controllers.common.ui.bgam
+import com.voxyl.overlay.controllers.common.ui.tbsm
 
 @Composable
 fun FrameWindowScope.MainScreen() {

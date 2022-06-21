@@ -3,7 +3,7 @@ package com.voxyl.overlay.business.autoupdater
 import com.voxyl.overlay.business.autoupdater.apis.GitHubApiProvider
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Warning
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
+import com.voxyl.overlay.controllers.common.PopUpQueue
 import com.voxyl.overlay.business.settings.Settings
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope

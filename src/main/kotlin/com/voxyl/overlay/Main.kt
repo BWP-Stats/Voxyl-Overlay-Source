@@ -17,8 +17,8 @@ import com.voxyl.overlay.business.discordrpc.DiscordRPC
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.business.nativelisteners.NativeListeners
 import com.voxyl.overlay.business.validation.ValidationChecks
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.LeaderboardTrackerWhatEvenIsAViewModel
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PopUpQueue
+import com.voxyl.overlay.controllers.playerstats.LeaderboardTracker
+import com.voxyl.overlay.controllers.common.PopUpQueue
 import com.voxyl.overlay.business.settings.Settings
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.window.SavedWindowState
@@ -56,7 +56,7 @@ fun main() = application {
         undecorated = true,
         transparent = true,
         title = "Voxyl Overlay",
-        icon = painterResource("VoxylLogoIcon.ico"),
+        icon = painterResource("logos/VoxylLogoIcon.ico"),
         alwaysOnTop = SavedWindowState[IsAlwaysOnTop] == "true",
         state = windowState
     ) {
@@ -73,7 +73,7 @@ fun main() = application {
             PopUpQueue.start()
             LogFileReader.start()
             UpdateChecker.check(cs)
-            LeaderboardTrackerWhatEvenIsAViewModel.startTracking()
+            LeaderboardTracker.startTracking()
 
             if (Config["show_discord_rp"] != "false") {
                 DiscordRPC.start(cs)
@@ -87,7 +87,7 @@ fun main() = application {
 
 @Composable
 fun ApplicationScope.VTray(windowState: WindowState) = Tray(
-    icon = painterResource("VoxylLogoIcon.ico"),
+    icon = painterResource("logos/VoxylLogoIcon.ico"),
     tooltip = "Voxyl Overlay",
 ) {
     val cs = rememberCoroutineScope()

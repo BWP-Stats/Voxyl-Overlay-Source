@@ -9,7 +9,7 @@ import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.BackgroundOpacity
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.theme.bgAlphaMultiplier
+import com.voxyl.overlay.controllers.common.ui.bgAlphaMultiplier
 
 @Composable
 fun BackgroundOpacitySlider(modifier: Modifier = Modifier) {

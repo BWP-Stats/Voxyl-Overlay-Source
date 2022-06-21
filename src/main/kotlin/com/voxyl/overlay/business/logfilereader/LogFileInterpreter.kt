@@ -2,7 +2,7 @@ package com.voxyl.overlay.business.logfilereader
 
 import com.voxyl.overlay.Window
 import com.voxyl.overlay.business.playerfetching.player.tags.FromGame
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.PlayerKindaButNotExactlyViewModel
+import com.voxyl.overlay.controllers.playerstats.Players
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHideDelay
 import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHide
@@ -22,10 +22,10 @@ object LogFileInterpreter {
     private fun checkForBwpGameStart(line: String, cs: CoroutineScope) {
         if (" [CHAT] Players in this game: " !in line) return
 
-        PlayerKindaButNotExactlyViewModel.removeAll()
+        Players.removeAll()
 
         line.substringAfterLast(":").toPlayerList().forEach {
-            PlayerKindaButNotExactlyViewModel.add(it, cs, FromGame)
+            Players.add(it, cs, FromGame)
         }
 
         autoShowAndHide(cs)
@@ -34,10 +34,10 @@ object LogFileInterpreter {
     private fun checkForHypixelGameStart(line: String, cs: CoroutineScope) {
         if (" [CHAT] ONLINE: " !in line) return
 
-        PlayerKindaButNotExactlyViewModel.removeAll()
+        Players.removeAll()
 
         line.substringAfterLast(":").toPlayerList().forEach {
-            PlayerKindaButNotExactlyViewModel.add(it, cs, FromGame)
+            Players.add(it, cs, FromGame)
         }
 
         autoShowAndHide(cs)
@@ -47,14 +47,14 @@ object LogFileInterpreter {
         if ("          Winner - " !in line) return
         if ("       The winning team is " !in line) return
 
-        PlayerKindaButNotExactlyViewModel.removeAll()
+        Players.removeAll()
     }
 
     private fun checkForPlayerFinalKilled(line: String) {
         if (" [CHAT] " !in line) return
         if (!line.endsWith(" FINAL KILL!")) return
 
-        PlayerKindaButNotExactlyViewModel.remove(
+        Players.remove(
             line.substringAfter("[CHAT] ").substringBefore(" ")
         )
     }
@@ -63,7 +63,7 @@ object LogFileInterpreter {
         if (" [CHAT] " !in line) return
         if (!line.endsWith(" has left the game!")) return
 
-        PlayerKindaButNotExactlyViewModel.remove(
+        Players.remove(
             line.substringAfter("[CHAT] ").substringBefore(" ")
         )
     }

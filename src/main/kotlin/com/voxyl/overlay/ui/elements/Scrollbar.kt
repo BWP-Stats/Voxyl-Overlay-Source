@@ -10,8 +10,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.ui.theme.MainColor
-import com.voxyl.overlay.ui.theme.tbsm
+import com.voxyl.overlay.controllers.common.ui.MainColor
+import com.voxyl.overlay.controllers.common.ui.tbsm
 
 @Composable
 fun Modifier.scrollbar(

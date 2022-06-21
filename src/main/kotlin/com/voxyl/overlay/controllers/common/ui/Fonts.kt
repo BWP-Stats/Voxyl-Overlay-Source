@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.theme
+package com.voxyl.overlay.controllers.common.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily

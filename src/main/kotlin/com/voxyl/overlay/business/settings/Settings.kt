@@ -2,7 +2,7 @@ package com.voxyl.overlay.business.settings
 
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.window.SavedWindowState
-import com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh.StatsToShow
+import com.voxyl.overlay.controllers.playerstats.StatsToShow
 import com.voxyl.overlay.business.settings.misc.MiscKeys.FirstTime
 import com.voxyl.overlay.business.settings.misc.MiscSettings
 import java.io.File
@@ -18,7 +18,6 @@ object Settings {
         if (deleteTempFile) deleteTempFile()
         MiscSettings[FirstTime] = "false"
         StatsToShow.save()
-
 
         Config.store(configPath)
         SavedWindowState.store(savedWindowStatePath)

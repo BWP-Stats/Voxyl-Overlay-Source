@@ -37,7 +37,8 @@ object PlayerFactory {
             val game = validatedGameResponse(stats, name)
             val info = validatedInfoResponse(stats, name)
 
-            if (hypixel == null && (overall == null || game == null || info == null)) throw IOException("Failed to get fetch stats from both APIs for $name")
+            if (hypixel == null && (overall == null || game == null || info == null))
+                throw IOException("Failed to get fetch stats from both APIs for $name")
 
             emit(ResponseStatus.Loaded(Player(name, uuid, info, overall, game, hypixel), name = name))
 
@@ -51,7 +52,11 @@ object PlayerFactory {
         val response = mojangApi.getUUID(name)
 
         if (response.isSuccessful) {
-            return response.body()?.substringAfterLast(":")?.trim('"', '}')?.untrimUUID()?.validateUUID()
+            return response.body()
+                ?.substringAfterLast(":")
+                ?.trim('"', '}')
+                ?.untrimUUID()
+                ?.validateUUID()
                 ?: throw IOException("UUID null or invalid for $name; HTTP ${response.code()}").also { Napier.e(it.localizedMessage) }
         }
 

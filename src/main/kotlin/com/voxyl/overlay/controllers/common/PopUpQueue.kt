@@ -1,4 +1,4 @@
-package com.voxyl.overlay.kindasortasomewhatviewmodelsishiguessithinkidkwhatevericantbebotheredsmh
+package com.voxyl.overlay.controllers.common
 
 import androidx.compose.runtime.*
 import com.voxyl.overlay.business.validation.popups.*
@@ -13,7 +13,7 @@ object PopUpQueue {
         fun setPopUp(popUp: PopUp?) {
             show = popUp != null
             if (popUp != null) {
-                this.popUp = popUp
+                Current.popUp = popUp
             }
         }
 

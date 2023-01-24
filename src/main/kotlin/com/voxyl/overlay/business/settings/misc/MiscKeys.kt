@@ -1,6 +1,12 @@
 package com.voxyl.overlay.business.settings.misc
 
-enum class MiscKeys(val key: String, var defaultValue: String) {
-    FirstTime("first_time", "true"),
-    FirstTimeSwitchingRank("first_time_switching_rank", "true"),
+import com.voxyl.overlay.business.settings.SettingsKey
+
+class MiscKey(name: String, default: Any) : SettingsKey<MiscSettings>(name, default) {
+    init { MiscSettings.register(this) }
 }
+
+val FirstTimeUsingOverlay  = MiscKey(name = "first_time",                default =  "true")
+val FirstTimeSwitchingRank = MiscKey(name = "first_time_switching_rank", default =  "true")
+
+val CurrentVersion = MiscKey(name = "current_version", default = "")

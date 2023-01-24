@@ -17,24 +17,22 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.LogFilePath
+import com.voxyl.overlay.business.settings.config.LogFilePath
 import com.voxyl.overlay.business.settings.config.LogFiles
-import com.voxyl.overlay.ui.elements.VTrailingIcon
-import com.voxyl.overlay.ui.settings.SettingsTextField
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.am
+import com.voxyl.overlay.ui.elements.VTrailingIcon
+import com.voxyl.overlay.ui.settings.SettingsTextField
 
 @ExperimentalComposeUiApi
 @Composable
 fun LogFilePathTextField() {
     var logFilePath by remember { mutableStateOf(TextFieldValue()) }
-    val cs = rememberCoroutineScope()
 
     val doOnEnter = doOnEnter@{
         if (!isValidLogFilePath(logFilePath)) return@doOnEnter
 
         Config[LogFilePath] = logFilePath.text
-        LogFileReader.start(cs)
         logFilePath = TextFieldValue()
     }
 
@@ -96,7 +94,7 @@ private fun autofillLogFilePath(logFilePath: TextFieldValue, autoFillLogPath: (S
     val autofilledFilePath = when (logFilePath.text.lowercase()) {
         "badlion" -> LogFiles.Badlion.path
         "lunar" -> LogFiles.Lunar.path
-        "vanilla", "forge", "feather" -> LogFiles.Vanilla.path
+        "vanilla", "forge", "feather", "labymod" -> LogFiles.Vanilla.path
         else -> logFilePath.text
     }
     autoFillLogPath(autofilledFilePath)

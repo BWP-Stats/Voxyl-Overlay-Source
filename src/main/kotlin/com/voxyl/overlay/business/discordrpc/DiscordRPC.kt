@@ -3,18 +3,23 @@ package com.voxyl.overlay.business.discordrpc
 import com.voxyl.overlay.business.playerfetching.player.Player
 import com.voxyl.overlay.business.playerfetching.player.PlayerFactory
 import com.voxyl.overlay.business.playerfetching.player.ResponseStatus
+import com.voxyl.overlay.business.playerfetching.player.StatefulEntity
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.PlayerName
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.controllers.common.PopUpQueue
-import com.voxyl.overlay.business.settings.config.Config
 import de.jcm.discordgamesdk.Core
 import de.jcm.discordgamesdk.CreateParams
 import de.jcm.discordgamesdk.GameSDKException
 import de.jcm.discordgamesdk.activity.Activity
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.time.Instant
 
@@ -81,22 +86,22 @@ object DiscordRPC {
             true
         } catch (e: IOException) {
             PopUpQueue.add(Error("Error initializing Discord library; ${e.message}"))
-            Napier.e("Error initializing Discord library; ${e.message}", e)
+            Napier.e("Error initializing Discord library", e)
             false
         } catch (e: RuntimeException) {
             PopUpQueue.add(Error("Wtf OS are you using?? ${e.message}"))
-            Napier.e("Wtf OS are you using?? ${e.message}", e)
+            Napier.e("Wtf OS are you using??", e)
             false
         } catch (e: UnsatisfiedLinkError) {
             PopUpQueue.add(Error("Error linking to Discord library; ${e.message}"))
-            Napier.e("Error linking to Discord library; ${e.message}", e)
+            Napier.e("Error linking to Discord library", e)
             false
         }
     }
 
     fun refresh(cs: CoroutineScope) {
         try {
-            PlayerFactory.makePlayer(Config["player_name"] ?: "").onEach {
+            PlayerFactory.create(Config[PlayerName]).onEach {
                 if (it is ResponseStatus.Loaded) {
                     player = it.data as Player
                 }

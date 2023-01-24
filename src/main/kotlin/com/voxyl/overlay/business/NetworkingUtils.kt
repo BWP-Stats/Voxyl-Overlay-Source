@@ -11,9 +11,7 @@ object NetworkingUtils {
             return null
         }
 
-        val gson = Gson()
-        val type = object : TypeToken<JsonObject>() {}.type
-        return gson.fromJson(response.errorBody()!!.charStream(), type)
+        return Gson().fromJson(response.errorBody()!!.charStream(), JsonObject::class.java)
     }
 
     fun formattedError(response: Response<*>): String {

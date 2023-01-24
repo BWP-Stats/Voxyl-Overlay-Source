@@ -20,3 +20,22 @@ val mcColors = mapOf(
     "yellow" to Color(0xFFFFFF55),
     "white" to Color(0xFFFFFFFF)
 )
+
+enum class McColors(val color: Color) {
+    Black      (Color(0xFF000000)),
+    DarkBlue   (Color(0xFF0000AA)),
+    DarkGreen  (Color(0xFF00AA00)),
+    DarkAqua   (Color(0xFF00AAAA)),
+    DarkRed    (Color(0xFFAA0000)),
+    DarkPurple (Color(0xFFAA00AA)),
+    Gold       (Color(0xFFFFAA00)),
+    Gray       (Color(0xFFAAAAAA)),
+    DarkGray   (Color(0xFF555555)),
+    Blue       (Color(0xFF5555FF)),
+    Green      (Color(0xFF55FF55)),
+    Aqua       (Color(0xFF55FFFF)),
+    Red        (Color(0xFFFF5555)),
+    LightPurple(Color(0xFFFF55FF)),
+    Yellow     (Color(0xFFFFFF55)),
+    White      (Color(0xFFFFFFFF)),
+}

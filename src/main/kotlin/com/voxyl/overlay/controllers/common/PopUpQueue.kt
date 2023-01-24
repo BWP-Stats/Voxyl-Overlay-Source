@@ -7,67 +7,55 @@ import kotlinx.coroutines.*
 object PopUpQueue {
     object Current {
         var show by mutableStateOf(false)
-        var popUp by mutableStateOf<PopUp>(PopUp.empty())
+        var popup by mutableStateOf<PopUp>(PopUp.empty())
 
         @JvmName("setEventSafe")
         fun setPopUp(popUp: PopUp?) {
             show = popUp != null
             if (popUp != null) {
-                Current.popUp = popUp
+                popup = popUp
             }
         }
 
         fun cancel() {
             setPopUp(null)
-            popUp.cancel()
+            popup.cancel()
         }
     }
 
-
     private var _popups = mutableStateListOf<PopUp>()
 
-    val popups: List<PopUp>
+    val popups: List<PopUp?>
         get() = _popups
 
-    private var current: Job? = null
+    private var job: Job? = null
 
     var paused = false
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun start(cs: CoroutineScope = GlobalScope) {
-        cs.launch(Dispatchers.Default) { pauseListener() }
+    fun start(cs: CoroutineScope = GlobalScope) = cs.launch {
+        while (true) {
+            while (paused || _popups.isEmpty()) {
+                delay(100)
+                continue
+            }
 
-        cs.launch(Dispatchers.Default) {
-            while (true) {
-                while (paused) {
-                    delay(100)
-                }
+            val popup = _popups[0]
+            Current.setPopUp(popup)
 
-                if (_popups.isEmpty()) {
-                    delay(200)
-                    continue
-                }
+            job = launch {
+                delay(popup.duration)
+                Current.cancel()
+            }
 
-                delay(750)
-
-                val event = _popups[0]
-
-                Current.setPopUp(event)
-                current = cs.launch {
-                    delay(event.duration)
-                    Current.cancel()
-                }
-
-                while (!event.cancelled) {
-                    delay(200)
-                }
-
-                if (!paused) {
-                    endCurrent()
-                }
+            try {
+                job!!.join()
+            } catch (_: CancellationException) {
+                /* Expected */
+            } finally {
+                endCurrent()
             }
         }
-
     }
 
     fun add(popUp: PopUp) {
@@ -78,30 +66,31 @@ object PopUpQueue {
         if (popups.firstOrNull()?.tags?.contains(tag) == true) {
             endCurrent()
         }
-        _popups = _popups.filter { tag in it.tags }.toMutableStateList()
-    }
 
-    private fun endCurrent() {
-        current?.cancel()
-        Current.cancel()
-        _popups -= _popups[0]
-    }
-
-    private suspend fun pauseListener() {
-        while (true) {
-            delay(200)
-            pause(ScreenShowing.screenId != "playerstats")
+        for (i in _popups.indices.reversed()) {
+            if (tag in _popups[i].tags) {
+                _popups.removeAt(i)
+            }
         }
     }
 
-    private fun pause(pause: Boolean) {
-        if (pause && !paused) {
-            current?.cancel()
-            Current.cancel()
-            paused = true
-        } else if (!pause && paused) {
-            popups.getOrNull(0)?.cancelled = false
-            paused = false
+    private fun endCurrent() {
+        job?.cancel()
+        Current.cancel()
+        if (_popups.isNotEmpty()) {
+            _popups -= _popups[0]
+        }
+    }
+
+    init {
+        Screen.subscribeToChange { _, new ->
+            if (new == Screen.Settings) {
+                job?.cancel()
+                paused = true
+            } else {
+                popups.getOrNull(0)?.cancelled = false
+                paused = false
+            }
         }
     }
 }

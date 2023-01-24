@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.playerfetching.player.PlayerState
-import com.voxyl.overlay.controllers.playerstats.Players
 import com.voxyl.overlay.controllers.common.ui.MainWhite
-import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
+import com.voxyl.overlay.controllers.playerstats.Players
+import com.voxyl.overlay.ui.elements.VText
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

@@ -8,10 +8,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.elements.VTextField
 import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.elements.onEnterOrEsc
-import com.voxyl.overlay.ui.elements.VText
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

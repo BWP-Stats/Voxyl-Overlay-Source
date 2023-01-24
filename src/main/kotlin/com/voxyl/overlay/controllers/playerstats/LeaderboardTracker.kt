@@ -4,8 +4,7 @@ import com.google.gson.JsonObject
 import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
 import com.voxyl.overlay.business.playerfetching.models.LevelsLeaderboardJson
 import com.voxyl.overlay.business.playerfetching.models.WWinsLeaderboardJson
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.BwpApiKey
+import com.voxyl.overlay.business.settings.config.*
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 
@@ -62,8 +61,8 @@ object LeaderboardTracker {
         cs.launch {
             while (true) {
                 aboutToUpdate = true
-                try { updateLevelLB(cs) } catch (e: Exception) { Napier.e("Failed to update level lb") }
-                try { updateWWinsLB(cs) } catch (e: Exception) { Napier.e("Failed to update w-wins lb") }
+                try { updateLevelLB(cs) } catch (e: Exception) { Napier.e("Failed to update level lb", e) }
+                try { updateWWinsLB(cs) } catch (e: Exception) { Napier.e("Failed to update w-wins lb", e) }
                 aboutToUpdate = false
                 delay(delay)
             }

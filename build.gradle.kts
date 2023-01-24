@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.voxyl"
-version = "1.1.1"
+version = "1.1.4"
 
 repositories {
     google()
@@ -20,9 +20,6 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation(compose.desktop.currentOs)
-
-    //discord rpc potential replacement
-    //implementation("dev.cbyrne:kdiscordipc:1.0.0")
 
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
@@ -44,7 +41,7 @@ dependencies {
     implementation("org.burnoutcrew.composereorderable:reorderable:0.7.4")
 
     //discord rpc
-    implementation("com.github.JnCrMx:discord-game-sdk4j:0.5.5")
+    implementation("com.github.JnCrMx:discord-game-sdk4j:v0.5.5")
 
     implementation("cc.popkorn:popkorn:2.2.0")
 }
@@ -72,7 +69,7 @@ compose.desktop {
             windows {
                 menu = true
                 upgradeUuid = "bdc7677a-1f35-467c-908e-00e0f4d572cf".toUpperCase()
-                iconFile.set(project.file("src/main/resources/VoxylLogoIcon.ico"))
+                iconFile.set(project.file("src/main/resources/logos/VoxylLogoIcon.ico"))
                 perUserInstall = true
             }
         }

@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 
 class ShapeThatIdkTheNameOf(private val size: Size) : Shape {
-
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,

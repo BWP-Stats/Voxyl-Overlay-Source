@@ -15,11 +15,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.HypixelApiKey
-import com.voxyl.overlay.ui.elements.VTrailingIcon
-import com.voxyl.overlay.ui.settings.SettingsTextField
+import com.voxyl.overlay.business.settings.config.HypixelApiKey
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.am
+import com.voxyl.overlay.ui.elements.VTrailingIcon
+import com.voxyl.overlay.ui.settings.SettingsTextField
 
 
 @ExperimentalComposeUiApi
@@ -35,12 +35,12 @@ fun HypixelApiKeyTextField() {
     }
 
     SettingsTextField(
-        text = getHypixelApiKeyLabel(apiKey, isValidHypixelApiKey(apiKey)),
+        text = getHypixelApiKeyLabel(apiKey),
         placeholder = "'/api new' in Hypixel",
         value = apiKey,
         onValueChange = { apiKey = it },
         doOnEnter = doOnEnter,
-        isValid = { apiKey.text.isBlank() || isValidHypixelApiKey(it) },
+        isValid = { it.text.isBlank() || isValidHypixelApiKey(it) },
         trailingIcon = {
             Icon(
                 painter = painterResource("icons/eye.png"),
@@ -77,13 +77,16 @@ fun HypixelApiKeyTextField() {
     )
 }
 
-private fun getHypixelApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
-    if (apiKey.text.isNotBlank() && !isValid)
+private fun getHypixelApiKeyLabel(apiKey: TextFieldValue) =
+    if (apiKey.text.isNotBlank() && !isValidHypixelApiKey(apiKey))
         "Please enter a valid API key"
-    else if (Config[HypixelApiKey].isBlank())
+    else if (Config[HypixelApiKey].isBlank() || !isValidHypixelApiKey(Config[HypixelApiKey]))
         "Enter your Hypixel API key"
     else
         "Enter your Hypixel API key (${Config[HypixelApiKey].substring(0, 11) + "*".repeat(22)})"
 
+private fun isValidHypixelApiKey(str: String) =
+    str.matches(Regex("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))
+
 private fun isValidHypixelApiKey(tfv: TextFieldValue) =
-    tfv.text.matches(Regex("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))
+    isValidHypixelApiKey(tfv.text)

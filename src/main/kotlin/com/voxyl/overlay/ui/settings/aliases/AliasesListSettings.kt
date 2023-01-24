@@ -13,22 +13,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.voxyl.overlay.business.settings.config.Aliases
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.ui.elements.VTrailingIcon
-import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.settings.SettingsTextField
+import com.voxyl.overlay.business.settings.config.PlayerName
 import com.voxyl.overlay.controllers.common.ui.am
+import com.voxyl.overlay.ui.elements.VText
+import com.voxyl.overlay.ui.elements.VTrailingIcon
+import com.voxyl.overlay.ui.settings.SettingsTextField
 
 @ExperimentalComposeUiApi
 @Composable
 fun AliasesTextField() {
     var alias by remember { mutableStateOf(TextFieldValue()) }
 
-    var aliases = remember { (Config["aliases"]?.split(",")?.filter { it != "" } ?: listOf()).toMutableStateList() }
+    var aliases = remember { (Config[Aliases].split(",").filter { it != "" }).toMutableStateList() }
 
-    if (!aliases.any { it.lowercase() == Config["player_name"]?.lowercase() }) {
-        if (Config["player_name"] != null && Config["player_name"] != "" && Config["player_name"]!!.matches(Regex("\\w{1,16}"))) {
-            aliases.add(Config["player_name"]!!)
+    if (!aliases.any { it.lowercase() == Config[PlayerName].lowercase() }) {
+        if (Config[PlayerName] != "" && Config[PlayerName].matches(Regex("\\w{1,16}"))) {
+            aliases.add(Config[PlayerName])
         }
     }
 
@@ -38,7 +40,7 @@ fun AliasesTextField() {
         aliases.add(alias.text)
         aliases = aliases.distinct().toMutableStateList()
 
-        Config["aliases"] = aliases.joinToString(",")
+        Config[Aliases] = aliases.joinToString(",")
 
         alias = TextFieldValue()
     }
@@ -82,7 +84,7 @@ private fun AliasTag(alias: String, aliases: SnapshotStateList<String>) {
         text = " $alias ",
         modifier = Modifier.padding(horizontal = 3.dp)
             .background(Color(.2f, .2f, .2f, .7f).am)
-            .clickable(alias.lowercase() != Config["player_name"]?.lowercase()) {
+            .clickable(alias.lowercase() != Config[PlayerName]?.lowercase()) {
                 aliases.remove(alias)
             },
         fontSize = TextUnit.Unspecified

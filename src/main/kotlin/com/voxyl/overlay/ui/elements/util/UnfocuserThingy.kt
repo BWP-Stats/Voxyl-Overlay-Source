@@ -11,10 +11,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.pointer.consumeDownChange
 import androidx.compose.ui.input.pointer.pointerInput
 
-
 //This exists to take the focus off of the text box as Idk how to do it otherwise
 internal fun Modifier.requestFocusOnClick(itShouldWork: Boolean = true): Modifier = composed {
-
     if (!itShouldWork) {
         return@composed this
     }

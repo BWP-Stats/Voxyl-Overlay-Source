@@ -9,8 +9,7 @@ import com.voxyl.overlay.business.playerfetching.player.PlayerState
 import com.voxyl.overlay.controllers.common.ui.am
 
 object BwpRankColors {
-
-    val colorsMap = mapOf(
+    private val colorsMap = mapOf(
         "owner" to mcColors["red"]!!,
         "admin" to mcColors["red"]!!,
         "manager" to mcColors["dark-red"]!!,
@@ -27,6 +26,7 @@ object BwpRankColors {
         "expert" to mcColors["blue"]!!,
         "adept" to mcColors["dark-green"]!!,
         "none" to mcColors["gray"]!!,
+        "bot" to mcColors["dark-gray"]!!,
         "err" to mcColors["red"]!!
     )
 
@@ -39,7 +39,7 @@ object BwpRankColors {
                     append("[")
                 }
                 withStyle(style = SpanStyle(color = Color.White.am)) {
-                    append(player["bwp.role"] ?: "ERR")
+                    append(player["bwp.role"] ?: ERROR_PLACEHOLDER)
                 }
                 withStyle(style = SpanStyle(color = colorsMap["youtube"]!!.am)) {
                     append("] ")
@@ -52,7 +52,7 @@ object BwpRankColors {
         else -> {
             buildAnnotatedString {
                 withStyle(style = SpanStyle(color = colorsMap[player["bwp.role"]?.lowercase() ?: "err"]!!.am)) {
-                    append("[${player["bwp.role"] ?: "ERR"}] ")
+                    append("[${player["bwp.role"] ?: ERROR_PLACEHOLDER}] ")
                 }
             }
         }

@@ -3,18 +3,19 @@ package com.voxyl.overlay.ui.settings.keybinds
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.business.nativelisteners.RefreshPlayersKeyListener
 import com.voxyl.overlay.business.nativelisteners.KeyListenerForSettings
 import com.voxyl.overlay.business.nativelisteners.NativeUtil.toCleanKeyCodeString
+import com.voxyl.overlay.business.nativelisteners.RefreshPlayersKeyListener
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.RefreshPlayersKeybind
-import com.voxyl.overlay.ui.elements.VText
+import com.voxyl.overlay.business.settings.config.RefreshPlayersKeybind
 import com.voxyl.overlay.controllers.common.ui.am
+import com.voxyl.overlay.ui.elements.VText
 import kotlinx.coroutines.launch
 
 @Composable

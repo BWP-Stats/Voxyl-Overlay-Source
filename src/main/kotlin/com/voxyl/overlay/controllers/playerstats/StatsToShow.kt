@@ -1,8 +1,8 @@
 package com.voxyl.overlay.controllers.playerstats
 
 import androidx.compose.runtime.toMutableStateList
+import com.voxyl.overlay.business.settings.config.Columns
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.Columns
 import java.util.*
 
 object StatsToShow {

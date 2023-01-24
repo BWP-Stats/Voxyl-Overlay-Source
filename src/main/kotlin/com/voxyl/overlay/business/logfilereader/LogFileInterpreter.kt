@@ -1,11 +1,11 @@
 package com.voxyl.overlay.business.logfilereader
 
-import com.voxyl.overlay.Window
+import com.voxyl.overlay.AppWindow
 import com.voxyl.overlay.business.playerfetching.player.tags.FromGame
-import com.voxyl.overlay.controllers.playerstats.Players
+import com.voxyl.overlay.business.settings.config.AutoShowAndHide
+import com.voxyl.overlay.business.settings.config.AutoShowAndHideDelay
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHideDelay
-import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.controllers.playerstats.Players
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -73,11 +73,11 @@ object LogFileInterpreter {
     private fun autoShowAndHide(cs: CoroutineScope) {
         if (Config[AutoShowAndHide] == "true") {
             cs.launch(Dispatchers.Default) {
-                Window.focusableWindowState = false
-                Window.isMinimized = false
-                Window.focusableWindowState = true
+                AppWindow.focusableWindowState = false
+                AppWindow.isMinimized = false
+                AppWindow.focusableWindowState = true
                 delay(Config[AutoShowAndHideDelay].toLongOrNull() ?: 5000)
-                Window.isMinimized = true
+                AppWindow.isMinimized = true
             }
         }
     }

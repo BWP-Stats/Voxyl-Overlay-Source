@@ -18,7 +18,6 @@ fun Modifier.scrollbar(
     state: LazyListState,
     width: Dp = 8.dp
 ): Modifier {
-
     var previousOffset by remember { mutableStateOf(state.firstVisibleItemScrollOffset) }
     val offset = state.firstVisibleItemScrollOffset
 

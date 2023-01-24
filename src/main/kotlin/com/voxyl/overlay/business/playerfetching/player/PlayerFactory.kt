@@ -1,22 +1,20 @@
-@file:Suppress("SpellCheckingInspection")
+@file:Suppress("SpellCheckingInspection", "MoveVariableDeclarationIntoWhen")
 
 package com.voxyl.overlay.business.playerfetching.player
 
 import com.google.gson.JsonObject
 import com.voxyl.overlay.business.NetworkingUtils
 import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
-import com.voxyl.overlay.business.playerfetching.apis.BwpApi
 import com.voxyl.overlay.business.playerfetching.apis.MojangApi
 import com.voxyl.overlay.business.playerfetching.models.GameStatsJson
 import com.voxyl.overlay.business.playerfetching.models.HypixelStatsJson
 import com.voxyl.overlay.business.playerfetching.models.OverallStatsJson
 import com.voxyl.overlay.business.playerfetching.models.PlayerInfoJson
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.BwpApiKey
-import com.voxyl.overlay.business.settings.config.ConfigKeys.HypixelApiKey
+import com.voxyl.overlay.business.settings.config.*
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import java.io.IOException
@@ -24,7 +22,41 @@ import java.io.IOException
 typealias DR = Deferred<Response<JsonObject>>
 
 object PlayerFactory {
-    fun makePlayer(name: String): Flow<ResponseStatus<Player>> = flow {
+    fun create(name: String): Flow<ResponseStatus<out StatefulEntity>> {
+        val state = preprocessPlayer(name)
+
+        return when (state) {
+            is DontMake -> emptyFlow()
+            is IsBot -> makeBot(state.name)
+            is IsPlayer -> makePlayer(state.name)
+        }
+    }
+
+    private sealed class State(val name: String)
+    private object DontMake               : State("N/A")
+    private class  IsBot   (name: String) : State(name)
+    private class  IsPlayer(name: String) : State(name)
+
+    private fun preprocessPlayer(rawName: String): State {
+        val isBot = rawName.startsWith("Bot-")
+
+        if (Config[AddBotsToOverlay] != "true" && isBot)
+            return DontMake
+
+        if (isBot) return IsBot(rawName)
+
+        val name = if (
+            Config[Aliases]
+                .lowercase()
+                .split(",")
+                .contains(rawName.lowercase())
+            && Config[ShowYourStatsInsteadOfAliases] == "true"
+        ) Config[PlayerName] else rawName
+
+        return IsPlayer(name)
+    }
+
+    private fun makePlayer(name: String) = flow {
         try {
             emit(ResponseStatus.Loading(name = name))
 
@@ -40,12 +72,19 @@ object PlayerFactory {
             if (hypixel == null && (overall == null || game == null || info == null))
                 throw IOException("Failed to get fetch stats from both APIs for $name")
 
-            emit(ResponseStatus.Loaded(Player(name, uuid, info, overall, game, hypixel), name = name))
+            val player = Player(name, uuid, info, overall, game, hypixel)
+
+            emit(ResponseStatus.Loaded(player, name = name))
 
         } catch (e: IOException) {
             val msg = e.localizedMessage ?: "IOException for '$name'; either your wifi or an API is down"
             emit(ResponseStatus.Error(msg, name = name))
         }
+    }
+
+    private fun makeBot(name: String) = flow<ResponseStatus<out StatefulEntity>> {
+        emit(ResponseStatus.Loading(name = name))
+        emit(ResponseStatus.Loaded(Bot(name), name = name))
     }
 
     private suspend fun getUUID(name: String, mojangApi: MojangApi = ApiProvider.getMojangApi()): String {
@@ -55,7 +94,6 @@ object PlayerFactory {
             return response.body()
                 ?.substringAfterLast(":")
                 ?.trim('"', '}')
-                ?.untrimUUID()
                 ?.validateUUID()
                 ?: throw IOException("UUID null or invalid for $name; HTTP ${response.code()}").also { Napier.e(it.localizedMessage) }
         }
@@ -64,28 +102,17 @@ object PlayerFactory {
         throw IOException("Failed to get UUID for $name; ${NetworkingUtils.formattedError(response)}")
     }
 
-    private fun String.untrimUUID(): String {
-        return this.replaceRange(8, 8, "-")
-            .replaceRange(13, 13, "-")
-            .replaceRange(18, 18, "-")
-            .replaceRange(23, 23, "-")
-    }
-
     private fun String.validateUUID(): String? {
-        return if (this.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".toRegex())) this else null
+        return if (this.matches("[0-9a-f]{32}".toRegex())) this else null
     }
 
     private suspend fun queryStatsApis(uuid: String, bwpKey: String, hypixKey: String): Map<String, DR> {
         return withContext(Dispatchers.IO) {
-            mapOf("hypixel" to async { ApiProvider.getHypixelApi().getStats(uuid, hypixKey) },
-                "overall" to async { getBwpApi().getOverallStats(uuid, bwpKey) },
-                "game" to async { getBwpApi().getGameStats(uuid, bwpKey) },
-                "info" to async { getBwpApi().getPlayerInfo(uuid, bwpKey) })
+            mapOf("hypixel" to async { ApiProvider.hypixel.getStats(uuid, hypixKey) },
+                  "overall" to async { ApiProvider.bwp.getOverallStats(uuid, bwpKey) },
+                  "game" to async { ApiProvider.bwp.getGameStats(uuid, bwpKey) },
+                  "info" to async { ApiProvider.bwp.getPlayerInfo(uuid, bwpKey) })
         }
-    }
-
-    private fun getBwpApi(): BwpApi {
-        return if (Config["use_backup_bwp_api"] != "false") ApiProvider.getBackupBwpApi() else ApiProvider.getActualBwpApi()
     }
 
     private suspend fun validatedHypixelResponse(deferred: Map<String, DR>, name: String): HypixelStatsJson? {

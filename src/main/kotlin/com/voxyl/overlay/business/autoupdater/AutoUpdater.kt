@@ -1,10 +1,10 @@
 package com.voxyl.overlay.business.autoupdater
 
 import com.voxyl.overlay.business.autoupdater.apis.GitHubApiProvider
+import com.voxyl.overlay.business.settings.Settings
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.controllers.common.PopUpQueue
-import com.voxyl.overlay.business.settings.Settings
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,41 +29,16 @@ object AutoUpdater {
 
                 val path = saveFile(assetDownloadResponse.body(), "./installers/Voxyl.Overlay-$tag.$fileType")
 
-                saveSettingsToTemp()
+                Settings.backupToTemp()
 
                 if (path.isNotBlank()) {
                     openInstaller(File(path))
                 }
             } catch (e: Exception) {
                 PopUpQueue.add(Error("Failed to download installation file"))
-                Napier.e("Failed to download installation file; ${e.message}")
+                Napier.e("Failed to download installation file", e)
             }
         }
-    }
-
-    fun restoreSettingsFromTemp() {
-        val tempDirPath = File(System.getProperty("java.io.tmpdir"))
-        val tempDir = File(tempDirPath, "voverlay")
-
-        if (!tempDir.exists()) {
-            println("No previous settings found")
-            return
-        }
-
-        Settings.loadAll(tempDir.absolutePath)
-    }
-
-    private fun saveSettingsToTemp() {
-        val tempDirPath = File(System.getProperty("java.io.tmpdir"))
-        val tempDir = File(tempDirPath, "voverlay")
-
-        for (counter in 0 until 1000) {
-            if (tempDir.mkdir()) {
-                break
-            }
-        }
-
-        Settings.storeAll(tempDir.absolutePath)
     }
 
     private fun getFileType() = when (OsCheck.getOs()) {
@@ -101,7 +76,7 @@ object AutoUpdater {
             return path
         } catch (e: IOException) {
             PopUpQueue.add(Error("Failed to save installation file"))
-            Napier.e("Failed to save installation file; ${e.message}")
+            Napier.e("Failed to save installation file", e)
             return ""
         } finally {
             input?.close()

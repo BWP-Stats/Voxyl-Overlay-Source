@@ -6,10 +6,10 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import com.voxyl.overlay.controllers.common.ui.am
 
-object ErrorString {
-    fun get(noHashtag: Boolean = false) = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = Color(255, 85, 85).am)) {
-            append(if (noHashtag) "ERR" else "#ERR")
-        }
+const val ERROR_PLACEHOLDER = "ERR"
+
+fun getColoredErrorPlaceholder(noHashtag: Boolean = false) = buildAnnotatedString {
+    withStyle(style = SpanStyle(color = Color(255, 85, 85).am)) {
+        append((if (noHashtag) "" else "#") + ERROR_PLACEHOLDER)
     }
 }

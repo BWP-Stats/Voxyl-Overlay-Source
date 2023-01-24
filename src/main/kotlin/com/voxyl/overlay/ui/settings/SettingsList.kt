@@ -10,9 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.AddYourselfToOverlay
-import com.voxyl.overlay.business.settings.config.ConfigKeys.AutoShowAndHide
+import com.voxyl.overlay.business.settings.config.*
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.ui.elements.*
@@ -20,16 +18,14 @@ import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.settings.aliases.AliasesTextField
 import com.voxyl.overlay.ui.settings.aliases.ShowYourStatsInsteadOfAliasesCheckBox
 import com.voxyl.overlay.ui.settings.appearances.*
+import com.voxyl.overlay.ui.settings.backup.BackupButtons
 import com.voxyl.overlay.ui.settings.basic.*
-import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideCheckBox
-import com.voxyl.overlay.ui.settings.qol.AddYourselfToOverlayCheckbox
 import com.voxyl.overlay.ui.settings.columns.ColumnsSettings
 import com.voxyl.overlay.ui.settings.discordrp.ShowDiscordRPCheckbox
 import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.OpenCloseKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.RefreshPlayersKeySetting
-import com.voxyl.overlay.ui.settings.qol.AutoShowAndHideDelaySlider
-import com.voxyl.overlay.ui.settings.qol.PinYourselfToTopCheckbox
+import com.voxyl.overlay.ui.settings.qol.*
 
 @Composable
 fun Settings(
@@ -50,6 +46,10 @@ fun SettingsList(
         mutableStateOf(Config[AddYourselfToOverlay] != "false")
     }
 
+    val addBots = remember {
+        mutableStateOf(Config[AddBotsToOverlay] != "false")
+    }
+
     val autoHide = remember {
         mutableStateOf(Config[AutoShowAndHide] != "false")
     }
@@ -57,43 +57,47 @@ fun SettingsList(
     val rawSettings by remember {
         mutableStateOf(
             listOf(
-                @Composable { Header("Basic") } to "BasicBWPApiKeyTextFieldHypixelApiKeyTextFieldPlayerNameTextFieldUsernameLogFilePathTextFieldBackupApiKey",
-                @Composable { BWPApiKeyTextField() } to "BasicBWPApiKeyTextField",
-                @Composable { HypixelApiKeyTextField() } to "BasicHypixelApiKeyTextField",
-                @Composable { PlayerNameTextField() } to "BasicPlayerNameTextField Username",
-                @Composable { LogFilePathTextField() } to "BasicLogFilePathTextField",
-                @Composable { Spacer(modifier = Modifier.size(10.dp)) } to "NeverGonnaGiveYouUpNeverGonnaLetYouDown",
-                @Composable { UseBackupBwpApiCheckbox() } to "BackupApiKey",
+                @Composable { Header("Basic") } to "basicbwpapikeytextfieldhypixelapikeytextfieldplayernametextfieldusernamelogfilepathtextfieldbackupapikey",
+                @Composable { BWPApiKeyTextField() } to "basicbwpapikeytextfield",
+                @Composable { HypixelApiKeyTextField() } to "basichypixelapikeytextfield",
+                @Composable { PlayerNameTextField() } to "basicplayernametextfieldusername",
+                @Composable { LogFilePathTextField() } to "basiclogfilepathtextfield",
+                @Composable { Spacer(modifier = Modifier.size(10.dp)) } to "nevergonnagiveyouupnevergonnaletyoudown",
+                @Composable { UseBackupBwpApiCheckbox() } to "backupapikey",
 
-                @Composable { Header("QOL") } to "QOLPinYourselfToTopCheckboxAddYourselfToOverlayCheckboxAutoShowAndHideCheckBoxAutoShowAndHideDelaySliderAutoHide",
-                @Composable { PinYourselfToTopCheckbox(addYourself) } to "QOLPinYourselfToTopCheckbox",
-                @Composable { AddYourselfToOverlayCheckbox(addYourself) } to "QOLAddYourselfToOverlayCheckbox",
-                @Composable { AutoShowAndHideCheckBox(autoHide) } to "QOLAutoShowAndHideCheckBoxAutoHide",
-                @Composable { AutoShowAndHideDelaySlider(autoHide) } to "QOLAutoShowAndHideDelaySliderAutoHide",
+                @Composable { Header("QOL") } to "qolpinyourselftotopcheckboxaddyourselftooverlaycheckboxautoshowandhidecheckboxautoshowandhidedelaysliderautohide",
+                @Composable { PinYourselfToTopCheckbox(addYourself) } to "qolpinyourselftotopcheckbox",
+                @Composable { AddYourselfToOverlayCheckbox(addYourself) } to "qoladdyourselftooverlaycheckbox",
+                @Composable { AddBotsToOverlayCheckbox(addBots) } to "qoladdbotstooverlaycheckbox",
+                @Composable { AutoShowAndHideCheckBox(autoHide) } to "qolautoshowandhidecheckboxautohide",
+                @Composable { AutoShowAndHideDelaySlider(autoHide) } to "qolautoshowandhidedelaysliderautohide",
 
-                @Composable { Header("Appearance") } to "AppearanceOpacitySliderTitleBarSizeSliderCenterStatsCheckBoxRSliderGSliderBSliderRedGreenBlue",
-                @Composable { BackgroundOpacitySlider() } to "AppearanceBackgroundOpacitySlider",
-                @Composable { OpacitySlider() } to "AppearanceOpacitySlider",
-                @Composable { TitleBarSizeSlider() } to "AppearanceTitleBarSizeSlider",
-                @Composable { CenterStatsCheckBox() } to "AppearanceCenterStatsCheckBox",
-                @Composable { RSlider() } to "AppearanceRSliderRed",
-                @Composable { GSlider() } to "AppearanceGSliderGreen",
-                @Composable { BSlider() } to "AppearanceBSliderBlue",
+                @Composable { Header("Appearance") } to "appearanceopacityslidertitlebarsizeslidercenterstatscheckboxrslidergsliderbsliderredgreenblue",
+                @Composable { BackgroundOpacitySlider() } to "appearancebackgroundopacityslider",
+                @Composable { OpacitySlider() } to "appearanceopacityslider",
+                @Composable { TitleBarSizeSlider() } to "appearancetitlebarsizeslider",
+                @Composable { CenterStatsCheckBox() } to "appearancecenterstatscheckbox",
+                @Composable { RSlider() } to "appearancersliderred",
+                @Composable { GSlider() } to "appearancegslidergreen",
+                @Composable { BSlider() } to "appearancebsliderblue",
 
-                @Composable { Header("Keybinds") } to "KeybindsOpenCloseKeySettingClearPlayersKeySettingHotkeysRefreshKeybinds",
-                @Composable { OpenCloseKeySetting() } to "KeybindsOpenCloseKeySettingHotkeys",
-                @Composable { ClearPlayersKeySetting() } to "KeybindsClearPlayersKeySettingHotkeys",
-                @Composable { RefreshPlayersKeySetting() } to "KeybindsRefreshPlayersKeySettingHotkeys",
+                @Composable { Header("Keybinds") } to "keybindsopenclosekeysettingclearplayerskeysettinghotkeysrefreshkeybinds",
+                @Composable { OpenCloseKeySetting() } to "keybindsopenclosekeysettinghotkeys",
+                @Composable { ClearPlayersKeySetting() } to "keybindsclearplayerskeysettinghotkeys",
+                @Composable { RefreshPlayersKeySetting() } to "keybindsrefreshplayerskeysettinghotkeys",
 
-                @Composable { Header("Aliases (Shift + scroll to scroll through your aliases when many are present)") } to "AliasesNicksNicknamesAltAccounts",
-                @Composable { ShowYourStatsInsteadOfAliasesCheckBox() } to "ShowYourStatsInsteadOfAliasesCheckBox",
-                @Composable { AliasesTextField() } to "AliasesNicksNicknamesAltAccounts",
+                @Composable { Header("Aliases (Shift + scroll to scroll through your aliases when many are present)") } to "aliasesnicksnicknamesaltaccounts",
+                @Composable { ShowYourStatsInsteadOfAliasesCheckBox() } to "showyourstatsinsteadofaliasescheckbox",
+                @Composable { AliasesTextField() } to "aliasesnicksnicknamesaltaccounts",
 
-                @Composable { Header("Discord Rich Presence") } to "DiscordRichPresenceDiscordRPC",
-                @Composable { ShowDiscordRPCheckbox() } to "DiscordRichPresenceDiscordRPC",
+                @Composable { Header("Discord Rich Presence") } to "discordrichpresencediscordrpc",
+                @Composable { ShowDiscordRPCheckbox() } to "discordrichpresencediscordrpc",
 
-                @Composable { Header("Columns") } to "ColumnsStatsShowRows",
-                @Composable { ColumnsSettings() } to "ColumnsStatsShowRows"
+                @Composable { Header("Columns") } to "columnsstatsshowrows",
+                @Composable { ColumnsSettings() } to "columnsstatsshowrows",
+
+                @Composable { Header("Backup") } to "backupsettingsfileconfig",
+                @Composable { BackupButtons() } to "backupsettingsfileconfig",
             )
         )
     }

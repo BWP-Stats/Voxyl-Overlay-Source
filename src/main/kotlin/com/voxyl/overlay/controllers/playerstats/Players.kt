@@ -1,18 +1,18 @@
 package com.voxyl.overlay.controllers.playerstats
 
-import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.*
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import com.voxyl.overlay.business.playerfetching.player.*
-import com.voxyl.overlay.business.playerfetching.player.tags.*
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.PlayerName
+import com.voxyl.overlay.business.playerfetching.player.tags.Error
+import com.voxyl.overlay.business.playerfetching.player.tags.Tag
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 object Players {
-
     private var _players = mutableStateListOf<PlayerState>()
 
     val players: List<PlayerState>
@@ -20,27 +20,18 @@ object Players {
 
     private var jobs = mutableMapOf<String, Job>()
 
-    fun add(rawName: String, cs: CoroutineScope, vararg tags: Tag) {
-
-        val name = if (
-            Config["aliases"]
-                ?.lowercase()
-                ?.split(",")
-                ?.contains(rawName.lowercase()) == true
-            && Config["show_your_stats_instead_of_aliases"] == "true"
-        ) Config[PlayerName] else rawName
-
+    fun add(name: String, cs: CoroutineScope, vararg tags: Tag) {
         try {
-            val tags2 = (listOf(*tags) + TagGenerator.generatePreTags(name, rawName))
+            val tags2 = (listOf(*tags) + TagGenerator.generatePreTags(name))
                 .distinctBy { tag -> tag.javaClass }
                 .toMutableStateList()
 
-            jobs[name] = PlayerFactory.makePlayer(name).onEach {
+            jobs[name] = PlayerFactory.create(name).onEach {
                 _players += when (it) {
                     is ResponseStatus.Loaded -> {
                         _players.remove(name)
                         PlayerState(
-                            name = (it.data as Player)["name"] ?: name,
+                            name = (it.data as StatefulEntity)["name"] ?: name,
                             player = it.data,
                             tags = tags2
                         ).also { ps ->

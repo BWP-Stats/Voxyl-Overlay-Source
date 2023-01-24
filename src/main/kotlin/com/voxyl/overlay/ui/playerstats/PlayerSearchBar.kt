@@ -12,14 +12,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.business.playerfetching.player.tags.ManuallySearched
-import com.voxyl.overlay.controllers.playerstats.Players
-import com.voxyl.overlay.ui.elements.VTextField
-import com.voxyl.overlay.ui.elements.VTrailingIcon
-import com.voxyl.overlay.ui.elements.onEnterOrEsc
-import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.controllers.common.ui.defaultTitleBarSizeMulti
 import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.controllers.common.ui.titleBarSizeMulti
+import com.voxyl.overlay.controllers.playerstats.Players
+import com.voxyl.overlay.ui.elements.VText
+import com.voxyl.overlay.ui.elements.VTextField
+import com.voxyl.overlay.ui.elements.VTrailingIcon
+import com.voxyl.overlay.ui.elements.onEnterOrEsc
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
@@ -47,7 +47,6 @@ fun PlayerSearchBar(
             Napier.wtf(e) { "Error adding someone to the KindaButNotExactlyViewModel" }
         }
     }
-
 
     VTextField(
         value = queriedName,

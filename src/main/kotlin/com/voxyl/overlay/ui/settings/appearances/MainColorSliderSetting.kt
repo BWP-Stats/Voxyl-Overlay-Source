@@ -8,34 +8,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys
-import com.voxyl.overlay.business.settings.config.ConfigKeys.*
-import com.voxyl.overlay.ui.elements.VSlider
+import com.voxyl.overlay.business.settings.config.*
 import com.voxyl.overlay.controllers.common.ui.MainWhite
+import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText
 
 @Composable
 fun RSlider(modifier: Modifier = Modifier) {
-    val r = mutableStateOf(Config[R].toIntOrNull()?.toFloat() ?: R.defaultValue.toInt().toFloat())
-    MainColorSlider(R, r, modifier)
+    val r = mutableStateOf(Config[PrimaryColorR].toIntOrNull()?.toFloat() ?: PrimaryColorR.default.toInt().toFloat())
+    MainColorSlider(PrimaryColorR, r, modifier)
 }
 
 @Composable
 fun GSlider(modifier: Modifier = Modifier) {
-    val g = mutableStateOf(Config[G].toIntOrNull()?.toFloat() ?: G.defaultValue.toInt().toFloat())
-    MainColorSlider(G, g, modifier)
+    val g = mutableStateOf(Config[PrimaryColorG].toIntOrNull()?.toFloat() ?: PrimaryColorG.default.toInt().toFloat())
+    MainColorSlider(PrimaryColorG, g, modifier)
 }
 
 @Composable
 fun BSlider(modifier: Modifier = Modifier) {
-    val b = mutableStateOf(Config[B].toIntOrNull()?.toFloat() ?: B.defaultValue.toInt().toFloat())
-    MainColorSlider(B, b, modifier)
+    val b = mutableStateOf(Config[PrimaryColorB].toIntOrNull()?.toFloat() ?: PrimaryColorB.default.toInt().toFloat())
+    MainColorSlider(PrimaryColorB, b, modifier)
 }
 
 @Composable
 fun MainColorSlider(
-    key: ConfigKeys,
+    key: ConfigKey,
     color: MutableState<Float>,
     modifier: Modifier = Modifier
 ) {
@@ -65,7 +63,7 @@ fun MainColorSlider(
 }
 
 @Composable
-private fun ColorText(key: ConfigKeys, color: MutableState<Float>) {
+private fun ColorText(key: ConfigKey, color: MutableState<Float>) {
     VText("${key.name}: (${"${color.value.toInt()}".padStart(3, '0')}x)", color = MainWhite, fontSize = 12.sp)
     Spacer(modifier = Modifier.size(17.dp))
 }

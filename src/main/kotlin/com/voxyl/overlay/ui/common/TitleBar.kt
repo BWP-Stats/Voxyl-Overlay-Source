@@ -16,24 +16,33 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
-import com.voxyl.overlay.Window
+import com.voxyl.overlay.AppWindow
+import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.business.settings.Settings
+import com.voxyl.overlay.controllers.common.Screen
+import com.voxyl.overlay.controllers.common.ui.*
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.playerstats.PlayerSearchBar
-import com.voxyl.overlay.controllers.common.ScreenShowing
-import com.voxyl.overlay.controllers.common.ui.*
 import com.voxyl.overlay.ui.settings.SettingsSearchBar
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
+import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
 
 @Composable
 fun FrameWindowScope.TitleBar() {
     VoxylLogoForTitleBar()
 
     WindowDraggableArea(modifier = Modifier.fillMaxWidth().height(64.dp).requestFocusOnClick())
+
+    var currentSearchBar by remember { mutableStateOf<@Composable (Modifier) -> Unit>({ PlayerSearchBar(it) }) }
+
+    LaunchedEffect(Unit) {
+        Screen.subscribeToChange { _, new ->
+            currentSearchBar = { if (new == Screen.PlayerStats) PlayerSearchBar(it) else SettingsSearchBar(it) }
+        }
+    }
 
     Row(
         Modifier
@@ -42,11 +51,7 @@ fun FrameWindowScope.TitleBar() {
     ) {
         MainColorSettingsButton()
 
-        if (ScreenShowing.screenId == "playerstats") {
-            PlayerSearchBar(Modifier.weight(1f))
-        } else {
-            SettingsSearchBar(Modifier.weight(1f))
-        }
+        currentSearchBar(Modifier.weight(1f))
 
         RedCloseOverlayButton()
 
@@ -70,13 +75,22 @@ fun VoxylLogoForTitleBar() {
 }
 
 @Composable
-fun MainColorSettingsButton(modifier: Modifier = Modifier) = TitleBarButton(
-    modifier = modifier.absolutePadding(left = 52.tbsm.dp),
-    bgColor = mutableStateOf(MainColor.value),
-    doOnClick = {
-        ScreenShowing.screenId = if (ScreenShowing.screenId == "playerstats") "settings" else "playerstats"
-    },
-)
+fun MainColorSettingsButton(modifier: Modifier = Modifier) {
+    val cs = rememberCoroutineScope();
+
+    TitleBarButton(
+        modifier = modifier.absolutePadding(left = 52.tbsm.dp),
+        bgColor = mutableStateOf(MainColor.value),
+        doOnClick = {
+            if (Screen.current == Screen.Settings) {
+                Settings.storeAll()
+                LogFileReader.start(cs)
+            }
+
+            Screen.current = if (Screen.current == Screen.PlayerStats) Screen.Settings else Screen.PlayerStats
+        },
+    )
+}
 
 @Composable
 fun RedCloseOverlayButton(modifier: Modifier = Modifier) = TitleBarButton(
@@ -93,7 +107,7 @@ fun YellowMinimizeButton(modifier: Modifier = Modifier) = TitleBarButton(
     modifier = modifier.absolutePadding(right = 10.tbsm.dp),
     bgColor = mutableStateOf(Color(251, 191, 36, 160).am),
     doOnClick = {
-        Window.isMinimized = true
+        AppWindow.isMinimized = true
     }
 )
 

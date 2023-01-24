@@ -7,34 +7,31 @@ import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Info
 import com.voxyl.overlay.controllers.common.PopUpQueue
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
+import kotlin.math.max
 
 object UpdateChecker {
-    fun check(cs: CoroutineScope, manuallyChecked: Boolean = false) {
-        cs.launch(Dispatchers.IO) {
-            try {
-                deleteInstallerDirectory()
+    fun check(cs: CoroutineScope, manuallyChecked: Boolean = false) = cs.launch(Dispatchers.IO) {
+        try {
+            deleteInstallerDirectory()
 
-                val latestRelease = GitHubApiProvider.getApi().getReleases().get(0).asJsonObject
-                val tag = latestRelease.get("tag_name").asString.trim('v')
+            val latestRelease = GitHubApiProvider.getApi().getReleases().get(0).asJsonObject
+            val latestVersion = latestRelease.get("tag_name").asString.trim('v')
 
-                val latestVersion = tag.split(".")
-                val currentVersion = AppInfo.VERSION.split(".")
-
-                if (currentVersion < latestVersion) {
-                    queryUpdate(tag, cs)
-                    return@launch
-                } else if (manuallyChecked) {
-                    PopUpQueue.add(Info("No new releases found (Current version ${AppInfo.VERSION})"))
-                }
-            } catch (e: IndexOutOfBoundsException) {
-                PopUpQueue.add(Error("Error checking for updates; no releases found"))
-                Napier.e("Failed to check for updates; no releases found? ${e.message}")
-            } catch (e: Exception) {
-                PopUpQueue.add(Error("Failed to check for updates"))
-                Napier.e("Failed to check for updates; ${e.message}")
+            if (compareVersions(latestVersion, AppInfo.VERSION) > 0) {
+                queryUpdate(latestVersion, cs)
+            } else if (manuallyChecked) {
+                PopUpQueue.add(Info("No new releases found (Current version ${AppInfo.VERSION})"))
             }
+        } catch (e: IndexOutOfBoundsException) {
+            PopUpQueue.add(Error("Error checking for updates; no releases found"))
+            Napier.e("Failed to check for updates; no releases found?", e)
+        } catch (e: Exception) {
+            PopUpQueue.add(Error("Failed to check for updates"))
+            Napier.e("Failed to check for updates", e)
         }
     }
 
@@ -50,19 +47,17 @@ object UpdateChecker {
         })
     }
 
-    private operator fun List<String>.compareTo(latestVersion: List<String>): Int {
-        var i = 0
-        while (i < this.size && i < latestVersion.size) {
-            val thisVersion = this[i].toInt()
-            val latestVersion2 = latestVersion[i].toInt()
+    private fun compareVersions(version1: String, version2: String): Int {
+        val v1 = version1.split(".")
+        val v2 = version2.split(".")
+        val maxLength = max(v1.size, v2.size)
 
-            if (thisVersion < latestVersion2) {
-                return -1
-            } else if (thisVersion > latestVersion2) {
-                return 1
+        for (i in 0 until maxLength) {
+            val ver1 = if (i < v1.size) v1[i].toInt() else 0
+            val ver2 = if (i < v2.size) v2[i].toInt() else 0
+            if (ver1 != ver2) {
+                return ver1.compareTo(ver2)
             }
-
-            i++
         }
 
         return 0

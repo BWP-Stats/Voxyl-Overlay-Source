@@ -3,12 +3,7 @@ package com.voxyl.overlay.controllers.common.ui
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.R
-import com.voxyl.overlay.business.settings.config.ConfigKeys.G
-import com.voxyl.overlay.business.settings.config.ConfigKeys.B
-import com.voxyl.overlay.business.settings.config.ConfigKeys.Opacity
-import com.voxyl.overlay.business.settings.config.ConfigKeys.BackgroundOpacity
+import com.voxyl.overlay.business.settings.config.*
 import kotlin.math.roundToInt
 
 var alphaMultiplier = mutableStateOf(Config[Opacity].toFloatOrNull() ?: 1f)
@@ -27,12 +22,11 @@ val ErrorColor
 
 private val _MainColor: Color
     get() = Color(
-        Config[R].toFloatOrNull()?.roundToInt() ?: 130,
-        Config[G].toFloatOrNull()?.roundToInt() ?: 32,
-        Config[B].toFloatOrNull()?.roundToInt() ?: 229,
+        Config[PrimaryColorR].toFloatOrNull()?.roundToInt() ?: 130,
+        Config[PrimaryColorG].toFloatOrNull()?.roundToInt() ?: 32,
+        Config[PrimaryColorB].toFloatOrNull()?.roundToInt() ?: 229,
         160
     ).am
-
 
 val MainColor: MutableState<Color> = mutableStateOf(Color(130, 32, 229, 160).am)
     get() {

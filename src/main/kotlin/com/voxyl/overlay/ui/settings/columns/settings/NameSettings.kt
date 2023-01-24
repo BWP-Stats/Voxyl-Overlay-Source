@@ -8,12 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.RankPrefix
-import com.voxyl.overlay.business.settings.config.ConfigKeys.ShowRankPrefix
+import com.voxyl.overlay.business.settings.config.RankPrefix
+import com.voxyl.overlay.business.settings.config.ShowRankPrefix
+import com.voxyl.overlay.business.settings.misc.FirstTimeSwitchingRank
 import com.voxyl.overlay.business.settings.misc.MiscSettings
 import com.voxyl.overlay.ui.elements.VCheckbox
-import com.voxyl.overlay.ui.settings.columns.ColumnSettingsMenuState
 import com.voxyl.overlay.ui.elements.VText
+import com.voxyl.overlay.ui.settings.columns.ColumnSettingsMenuState
 
 @Composable
 fun NameSettings() {
@@ -67,8 +68,8 @@ private fun whichRankPrefixSetting() {
         Config[RankPrefix] = prefix
     }) {
         VText(
-            text = if (MiscSettings["first_time_switching_rank"] == "true") {
-                MiscSettings["first_time_switching_rank"] = "false"
+            text = if (MiscSettings[FirstTimeSwitchingRank] == "true") {
+                MiscSettings[FirstTimeSwitchingRank] = "false"
                 "Use $prefix rank (Click me!)"
             } else {
                 "Use $prefix rank"

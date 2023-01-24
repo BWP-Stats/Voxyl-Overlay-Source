@@ -5,9 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.mouseClickable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -22,15 +22,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.Window
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.Columns
+import com.voxyl.overlay.AppWindow
+import com.voxyl.overlay.business.settings.config.*
+import com.voxyl.overlay.controllers.common.ui.MainWhite
+import com.voxyl.overlay.controllers.common.ui.am
 import com.voxyl.overlay.controllers.playerstats.StatsToShow
 import com.voxyl.overlay.controllers.playerstats.StatsToShow.clean
 import com.voxyl.overlay.controllers.playerstats.StatsToShow.raw
-import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.controllers.common.ui.am
 import org.burnoutcrew.reorderable.*
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -39,7 +38,7 @@ fun ColumnsSettings() {
     val state = rememberReorderState()
     val stats = StatsToShow._stats
 
-    val width = (Window.width.dp - 40.dp) / stats.size
+    val width = (AppWindow.width.dp - 40.dp) / stats.size
 
     Column(
         Modifier

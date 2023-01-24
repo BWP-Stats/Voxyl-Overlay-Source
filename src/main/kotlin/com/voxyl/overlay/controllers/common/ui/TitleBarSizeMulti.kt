@@ -2,7 +2,7 @@ package com.voxyl.overlay.controllers.common.ui
 
 import androidx.compose.animation.core.Animatable
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.TitleBarSizeMulti
+import com.voxyl.overlay.business.settings.config.*
 
 var titleBarSizeMulti = Animatable(defaultTitleBarSizeMulti)
 

@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener
-import com.voxyl.overlay.Window
+import com.voxyl.overlay.AppWindow
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.OpenAndCloseKeybind
+import com.voxyl.overlay.business.settings.config.OpenAndCloseKeybind
 
 object OpenCloseKeyListener : NativeKeyListener {
     var paramString by mutableStateOf(
@@ -16,12 +16,12 @@ object OpenCloseKeyListener : NativeKeyListener {
 
     override fun nativeKeyReleased(e: NativeKeyEvent) {
         if (e.paramString() == paramString) {
-            if (Window.isMinimized) {
-                Window.focusableWindowState = false
-                Window.isMinimized = false
-                Window.focusableWindowState = true
+            if (AppWindow.isMinimized) {
+                AppWindow.focusableWindowState = false
+                AppWindow.isMinimized = false
+                AppWindow.focusableWindowState = true
             } else {
-                Window.isMinimized = true
+                AppWindow.isMinimized = true
             }
         }
     }

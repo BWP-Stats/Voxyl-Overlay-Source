@@ -13,15 +13,15 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.voxyl.overlay.business.settings.config.CenterStats
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.controllers.common.ui.MainWhite
+import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.controllers.playerstats.StatsSort
 import com.voxyl.overlay.controllers.playerstats.StatsToShow
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.CenterStats
-import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.controllers.playerstats.StatsToShow.clean
-import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.controllers.common.ui.tbsm
+import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 
 @Composable
 fun PlayerStats() {

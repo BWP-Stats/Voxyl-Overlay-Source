@@ -11,25 +11,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerMoveFilter
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.business.playerfetching.player.PlayerState
-import com.voxyl.overlay.controllers.playerstats.Players
-import com.voxyl.overlay.controllers.playerstats.StatsSort
-import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.*
-import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.playerstats.playerstats.colors.BwpRankColors
-import com.voxyl.overlay.ui.playerstats.playerstats.colors.ErrorString
-import com.voxyl.overlay.ui.playerstats.playerstats.colors.HypixelRankColors
-import com.voxyl.overlay.ui.playerstats.playerstats.colors.LevelColors.coloredLevel
+import com.voxyl.overlay.business.settings.config.*
 import com.voxyl.overlay.controllers.common.ui.MainWhite
-import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.controllers.common.ui.am
 import com.voxyl.overlay.controllers.common.ui.tbsm
+import com.voxyl.overlay.controllers.playerstats.Players
+import com.voxyl.overlay.controllers.playerstats.StatsSort
+import com.voxyl.overlay.ui.elements.VText
+import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.BwpRankColors
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.HypixelRankColors
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.LevelColors.coloredLevel
+import com.voxyl.overlay.ui.playerstats.playerstats.colors.getColoredErrorPlaceholder
 import io.github.aakira.napier.Napier
 import kotlin.math.max
 import kotlin.math.sqrt
@@ -210,11 +210,11 @@ private fun getStat(statToShow: String, player: PlayerState) = when {
         player.tags.joinToString(", ").toAnnotatedString()
     }
 
-    player[statToShow] != null -> player[statToShow]?.toAnnotatedString() ?: ErrorString.get()
+    player[statToShow] != null -> player[statToShow]?.toAnnotatedString() ?: getColoredErrorPlaceholder(false)
 
     player.isLoading -> "...".toAnnotatedString()
 
-    else -> ErrorString.get()
+    else -> getColoredErrorPlaceholder(false)
 }
 
 fun figureOutWhichRankToUseAndIfToShowTheRankPrefixAndThenReturnTheOutputCorrespondingToTheMatchingCondition(player: PlayerState): AnnotatedString {

@@ -16,13 +16,14 @@ import com.voxyl.overlay.business.autoupdater.UpdateChecker
 import com.voxyl.overlay.business.discordrpc.DiscordRPC
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.business.nativelisteners.NativeListeners
-import com.voxyl.overlay.business.validation.ValidationChecks
-import com.voxyl.overlay.controllers.playerstats.LeaderboardTracker
-import com.voxyl.overlay.controllers.common.PopUpQueue
 import com.voxyl.overlay.business.settings.Settings
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.window.SavedWindowState
-import com.voxyl.overlay.business.settings.window.SavedWindowStateKeys.*
+import com.voxyl.overlay.business.settings.config.ShowDiscordRP
+import com.voxyl.overlay.business.settings.window.*
+import com.voxyl.overlay.business.settings.window.WindowState
+import com.voxyl.overlay.business.validation.ValidationChecks
+import com.voxyl.overlay.controllers.common.PopUpQueue
+import com.voxyl.overlay.controllers.playerstats.LeaderboardTracker
 import com.voxyl.overlay.ui.common.MainScreen
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -32,16 +33,16 @@ import java.util.logging.ConsoleHandler
 import java.util.logging.FileHandler
 import java.util.logging.Level
 import java.util.logging.SimpleFormatter
+import androidx.compose.ui.window.WindowState as AndroidWindowState
 
-lateinit var Window: ComposeWindow
+lateinit var AppWindow: ComposeWindow
     private set
 
 @ExperimentalComposeUiApi
 @Preview
 fun main() = application {
-
     Settings.loadAll()
-    AutoUpdater.restoreSettingsFromTemp()
+    Settings.checkForAutoRestore()
 
     val windowState = rememberWindowState(
         position = getPreferredWindowPosition(),
@@ -57,25 +58,25 @@ fun main() = application {
         transparent = true,
         title = "Voxyl Overlay",
         icon = painterResource("logos/VoxylLogoIcon.ico"),
-        alwaysOnTop = SavedWindowState[IsAlwaysOnTop] == "true",
+        alwaysOnTop = WindowState[IsAlwaysOnTop] == "true",
         state = windowState
     ) {
-        Window = window.apply {
+        AppWindow = window.apply {
             minimumSize = Dimension(600, 200)
         }
 
         val cs = rememberCoroutineScope()
 
         LaunchedEffect(Unit) {
+            ValidationChecks.runAtStart()
             Napier.initialize()
-            ValidationChecks.runAtStart(cs)
             NativeListeners.initialize()
             PopUpQueue.start()
             LogFileReader.start()
             UpdateChecker.check(cs)
             LeaderboardTracker.startTracking()
 
-            if (Config["show_discord_rp"] != "false") {
+            if (Config[ShowDiscordRP] != "false") {
                 DiscordRPC.start(cs)
             }
         }
@@ -86,7 +87,7 @@ fun main() = application {
 }
 
 @Composable
-fun ApplicationScope.VTray(windowState: WindowState) = Tray(
+fun ApplicationScope.VTray(windowState: AndroidWindowState) = Tray(
     icon = painterResource("logos/VoxylLogoIcon.ico"),
     tooltip = "Voxyl Overlay",
 ) {
@@ -117,15 +118,15 @@ fun ApplicationScope.VTray(windowState: WindowState) = Tray(
 }
 
 fun getPreferredWindowPosition(): WindowPosition {
-    val x = SavedWindowState[X].toFloatOrNull() ?: return WindowPosition.PlatformDefault
-    val y = SavedWindowState[Y].toFloatOrNull() ?: return WindowPosition.PlatformDefault
+    val x = WindowState[X].toFloatOrNull() ?: return WindowPosition.PlatformDefault
+    val y = WindowState[Y].toFloatOrNull() ?: return WindowPosition.PlatformDefault
 
     return WindowPosition(x.dp, y.dp)
 }
 
 fun getPreferredWindowSize(): DpSize {
-    val w = SavedWindowState[Width].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
-    val h = SavedWindowState[Height].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
+    val w = WindowState[Width].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
+    val h = WindowState[Height].toFloatOrNull() ?: return DpSize(650.dp, 300.dp)
 
     return DpSize(w.dp, h.dp)
 }
@@ -136,19 +137,17 @@ private fun Napier.initialize() {
         formatter = SimpleFormatter()
     }
 
-    base(DebugAntilog(handler = listOf(DefaultHandler.`😳`, consoleHandler)))
+    base(DebugAntilog(handler = listOf(DefaultHandler.get(), consoleHandler)))
 }
 
-@Suppress("ObjectPropertyName", "NonAsciiCharacters", "MemberVisibilityCanBePrivate")
 object DefaultHandler {
-    val path = getPath()
+    fun get() = handler
 
-    val `😳` = FileHandler(path, 2000000, 5, true).apply {
+    private val handler = FileHandler(getPath(), 2000000, 5, true).apply {
         level = Level.ALL
         formatter = SimpleFormatter()
     }
 
-    @JvmName("getPath1")
     private fun getPath(path: String = "./logs/voxyl%g.log"): String {
         val configFile = File(path)
         configFile.parentFile.mkdirs()

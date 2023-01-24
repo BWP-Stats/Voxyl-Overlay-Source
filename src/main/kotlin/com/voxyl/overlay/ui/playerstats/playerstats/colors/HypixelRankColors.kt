@@ -132,6 +132,14 @@ object HypixelRankColors {
             }
         } to mcColors["green"]!!),
 
+        "BOT" to ({ _: PlayerState ->
+            buildAnnotatedString {
+                withStyle(style = SpanStyle(color = mcColors["dark-gray"]!!.am)) {
+                    append("[BOT]")
+                }
+            }
+        } to mcColors["dark-gray"]!!),
+
         "NONE" to ({ _: PlayerState ->
             buildAnnotatedString {
                 withStyle(style = SpanStyle(color = mcColors["gray"]!!.am)) {
@@ -140,20 +148,19 @@ object HypixelRankColors {
             }
         } to mcColors["gray"]!!),
 
-        "ERR" to ({ _: PlayerState ->
+        ERROR_PLACEHOLDER to ({ _: PlayerState ->
             buildAnnotatedString {
                 withStyle(style = SpanStyle(color = mcColors["red"]!!.am)) {
-                    append("[ERR]")
+                    append("[${ERROR_PLACEHOLDER}]")
                 }
             }
         } to mcColors["red"]!!)
     )
 
-
     fun coloredRank(player: PlayerState) = when {
         player.isLoading -> buildAnnotatedString { }
-        player.error.isNotBlank() -> ranks["ERR"]!!.first(player) + " ".toAnnotatedString()
-        else -> (ranks[player["hypixel.rank"]] ?: ranks["ERR"]!!).first(player)  + " ".toAnnotatedString()
+        player.error.isNotBlank() -> ranks[ERROR_PLACEHOLDER]!!.first(player) + " ".toAnnotatedString()
+        else -> (ranks[player["hypixel.rank"]] ?: ranks[ERROR_PLACEHOLDER]!!).first(player)  + " ".toAnnotatedString()
     }
 
     fun coloredName(player: PlayerState): AnnotatedString = when {
@@ -164,13 +171,13 @@ object HypixelRankColors {
         }
 
         player.error.isNotBlank() -> buildAnnotatedString {
-            withStyle(style = SpanStyle(color = ranks["ERR"]!!.second.am)) {
+            withStyle(style = SpanStyle(color = ranks[ERROR_PLACEHOLDER]!!.second.am)) {
                 append("#${player.name}")
             }
         }
 
         else -> buildAnnotatedString {
-            withStyle(style = SpanStyle(color = ranks[player["hypixel.rank"] ?: "ERR"]!!.second.am)) {
+            withStyle(style = SpanStyle(color = ranks[player["hypixel.rank"] ?: ERROR_PLACEHOLDER]!!.second.am)) {
                 append(player.name)
             }
         }

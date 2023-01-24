@@ -13,11 +13,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.ui.elements.VTextField
-import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.controllers.common.ui.defaultTitleBarSizeMulti
 import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.controllers.common.ui.titleBarSizeMulti
+import com.voxyl.overlay.ui.elements.VText
+import com.voxyl.overlay.ui.elements.VTextField
 import kotlinx.coroutines.launch
 
 var queriedSetting by mutableStateOf(TextFieldValue())

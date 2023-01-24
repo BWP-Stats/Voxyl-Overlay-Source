@@ -32,7 +32,7 @@ fun BoxScope.PopUpBar() {
         if (PopUpQueue.Current.show) -10f else 100f
     )
 
-    val popUp = PopUpQueue.Current.popUp
+    val popUp = PopUpQueue.Current.popup
 
     Row(
         modifier = Modifier.size(400.dp, 62.dp)

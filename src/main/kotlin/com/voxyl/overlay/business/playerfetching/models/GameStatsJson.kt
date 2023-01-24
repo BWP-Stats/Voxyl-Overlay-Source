@@ -3,7 +3,7 @@ package com.voxyl.overlay.business.playerfetching.models
 import com.google.gson.JsonObject
 
 @JvmInline
-value class GameStatsJson(val json: JsonObject) {
+value class GameStatsJson(override val json: JsonObject) : JsonValueClass {
     fun toOverallGameStats(): Map<String, String> {
         var beds = 0
         var wins = 0

@@ -3,8 +3,8 @@ package com.voxyl.overlay.controllers.playerstats
 import androidx.compose.runtime.mutableStateOf
 import com.voxyl.overlay.business.playerfetching.player.PlayerState
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.SortAsc
-import com.voxyl.overlay.business.settings.config.ConfigKeys.SortBy
+import com.voxyl.overlay.business.settings.config.SortAsc
+import com.voxyl.overlay.business.settings.config.SortBy
 
 object StatsSort {
     private var _by = mutableStateOf(Config[SortBy])

@@ -14,12 +14,12 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.voxyl.overlay.business.settings.config.BwpApiKey
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.BwpApiKey
-import com.voxyl.overlay.ui.elements.VTrailingIcon
-import com.voxyl.overlay.ui.settings.SettingsTextField
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.am
+import com.voxyl.overlay.ui.elements.VTrailingIcon
+import com.voxyl.overlay.ui.settings.SettingsTextField
 
 @ExperimentalComposeUiApi
 @Composable
@@ -79,9 +79,10 @@ fun BWPApiKeyTextField() {
 private fun getBwpApiKeyLabel(apiKey: TextFieldValue, isValid: Boolean) =
     if (apiKey.text.isNotBlank() && !isValid)
         "API key must be 32 chars and contain only letters & numbers"
-    else if (Config[BwpApiKey].isBlank())
+    else if (Config[BwpApiKey].isBlank() || !isValidBwpApiKey(Config[BwpApiKey]))
         "Enter your BWP API key"
     else
         "Enter your BWP API key (${Config[BwpApiKey].substring(0, 11) + "*".repeat(22)})"
 
-private fun isValidBwpApiKey(tfv: TextFieldValue) = tfv.text.matches(Regex("[a-zA-Z0-9]{32}"))
+private fun isValidBwpApiKey(str: String) = str.matches(Regex("[a-zA-Z0-9]{32}"))
+private fun isValidBwpApiKey(tfv: TextFieldValue) = isValidBwpApiKey(tfv.text)

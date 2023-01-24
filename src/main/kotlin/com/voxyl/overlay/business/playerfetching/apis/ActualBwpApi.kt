@@ -1,7 +1,6 @@
 package com.voxyl.overlay.business.playerfetching.apis
 
 import com.google.gson.JsonObject
-import com.voxyl.overlay.business.NetworkingUtils
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

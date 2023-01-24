@@ -13,7 +13,7 @@ object NativeListeners {
             GlobalScreen.addNativeKeyListener(ClearPlayersKeyListener)
             GlobalScreen.addNativeKeyListener(RefreshPlayersKeyListener)
         } catch (e: NativeHookException) {
-            Napier.e(e) { "Failed to register native hooks" }
+            Napier.e("Failed to register native hooks", e)
         }
     }
 

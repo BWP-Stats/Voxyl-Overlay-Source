@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.PlayerName
+import com.voxyl.overlay.business.settings.config.*
 import com.voxyl.overlay.ui.elements.VTrailingIcon
 import com.voxyl.overlay.ui.settings.SettingsTextField
 import com.voxyl.overlay.controllers.common.ui.MainWhite
@@ -78,9 +78,9 @@ fun PlayerNameTextField() {
 private fun getNameLabel(name: TextFieldValue, isValid: Boolean) =
     if (name.text.isNotBlank() && !isValid)
         "Please enter a valid name"
-    else if (Config[PlayerName.key]?.isBlank() == true)
+    else if (Config[PlayerName].isBlank())
         "Enter your MC username"
     else
-        "Enter your MC username (${Config[PlayerName.key]})"
+        "Enter your MC username (${Config[PlayerName]})"
 
 private fun isValidName(tfv: TextFieldValue) = tfv.text.matches(Regex("\\w{1,16}"))

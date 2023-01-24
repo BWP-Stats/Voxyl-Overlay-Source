@@ -15,9 +15,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.Window
-import com.voxyl.overlay.business.settings.window.SavedWindowState
-import com.voxyl.overlay.business.settings.window.SavedWindowStateKeys.IsAlwaysOnTop
+import com.voxyl.overlay.AppWindow
+import com.voxyl.overlay.business.settings.window.*
 import com.voxyl.overlay.controllers.common.ui.*
 import com.voxyl.overlay.controllers.playerstats.Players
 import com.voxyl.overlay.ui.elements.ShapeThatIdkTheNameOf
@@ -54,7 +53,7 @@ fun AdditionalSettings(
             .padding(vertical = boxOffset.value.dp)
             .height(animatedSize.value.dp)
             .hoverable({
-                if (it.x < Window.size.width - 60 || it.y > 170) {
+                if (it.x < AppWindow.size.width - 60 || it.y > 170) {
                     cs.launch {
                         titleBarSizeMulti.animateTo(defaultTitleBarSizeMulti)
                     }
@@ -103,7 +102,7 @@ fun AdditionalSettings(
 
 @Composable
 fun AlwaysOnTopButton() {
-    var tint by remember { mutableStateOf(if (Window.isAlwaysOnTop) MainWhite.copy(alpha = .99f).am else MainWhite) }
+    var tint by remember { mutableStateOf(if (AppWindow.isAlwaysOnTop) MainWhite.copy(alpha = .99f).am else MainWhite) }
 
     val infiniteTransition = rememberInfiniteTransition()
     val rotation by infiniteTransition.animateFloat(
@@ -115,7 +114,7 @@ fun AlwaysOnTopButton() {
         )
     )
 
-    var windowOnTop by remember { mutableStateOf(Window.isAlwaysOnTop) }
+    var windowOnTop by remember { mutableStateOf(AppWindow.isAlwaysOnTop) }
     Tooltip(
         "Toggles the overlay being always on top of all other windows"
     ) {
@@ -124,9 +123,9 @@ fun AlwaysOnTopButton() {
             modifier = Modifier
                 .rotate(if (windowOnTop) rotation else 0f)
                 .clickable {
-                    Window.isAlwaysOnTop = !(Window.isAlwaysOnTop)
-                    SavedWindowState[IsAlwaysOnTop] = windowOnTop.toString()
-                    windowOnTop = Window.isAlwaysOnTop
+                    AppWindow.isAlwaysOnTop = !(AppWindow.isAlwaysOnTop)
+                    WindowState[IsAlwaysOnTop] = windowOnTop.toString()
+                    windowOnTop = AppWindow.isAlwaysOnTop
 
                     tint = if (windowOnTop) MainWhite.copy(alpha = .9f).am else MainWhite
                 }

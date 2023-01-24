@@ -1,15 +1,16 @@
 package com.voxyl.overlay.ui.settings.appearances
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.config.ConfigKeys.Opacity
+import com.voxyl.overlay.business.settings.config.Opacity
+import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
 import com.voxyl.overlay.ui.elements.VSlider
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
 
 @Composable
 fun OpacitySlider(modifier: Modifier = Modifier) {

@@ -1,7 +1,7 @@
 package com.voxyl.overlay.business.validation
 
-import com.voxyl.overlay.business.NetworkingUtils
-import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
+import com.voxyl.overlay.business.utils.NetworkingUtils
+import com.voxyl.overlay.business.statsfetching.apis.ApiProvider
 import com.voxyl.overlay.business.settings.config.BwpApiKey
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.validation.popups.Error

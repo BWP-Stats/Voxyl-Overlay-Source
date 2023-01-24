@@ -37,7 +37,11 @@ fun BackupButtons() {
             backupExists = Settings.backupExists()
         }
 
-        BackupButton("Restore settings", color = if (backupExists) MainWhite else ErrorColor) {
+        BackupButton(
+            text = "Restore settings",
+            color = if (backupExists) MainWhite else ErrorColor,
+            enabled = backupExists,
+        ) {
             Settings.restoreFromTemp()
         }
 
@@ -51,9 +55,22 @@ fun BackupButtons() {
 }
 
 @Composable
-private fun RowScope.BackupButton(text: String, color: Color = MainWhite, onPressed: () -> Unit) {
+private fun RowScope.BackupButton(
+    text: String,
+    color: Color = MainWhite,
+    enabled: Boolean = true,
+    onPressed: () -> Unit
+) {
     var pressed by remember { mutableStateOf(false) }
-    val progress by animateFloatAsState(if (pressed) 1f else 0f, animationSpec = TweenSpec(1000, easing = LinearEasing))
+
+    val animSpec = TweenSpec<Float>(if (pressed) 875 else 175, easing = LinearEasing)
+
+    val progress by animateFloatAsState(if (pressed && enabled) 1f else 0f, animSpec) {
+        if (enabled) {
+            onPressed()
+            pressed = false
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -63,13 +80,7 @@ private fun RowScope.BackupButton(text: String, color: Color = MainWhite, onPres
                 detectTapGestures(
                     onPress = {
                         pressed = true
-
                         tryAwaitRelease()
-
-                        if (progress > .99f) {
-                            onPressed()
-                        }
-
                         pressed = false
                     }
                 )

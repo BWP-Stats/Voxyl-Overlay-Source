@@ -1,9 +1,9 @@
 package com.voxyl.overlay.controllers.playerstats
 
 import com.google.gson.JsonObject
-import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
-import com.voxyl.overlay.business.playerfetching.models.LevelsLeaderboardJson
-import com.voxyl.overlay.business.playerfetching.models.WWinsLeaderboardJson
+import com.voxyl.overlay.business.statsfetching.apis.ApiProvider
+import com.voxyl.overlay.business.statsfetching.models.LevelsLeaderboardJson
+import com.voxyl.overlay.business.statsfetching.models.WWinsLeaderboardJson
 import com.voxyl.overlay.business.settings.config.*
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*

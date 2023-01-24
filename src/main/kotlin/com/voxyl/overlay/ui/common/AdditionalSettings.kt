@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.AppWindow
 import com.voxyl.overlay.business.settings.window.*
 import com.voxyl.overlay.controllers.common.ui.*
-import com.voxyl.overlay.controllers.playerstats.Players
+import com.voxyl.overlay.controllers.playerstats.Entities
 import com.voxyl.overlay.ui.elements.ShapeThatIdkTheNameOf
 import com.voxyl.overlay.ui.elements.Tooltip
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
@@ -141,7 +141,7 @@ fun ClearPlayersButton() {
         Icon(
             Icons.Filled.Clear, contentDescription = null, tint = MainWhite,
             modifier = Modifier.clickable {
-                Players.removeAll()
+                Entities.removeAll()
             }
         )
     }
@@ -157,7 +157,7 @@ fun RefreshAllButton() {
         Icon(
             Icons.Filled.Refresh, contentDescription = null, tint = MainWhite,
             modifier = Modifier.clickable {
-                Players.refreshAll(cs)
+                Entities.refreshAll(cs)
             }
         )
     }

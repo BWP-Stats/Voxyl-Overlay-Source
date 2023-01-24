@@ -1,9 +1,8 @@
 package com.voxyl.overlay.business.discordrpc
 
-import com.voxyl.overlay.business.playerfetching.player.Player
-import com.voxyl.overlay.business.playerfetching.player.PlayerFactory
-import com.voxyl.overlay.business.playerfetching.player.ResponseStatus
-import com.voxyl.overlay.business.playerfetching.player.StatefulEntity
+import com.voxyl.overlay.business.statsfetching.enitities.EntityFactory
+import com.voxyl.overlay.business.statsfetching.enitities.ResponseStatus
+import com.voxyl.overlay.business.statsfetching.enitities.types.Player
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.PlayerName
 import com.voxyl.overlay.business.validation.popups.Error
@@ -101,7 +100,7 @@ object DiscordRPC {
 
     fun refresh(cs: CoroutineScope) {
         try {
-            PlayerFactory.create(Config[PlayerName]).onEach {
+            EntityFactory.create(Config[PlayerName]).onEach {
                 if (it is ResponseStatus.Loaded) {
                     player = it.data as Player
                 }

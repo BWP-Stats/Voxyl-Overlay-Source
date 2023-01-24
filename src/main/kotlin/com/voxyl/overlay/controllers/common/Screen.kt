@@ -1,7 +1,7 @@
 package com.voxyl.overlay.controllers.common
 
 import androidx.compose.runtime.*
-import com.voxyl.overlay.ui.playerstats.playerstats.PlayerStats as PlayerStatsUI
+import com.voxyl.overlay.ui.entitystats.EntityStats as PlayerStatsUI
 import com.voxyl.overlay.ui.settings.Settings as SettingsUI
 import kotlin.properties.Delegates
 

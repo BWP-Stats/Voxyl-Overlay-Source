@@ -17,9 +17,9 @@ val PinYourselfToTop     = ConfigKey(name = "pin_yourself_to_top",     default =
 val AutoShowAndHide      = ConfigKey(name = "auto_show_and_hide",       default = "false")
 val AutoShowAndHideDelay = ConfigKey(name = "auto_show_and_hide_delay", default = "5")
 
-val Opacity           = ConfigKey(name = "opacity",              default = "1")
-val BackgroundOpacity = ConfigKey(name = "background_opacity",   default = "1")
-val TitleBarSizeMulti = ConfigKey(name = "title_bar_size_multi", default = "1")
+val Opacity           = ConfigKey(name = "opacity",              default = "1.2")
+val BackgroundOpacity = ConfigKey(name = "background_opacity",   default = "1.5")
+val TitleBarSizeMulti = ConfigKey(name = "title_bar_size_multi", default = "0.9")
 
 val CenterStats    = ConfigKey(name = "center_stats", default = "false")
 val RankPrefix     = ConfigKey(name = "rank_prefix",  default = "bwp")

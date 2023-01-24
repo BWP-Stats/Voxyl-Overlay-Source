@@ -24,7 +24,7 @@ import com.voxyl.overlay.business.settings.Settings
 import com.voxyl.overlay.controllers.common.Screen
 import com.voxyl.overlay.controllers.common.ui.*
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.playerstats.PlayerSearchBar
+import com.voxyl.overlay.ui.entitystats.PlayerSearchBar
 import com.voxyl.overlay.ui.settings.SettingsSearchBar
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess

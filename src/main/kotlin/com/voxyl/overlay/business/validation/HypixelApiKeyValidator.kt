@@ -1,11 +1,10 @@
 package com.voxyl.overlay.business.validation
 
-import com.voxyl.overlay.business.playerfetching.apis.ApiProvider
+import com.voxyl.overlay.business.statsfetching.apis.ApiProvider
 import com.voxyl.overlay.business.settings.config.Columns
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.HypixelApiKey
 import com.voxyl.overlay.business.validation.popups.Error
-import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.controllers.common.PopUpQueue
 import com.voxyl.overlay.controllers.common.Screen
 import kotlinx.coroutines.*

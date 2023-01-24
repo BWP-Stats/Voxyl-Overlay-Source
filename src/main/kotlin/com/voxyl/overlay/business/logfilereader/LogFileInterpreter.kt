@@ -1,11 +1,11 @@
 package com.voxyl.overlay.business.logfilereader
 
 import com.voxyl.overlay.AppWindow
-import com.voxyl.overlay.business.playerfetching.player.tags.FromGame
+import com.voxyl.overlay.business.statsfetching.enitities.tags.FromGame
 import com.voxyl.overlay.business.settings.config.AutoShowAndHide
 import com.voxyl.overlay.business.settings.config.AutoShowAndHideDelay
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.controllers.playerstats.Players
+import com.voxyl.overlay.controllers.playerstats.Entities
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -22,10 +22,10 @@ object LogFileInterpreter {
     private fun checkForBwpGameStart(line: String, cs: CoroutineScope) {
         if (" [CHAT] Players in this game: " !in line) return
 
-        Players.removeAll()
+        Entities.removeAll()
 
         line.substringAfterLast(":").toPlayerList().forEach {
-            Players.add(it, cs, FromGame)
+            Entities.add(it, cs, FromGame)
         }
 
         autoShowAndHide(cs)
@@ -34,10 +34,10 @@ object LogFileInterpreter {
     private fun checkForHypixelGameStart(line: String, cs: CoroutineScope) {
         if (" [CHAT] ONLINE: " !in line) return
 
-        Players.removeAll()
+        Entities.removeAll()
 
         line.substringAfterLast(":").toPlayerList().forEach {
-            Players.add(it, cs, FromGame)
+            Entities.add(it, cs, FromGame)
         }
 
         autoShowAndHide(cs)
@@ -47,14 +47,14 @@ object LogFileInterpreter {
         if ("          Winner - " !in line) return
         if ("       The winning team is " !in line) return
 
-        Players.removeAll()
+        Entities.removeAll()
     }
 
     private fun checkForPlayerFinalKilled(line: String) {
         if (" [CHAT] " !in line) return
         if (!line.endsWith(" FINAL KILL!")) return
 
-        Players.remove(
+        Entities.remove(
             line.substringAfter("[CHAT] ").substringBefore(" ")
         )
     }
@@ -63,7 +63,7 @@ object LogFileInterpreter {
         if (" [CHAT] " !in line) return
         if (!line.endsWith(" has left the game!")) return
 
-        Players.remove(
+        Entities.remove(
             line.substringAfter("[CHAT] ").substringBefore(" ")
         )
     }

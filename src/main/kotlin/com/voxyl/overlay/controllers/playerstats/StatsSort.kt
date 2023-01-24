@@ -1,7 +1,7 @@
 package com.voxyl.overlay.controllers.playerstats
 
 import androidx.compose.runtime.mutableStateOf
-import com.voxyl.overlay.business.playerfetching.player.PlayerState
+import com.voxyl.overlay.business.statsfetching.enitities.Entity
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.SortAsc
 import com.voxyl.overlay.business.settings.config.SortBy
@@ -30,24 +30,24 @@ object StatsSort {
             Config[SortAsc] = value.toString()
         }
 
-    fun sortPlayersList(players: List<PlayerState>): List<PlayerState> {
-        return if (players.any { by != "name" }) {
+    fun sortEntitiesList(entities: List<Entity>): List<Entity> {
+        return if (entities.any { by != "name" }) {
             if (ascending) {
-                players.sortedBy {
+                entities.sortedBy {
                     if (it.error.isNotBlank()) Double.MAX_VALUE else it[by]?.toDouble()
                 }
             } else {
-                players.sortedByDescending {
+                entities.sortedByDescending {
                     if (it.error.isNotBlank()) 0.0 else it[by]?.toDouble()
                 }
             }
         } else {
             if (ascending) {
-                players.sortedBy {
+                entities.sortedBy {
                     if (it.error.isNotBlank()) "∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐∐" else it[by]
                 }
             } else {
-                players.sortedByDescending {
+                entities.sortedByDescending {
                     if (it.error.isNotBlank()) "                             " else it[by]?.trimStart('_')
                 }
             }

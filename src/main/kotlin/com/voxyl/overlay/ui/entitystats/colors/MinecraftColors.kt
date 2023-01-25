@@ -39,10 +39,6 @@ enum class McColors(val color: Color) {
     Yellow      (Color(0xFFFFFF55)),
     White       (Color(0xFFFFFFFF));
 
-    fun fromKebabCase(color: String): McColors {
-        return valueOf(color.kebabToLowerCamelCase())
-    }
-
     private fun String.kebabToLowerCamelCase(): String {
         return "-[a-zA-Z]".toRegex().replace(this) {
             it.value.replace("-","").uppercase()

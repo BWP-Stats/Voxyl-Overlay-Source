@@ -39,12 +39,14 @@ object Entities {
                             name = (it.data as RawEntity)["name"] ?: name,
                             raw = it.data,
                             tags = tags2
-                        ).also { ps ->
+                        ).also { entity ->
                             try {
-                                ps.tags += TagGenerator.generatePostTags(ps).distinctBy { tag -> tag.javaClass }
+                                entity.tags += TagGenerator.generatePostTags(entity).distinctBy { tag -> tag.javaClass }
                             } catch (e: Exception) {
                                 Napier.wtf(e) { "Failed to generate post tags" }
                             }
+
+                            listeners.forEach { callback -> callback(entity, ChangeType.AddLoaded) }
                         }
                     }
 
@@ -55,7 +57,7 @@ object Entities {
                             name = name,
                             isLoading = true,
                             tags = tags2
-                        )
+                        ).also { entity -> listeners.forEach { callback -> callback(entity, ChangeType.AddLoading) } }
                     }
 
                     is ResponseStatus.Error -> {
@@ -65,7 +67,7 @@ object Entities {
                             name = name,
                             error = it.message ?: "An unexpected error has occurred",
                             tags = (tags2 + Error).distinctBy { tag -> tag.javaClass }.toMutableStateList()
-                        )
+                        ).also { entity -> listeners.forEach { callback -> callback(entity, ChangeType.AddError) } }
                     }
                 }
             }.launchIn(cs)
@@ -93,14 +95,26 @@ object Entities {
     }
 
     fun remove(name: String) {
+        _entities.find { it.name == name }?.let {
+            listeners.forEach { callback -> callback(it, ChangeType.Remove) }
+        }
+
         jobs[name]?.cancel()
         jobs.remove(name)
         _entities.remove(name)
     }
 
     fun removeAll() {
-        jobs.forEach { it.value.cancel() }
-        jobs.clear()
-        _entities.clear()
+        for (i in _entities.indices.reversed()) {
+            remove(_entities[i].name)
+        }
     }
+
+    private val listeners = mutableListOf<(Entity, ChangeType) -> Unit>()
+
+    fun addChangeListener(callback: (Entity, ChangeType) -> Unit) {
+        listeners += callback
+    }
+
+    enum class ChangeType { AddLoading, AddError, AddLoaded, Remove }
 }

@@ -75,7 +75,7 @@ fun EntityStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
 }
 
 private fun headerWeight(stat: String) = when(stat) {
-    "tags" -> CellWeights.get<Tags>(2f)
-    "name" -> CellWeights.get<Name>(4f)
+    "name" -> CellWeights.get(stat, 4f)
+    "tags" -> CellWeights.get(stat, 2f)
     else -> cellWeight(stat)
 }

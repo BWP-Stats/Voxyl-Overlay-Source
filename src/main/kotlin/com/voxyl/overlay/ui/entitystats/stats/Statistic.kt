@@ -36,6 +36,14 @@ interface Statistic {
     operator fun invoke(rs: RowScope) = rs.display(entity)
 
     companion object {
+        fun forDataString(dataString: String): Class<out Statistic> {
+            val pascalCaseName = "\\.[a-zA-Z]".toRegex().replace(dataString) {
+                it.value.replace(".","").uppercase()
+            }.capitalize()
+
+            return Class.forName(Statistic::class.java.packageName + '.' + pascalCaseName) as Class<out Statistic>
+        }
+
         inline fun <reified T> get(entity: Entity): Statistic {
             return T::class.java.constructors[0].newInstance(entity) as Statistic
         }

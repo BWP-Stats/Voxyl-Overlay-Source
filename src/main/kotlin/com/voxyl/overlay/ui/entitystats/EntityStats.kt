@@ -24,6 +24,7 @@ import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.entitystats.stats.Name
 import com.voxyl.overlay.ui.entitystats.stats.Tags
+import com.voxyl.overlay.ui.entitystats.stats.util.CellWeights
 
 @Composable
 fun EntityStats() {
@@ -74,7 +75,7 @@ fun EntityStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
 }
 
 private fun headerWeight(stat: String) = when(stat) {
-    "name" -> Name.cellWeight
-    "tags" -> Tags.cellWeight
+    "tags" -> CellWeights.get<Tags>(2f)
+    "name" -> CellWeights.get<Name>(4f)
     else -> cellWeight(stat)
 }

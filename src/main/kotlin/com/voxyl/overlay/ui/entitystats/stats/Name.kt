@@ -19,10 +19,7 @@ import com.voxyl.overlay.controllers.common.ui.am
 import com.voxyl.overlay.ui.entitystats.colors.mcColors
 import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.DefaultStatCell
 import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
-import com.voxyl.overlay.ui.entitystats.stats.util.getColorizedBwpName
-import com.voxyl.overlay.ui.entitystats.stats.util.getColorizedBwpRank
-import com.voxyl.overlay.ui.entitystats.stats.util.getColorizedHypixelName
-import com.voxyl.overlay.ui.entitystats.stats.util.getColorizedHypixelRank
+import com.voxyl.overlay.ui.entitystats.stats.util.*
 import com.voxyl.overlay.ui.entitystats.toAnnotatedString
 import java.util.*
 import kotlin.math.max
@@ -37,28 +34,16 @@ class Name(override val entity: Entity) : Statistic {
 
     init {
         name = getRank() + getName()
-        names[entity] = name
+        CellWeights.put<Name>(entity, weight = name.length * 1.1)
     }
 
     @Composable
     override fun RowScope.display(entity: Entity) = DefaultStatCell(
         name,
         Modifier
-            .weight(cellWeight)
+            .weight(CellWeights.get<Name>(default = 4f))
             .selectableStat(entity)
     )
-
-    companion object {
-        private val names = WeakHashMap<Entity, AnnotatedString>()
-
-        private var _cellWeight by mutableStateOf(4f)
-
-        val cellWeight: Float
-            get() {
-                _cellWeight = max(4f, (names.maxOfOrNull { it.value.length }?.toFloat() ?: 0f).pow(.5f))
-                return _cellWeight
-            }
-    }
 
     private fun getName(): AnnotatedString {
         return when {

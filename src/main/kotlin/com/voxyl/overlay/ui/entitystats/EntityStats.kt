@@ -22,6 +22,8 @@ import com.voxyl.overlay.controllers.playerstats.StatsToShow
 import com.voxyl.overlay.controllers.playerstats.StatsToShow.clean
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
+import com.voxyl.overlay.ui.entitystats.stats.Name
+import com.voxyl.overlay.ui.entitystats.stats.Tags
 
 @Composable
 fun EntityStats() {
@@ -43,7 +45,7 @@ fun EntityStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
     ) {
         for (stat in statsToShow.toList()) {
             Row(
-                modifier = Modifier.weight(cellWeight(stat))
+                modifier = Modifier.weight(headerWeight(stat))
                     .clickable {
                         if (stat != "tags") {
                             StatsSort.by = stat
@@ -69,4 +71,10 @@ fun EntityStatsViewHeader(statsToShow: SnapshotStateList<String>) = Column(
             }
         }
     }
+}
+
+private fun headerWeight(stat: String) = when(stat) {
+    "name" -> Name.cellWeight
+    "tags" -> Tags.cellWeight
+    else -> cellWeight(stat)
 }

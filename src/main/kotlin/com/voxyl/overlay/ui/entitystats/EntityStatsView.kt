@@ -17,7 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.business.settings.config.*
+import com.voxyl.overlay.business.settings.config.CenterStats
+import com.voxyl.overlay.business.settings.config.Config
+import com.voxyl.overlay.business.settings.config.PinYourselfToTop
+import com.voxyl.overlay.business.settings.config.PlayerName
 import com.voxyl.overlay.business.statsfetching.enitities.Entity
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.am
@@ -26,10 +29,11 @@ import com.voxyl.overlay.controllers.playerstats.Entities
 import com.voxyl.overlay.controllers.playerstats.StatsSort
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.entitystats.colors.BwpRankColors
-import com.voxyl.overlay.ui.entitystats.colors.HypixelRankColors
 import com.voxyl.overlay.ui.entitystats.colors.LevelColors.coloredLevel
 import com.voxyl.overlay.ui.entitystats.colors.getColoredErrorPlaceholder
+import com.voxyl.overlay.ui.entitystats.stats.Name
+import com.voxyl.overlay.ui.entitystats.stats.Statistic
+import com.voxyl.overlay.ui.entitystats.stats.Tags
 import io.github.aakira.napier.Napier
 import kotlin.math.max
 import kotlin.math.sqrt
@@ -109,7 +113,8 @@ fun RowScope.DisplayStat(
     entity: Entity,
     statToShow: String,
 ) = when (statToShow) {
-//    "tags" -> Statistic.get<Tags>(entity)()
+    "tags" -> Statistic.get<Tags>(entity)(rs = this)
+    "name" -> Statistic.get<Name>(entity)(rs = this)
     else -> StatCell(
         modifier = modifier,
         entity = entity,
@@ -165,10 +170,6 @@ private fun Modifier.selectable(
 
 @Composable
 private fun getStat(statToShow: String, player: Entity) = when {
-    statToShow == "name" -> {
-        figureOutWhichRankToUseAndIfToShowTheRankPrefixAndThenReturnTheOutputCorrespondingToTheMatchingCondition(player)
-    }
-
     statToShow == "bwp.level" && player.raw != null -> {
         coloredLevel(player["bwp.level"] ?: "0")
     }
@@ -192,23 +193,7 @@ private fun getStat(statToShow: String, player: Entity) = when {
     else -> getColoredErrorPlaceholder(false)
 }
 
-fun figureOutWhichRankToUseAndIfToShowTheRankPrefixAndThenReturnTheOutputCorrespondingToTheMatchingCondition(player: Entity): AnnotatedString {
-    return if (Config[ShowRankPrefix] == "false") {
-        if (Config[RankPrefix] == "bwp") {
-            BwpRankColors.coloredName(player)
-        } else {
-            HypixelRankColors.coloredName(player)
-        }
-    } else {
-        if (Config[RankPrefix] == "bwp") {
-            BwpRankColors.coloredRank(player) + BwpRankColors.coloredName(player)
-        } else {
-            HypixelRankColors.coloredRank(player) + HypixelRankColors.coloredName(player)
-        }
-    }
-}
-
-private fun String.toAnnotatedString(): AnnotatedString {
+fun String.toAnnotatedString(): AnnotatedString {
     return buildAnnotatedString { append(this@toAnnotatedString) }
 }
 

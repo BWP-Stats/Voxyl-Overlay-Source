@@ -44,6 +44,9 @@ dependencies {
     implementation("com.github.JnCrMx:discord-game-sdk4j:v0.5.5")
 
     implementation("cc.popkorn:popkorn:2.2.0")
+
+    //reflection
+    implementation("org.reflections:reflections:0.10.2")
 }
 
 tasks.test {

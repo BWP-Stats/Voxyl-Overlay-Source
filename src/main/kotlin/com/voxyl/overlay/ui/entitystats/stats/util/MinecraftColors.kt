@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.entitystats.colors
+package com.voxyl.overlay.ui.entitystats.stats.util
 
 import androidx.compose.ui.graphics.Color
 

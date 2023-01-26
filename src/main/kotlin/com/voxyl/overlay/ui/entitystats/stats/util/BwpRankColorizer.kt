@@ -7,8 +7,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import com.voxyl.overlay.business.statsfetching.enitities.Entity
 import com.voxyl.overlay.controllers.common.ui.am
-import com.voxyl.overlay.ui.entitystats.colors.ERROR_PLACEHOLDER
-import com.voxyl.overlay.ui.entitystats.colors.mcColors
 
 private val colorsMap = mapOf(
     "owner"        to  mcColors["red"]!!,

@@ -8,7 +8,7 @@ import com.voxyl.overlay.business.statsfetching.models.PlayerInfoJson
 import com.voxyl.overlay.business.utils.contains
 import com.voxyl.overlay.business.utils.get
 import com.voxyl.overlay.business.utils.getStr
-import com.voxyl.overlay.ui.entitystats.colors.ERROR_PLACEHOLDER
+import com.voxyl.overlay.ui.entitystats.stats.util.ERROR_PLACEHOLDER
 import io.github.aakira.napier.Napier
 import kotlin.math.ceil
 import kotlin.math.min
@@ -154,15 +154,15 @@ class Player(
     }
 
     private fun calcFkdr(stats: Map<String, String>): String {
-        val fks = stats["bedwars.final_kills_bedwars"]?.toDouble() ?: return "0"
-        val fds = stats["bedwars.final_deaths_bedwars"]?.toDouble() ?: return "0"
+        val fks = stats["bedwars.final_kills_bedwars"]?.toDouble() ?: return "ERR"
+        val fds = stats["bedwars.final_deaths_bedwars"]?.toDouble() ?: return "ERR"
 
         return if (fds == 0.0) fks.toString() else String.format("%.2f", fks / fds)
     }
 
     private fun calcWlr(stats: Map<String, String>): String {
-        val ws = stats["bedwars.wins_bedwars"]?.toDouble() ?: return "0"
-        val ls = stats["bedwars.losses_bedwars"]?.toDouble() ?: return "0"
+        val ws = stats["bedwars.wins_bedwars"]?.toDouble() ?: return "ERR"
+        val ls = stats["bedwars.losses_bedwars"]?.toDouble() ?: return "ERR"
 
         return if (ls == 0.0) ws.toString() else String.format("%.2f", ws / ls)
     }

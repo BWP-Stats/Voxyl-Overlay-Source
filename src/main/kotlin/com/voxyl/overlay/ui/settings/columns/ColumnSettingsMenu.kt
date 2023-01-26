@@ -22,14 +22,14 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
 import com.voxyl.overlay.controllers.playerstats.StatsToShow
-import com.voxyl.overlay.controllers.playerstats.StatsToShow.clean
 import com.voxyl.overlay.ui.elements.VText
+import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.prettyName
 import com.voxyl.overlay.ui.settings.columns.settings.NameSettings
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ColumnSettingsMenu() {
-    if (!ColumnSettingsMenuState.show) return
+    if (!ColumnSettingsMenuState.shouldShow) return
 
     var offset by remember { mutableStateOf(DpOffset.Zero) }
     var show by remember { mutableStateOf(false) }
@@ -38,7 +38,7 @@ fun ColumnSettingsMenu() {
         modifier = Modifier
             .fillMaxSize()
             .onPointerEvent(PointerEventType.Move) {
-                if (ColumnSettingsMenuState.show && !show) {
+                if (ColumnSettingsMenuState.shouldShow && !show) {
                     val position = it.changes.first().position
                     offset = DpOffset(position.x.dp, position.y.dp)
 
@@ -51,9 +51,9 @@ fun ColumnSettingsMenu() {
             modifier = Modifier.offset(offset.x, offset.y).alpha(alphaMultiplier.value)
         ) {
             DropdownMenu(
-                expanded = ColumnSettingsMenuState.show,
+                expanded = ColumnSettingsMenuState.shouldShow,
                 onDismissRequest = {
-                    ColumnSettingsMenuState.show = false
+                    ColumnSettingsMenuState.shouldShow = false
                     show = false
                 },
                 modifier = Modifier.background(color = Color(.1f, .1f, .1f, 0.9f))
@@ -62,7 +62,7 @@ fun ColumnSettingsMenu() {
                     onClick = {},
                     enabled = false
                 ) {
-                    VText("Options for ${ColumnSettingsMenuState.stat.clean()}", fontSize = TextUnit.Unspecified)
+                    VText("Options for ${ColumnSettingsMenuState.dataString.prettyName()}", fontSize = TextUnit.Unspecified)
                 }
 
                 Divider(
@@ -72,8 +72,8 @@ fun ColumnSettingsMenu() {
                 )
 
                 DropdownMenuItem(onClick = {
-                    StatsToShow.remove(ColumnSettingsMenuState.stat)
-                    ColumnSettingsMenuState.show = false
+                    StatsToShow.remove(ColumnSettingsMenuState.dataString)
+                    ColumnSettingsMenuState.shouldShow = false
                 }) {
                     VText("Remove", fontSize = TextUnit.Unspecified)
                 }
@@ -85,6 +85,6 @@ fun ColumnSettingsMenu() {
 }
 
 object ColumnSettingsMenuState {
-    var show by mutableStateOf(false)
-    var stat by mutableStateOf("")
+    var shouldShow by mutableStateOf(false)
+    var dataString by mutableStateOf("")
 }

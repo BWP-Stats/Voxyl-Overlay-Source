@@ -27,9 +27,9 @@ import com.voxyl.overlay.business.settings.config.*
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.am
 import com.voxyl.overlay.controllers.playerstats.StatsToShow
-import com.voxyl.overlay.controllers.playerstats.StatsToShow.clean
-import com.voxyl.overlay.controllers.playerstats.StatsToShow.raw
 import com.voxyl.overlay.ui.elements.VText
+import com.voxyl.overlay.ui.entitystats.stats.Statistic
+import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.prettyName
 import org.burnoutcrew.reorderable.*
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -74,20 +74,21 @@ fun ColumnsSettings() {
                         .detectReorder(state)
                         .mouseClickable {
                             if (buttons.isSecondaryPressed) {
-                                ColumnSettingsMenuState.stat = it
-                                ColumnSettingsMenuState.show = true
+                                ColumnSettingsMenuState.dataString = it
+                                ColumnSettingsMenuState.shouldShow = true
                             }
                         },
                     contentAlignment = Alignment.Center
                 ) {
                     VText(
-                        text = it.clean() + (if (it.raw() in statsWithAdditionalSettings) "*" else ""),
+                        text = it.prettyName() + (if (Statistic.getMetadataForDataString(it).hasAdditionalSettings) "*" else ""),
                         textAlign = TextAlign.Center,
                         fontSize = 16.sp
                     )
                 }
             }
         }
+
         Row(
             Modifier
                 .height(50.dp)

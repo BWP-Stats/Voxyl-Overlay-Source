@@ -21,12 +21,11 @@ import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.statsfetching.enitities.Entity
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.entitystats.EntityContextMenuState
+import org.reflections.Reflections
+import kotlin.reflect.full.companionObjectInstance
+import kotlin.reflect.full.primaryConstructor
 
 interface Statistic {
-    val prettyName: String
-    val actualName: String
-    val dataString: String
-
     val entity: Entity
 
     @Composable
@@ -35,21 +34,38 @@ interface Statistic {
     @Composable
     operator fun invoke(rs: RowScope) = rs.display(entity)
 
-    companion object {
-        fun forDataString(dataString: String): Class<out Statistic> {
-            val pascalCaseName = "\\.[a-zA-Z]".toRegex().replace(dataString) {
-                it.value.replace(".","").uppercase()
-            }.capitalize()
+    interface Metadata {
+        val prettyName: String
+        val actualName: String
+        val dataString: String
+        val cellWeight: Float
+        val isSortable: Boolean
+        val hasAdditionalSettings: Boolean
+    }
 
-            return Class.forName(Statistic::class.java.packageName + '.' + pascalCaseName) as Class<out Statistic>
+    companion object {
+        val implementations: Map<String, Class<out Statistic>>
+
+        fun getStatisticForDataString(dataString: String, entity: Entity): Statistic {
+            val clazz = implementations[dataString]!!
+            val constructor = clazz.kotlin.primaryConstructor!!
+
+            return constructor.call(entity)
         }
 
-        inline fun <reified T> get(entity: Entity): Statistic {
-            return T::class.java.constructors[0].newInstance(entity) as Statistic
+        fun getMetadataForDataString(dataString: String): Metadata {
+            val clazz = implementations[dataString]!!
+            val companion = clazz.kotlin.companionObjectInstance
+
+            return (companion as Metadata)
+        }
+
+        fun String.prettyName(): String {
+            return getMetadataForDataString(this).prettyName
         }
 
         @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
-        fun Modifier.selectableStat(entity: Entity) = this
+        /*protected*/ fun Modifier.selectableStat(entity: Entity) = this
             .pointerMoveFilter(
                 onMove = {
                     EntityContextMenuState.player = entity
@@ -69,7 +85,7 @@ interface Statistic {
             }
 
         @Composable
-        fun DefaultStatCell(
+        /*protected*/ fun DefaultStatCell(
             text: AnnotatedString,
             modifier: Modifier,
         ) = Box(modifier) {
@@ -82,6 +98,18 @@ interface Statistic {
                     .fillMaxSize()
                     .offset(y = 5.dp)
             )
+        }
+
+        init {
+            val impls = Reflections(this::class.java.packageName)
+                .getSubTypesOf(Statistic::class.java)
+
+            val toPopulate = mutableMapOf<String, Class<out Statistic>>()
+
+            implementations = impls.associateByTo(toPopulate) {
+                (it.kotlin.companionObjectInstance as? Metadata)?.dataString
+                    ?: throw IllegalStateException("Statistics implementation must have a Metadata companion object")
+            }
         }
     }
 }

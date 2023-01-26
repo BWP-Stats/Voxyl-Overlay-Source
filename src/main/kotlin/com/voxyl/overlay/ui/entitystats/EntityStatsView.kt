@@ -1,23 +1,18 @@
 package com.voxyl.overlay.ui.entitystats
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.isSecondaryPressed
-import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.business.settings.config.CenterStats
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.PinYourselfToTop
 import com.voxyl.overlay.business.settings.config.PlayerName
@@ -27,19 +22,11 @@ import com.voxyl.overlay.controllers.common.ui.am
 import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.controllers.playerstats.Entities
 import com.voxyl.overlay.controllers.playerstats.StatsSort
-import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.entitystats.colors.LevelColors.coloredLevel
-import com.voxyl.overlay.ui.entitystats.colors.getColoredErrorPlaceholder
-import com.voxyl.overlay.ui.entitystats.stats.Name
 import com.voxyl.overlay.ui.entitystats.stats.Statistic
-import com.voxyl.overlay.ui.entitystats.stats.Tags
-import io.github.aakira.napier.Napier
-import kotlin.math.max
-import kotlin.math.sqrt
 
 @Composable
-fun EntityStatsView(statsToShow: SnapshotStateList<String>) {
+fun EntityStatsView(dataStrings: List<String>) {
     Column(
         modifier = Modifier
             .absoluteOffset(y = 90.tbsm.dp)
@@ -47,18 +34,18 @@ fun EntityStatsView(statsToShow: SnapshotStateList<String>) {
             .verticalScroll(rememberScrollState())
     ) {
         val rawEntities = Entities.entities.toList()
-        var entity = StatsSort.sortEntitiesList(rawEntities)
+        var entities = StatsSort.sortEntitiesList(rawEntities)
 
         if (Config[PinYourselfToTop] != "false") {
-            entity = entity.filter { it.name != Config[PlayerName] }.toMutableList()
+            entities = entities.filter { it.name != Config[PlayerName] }.toMutableList()
 
-            if (entity.size != rawEntities.size) {
-                entity.add(0, rawEntities.first { it.name == Config[PlayerName] })
+            if (entities.size != rawEntities.size) {
+                entities.add(0, rawEntities.first { it.name == Config[PlayerName] })
             }
         }
 
-        for (player in entity) {
-            EntitiesStatsBar(entity = player, statsToShow = statsToShow)
+        for (player in entities) {
+            EntitiesStatsBar(entity = player, dataStrings = dataStrings)
         }
 
         Spacer(modifier = Modifier.size(115.dp))
@@ -71,7 +58,7 @@ fun EntityStatsView(statsToShow: SnapshotStateList<String>) {
 fun EntitiesStatsBar(
     modifier: Modifier = Modifier,
     entity: Entity,
-    statsToShow: SnapshotStateList<String>
+    dataStrings: List<String>
 ) {
     var selected by remember { mutableStateOf(false) }
 
@@ -100,8 +87,8 @@ fun EntitiesStatsBar(
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            for (stat in statsToShow) {
-                DisplayStat(entity = entity, statToShow = stat)
+            for (dataString in dataStrings) {
+                DisplayStat(entity = entity, dataString = dataString)
             }
         }
     }
@@ -109,131 +96,11 @@ fun EntitiesStatsBar(
 
 @Composable
 fun RowScope.DisplayStat(
-    modifier: Modifier = Modifier,
     entity: Entity,
-    statToShow: String,
-) = when (statToShow) {
-    "tags" -> Statistic.get<Tags>(entity)(rs = this)
-    "name" -> Statistic.get<Name>(entity)(rs = this)
-    else -> StatCell(
-        modifier = modifier,
-        entity = entity,
-        statToShow = statToShow
-    )
-}
+    dataString: String,
+) = Statistic.getStatisticForDataString(dataString, entity)(rs = this)
 
-@Composable
-fun RowScope.StatCell(
-    modifier: Modifier = Modifier,
-    entity: Entity,
-    statToShow: String,
-) {
-    Box(
-        modifier = modifier
-            .weight(cellWeight(statToShow))
-            .selectable(entity),
-    ) {
-        VText(
-            text = getStat(statToShow, entity),
-            fontSize = 17.sp,
-            textAlign = if (Config[CenterStats] != "false") TextAlign.Center else null,
-            fontWeight = FontWeight.Medium,
-            modifier = modifier
-                .fillMaxSize()
-                .offset(y = 5.dp)
-        )
-    }
-}
-
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
-@Composable
-private fun Modifier.selectable(
-    entity: Entity,
-) = this
-    .pointerMoveFilter(
-        onMove = {
-            EntityContextMenuState.player = entity
-            true
-        },
-        onExit = {
-            if (!EntityContextMenuState.show) {
-                EntityContextMenuState.player = Entity.dummy
-            }
-            true
-        }
-    )
-    .mouseClickable {
-        if (buttons.isSecondaryPressed) {
-            EntityContextMenuState.show = true
-        }
-    }
-
-@Composable
-private fun getStat(statToShow: String, player: Entity) = when {
-    statToShow == "bwp.level" && player.raw != null -> {
-        coloredLevel(player["bwp.level"] ?: "0")
-    }
-
-    statToShow == "bwp.realstars" && player.raw != null -> {
-        coloredLevel(player["bwp.realstars"] ?: "0")
-    }
-
-    statToShow == "bedwars.level" && player.raw != null -> {
-        coloredLevel(player["bedwars.level"] ?: "0")
-    }
-
-    statToShow == "tags" -> {
-        player.tags.joinToString(", ").toAnnotatedString()
-    }
-
-    player[statToShow] != null -> player[statToShow]?.toAnnotatedString() ?: getColoredErrorPlaceholder(false)
-
-    player.isLoading -> "...".toAnnotatedString()
-
-    else -> getColoredErrorPlaceholder(false)
-}
 
 fun String.toAnnotatedString(): AnnotatedString {
     return buildAnnotatedString { append(this@toAnnotatedString) }
-}
-
-fun cellWeight(stat: String) = when (stat) {
-    "tags" -> calcTagCellWeight()
-    else -> calcRegularCellWeight(stat)
-}
-
-fun calcTagCellWeight(): Float {
-    return try {
-        val tagLengths = Entities.entities.map {
-            "--".repeat(it.tags.size)
-        }
-
-        val max = tagLengths.maxByOrNull { it.length } ?: ""
-
-        max("tags".getCellWeight(), max.length.toFloat() / 3f)
-    } catch (e: Exception) {
-        Napier.wtf(e) { "Error with calculating the tag cell weight" }
-        "tags".getCellWeight()
-    }
-}
-
-fun calcRegularCellWeight(stat: String): Float {
-    return try {
-        val stats = Entities.entities.map {
-            it[stat] ?: ""
-        }
-
-        val max = stats.maxByOrNull { it.substringAfterLast(".").length } ?: ""
-
-        max(stat.getCellWeight(), sqrt(max.length.toFloat()))
-    } catch (e: Exception) {
-        Napier.wtf(e) { "Error with calculating the regular cell weight" }
-        stat.getCellWeight()
-    }
-}
-
-private fun String.getCellWeight() = when (this) {
-    "name" -> 4f
-    "tags" -> 1f
-    else -> 2f
 }

@@ -15,9 +15,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
-abstract class Settings<Type : Settings<Type>> {
-    abstract val FILE_NAME: String
-
+abstract class Settings<Type : Settings<Type>>(val fileName: String) {
     private lateinit var state: Properties
     
     operator fun get(key: SettingsKey<Type>): String {
@@ -38,12 +36,12 @@ abstract class Settings<Type : Settings<Type>> {
         }
     }
     
-    fun load(basePath: String = FILE_NAME) {
+    fun load(basePath: String = fileName) {
         state = get(basePath)
     }
 
-    fun get(basePath: String = FILE_NAME): Properties {
-        val fullerPath = "$basePath/$FILE_NAME"
+    fun get(basePath: String = fileName): Properties {
+        val fullerPath = "$basePath/$fileName"
 
         val props = Properties()
         makeConfigFileIfNotPresent(fullerPath)
@@ -52,8 +50,8 @@ abstract class Settings<Type : Settings<Type>> {
         return props
     }
 
-    fun store(basePath: String = FILE_NAME) {
-        val fullerPath = "$basePath/$FILE_NAME"
+    fun store(basePath: String = fileName) {
+        val fullerPath = "$basePath/$fileName"
 
         val configFile = File(fullerPath)
 
@@ -65,7 +63,7 @@ abstract class Settings<Type : Settings<Type>> {
         state.store(FileOutputStream(fullerPath), null)
     }
 
-    private fun makeConfigFileIfNotPresent(path: String = FILE_NAME) {
+    private fun makeConfigFileIfNotPresent(path: String = fileName) {
         val configFile = File(path)
 
         if (!configFile.exists()) {
@@ -108,9 +106,9 @@ abstract class Settings<Type : Settings<Type>> {
             val children = tempDir.listFiles() ?: emptyArray()
             
             return tempDir.exists()
-                    && children.any { it.name.contains(Config.FILE_NAME) }
-                    && children.any { it.name.contains(MiscSettings.FILE_NAME) }
-                    && children.any { it.name.contains(WindowState.FILE_NAME) }
+                    && children.any { it.name.contains(Config.fileName) }
+                    && children.any { it.name.contains(MiscSettings.fileName) }
+                    && children.any { it.name.contains(WindowState.fileName) }
         }
         
         fun restoreFromTemp() {

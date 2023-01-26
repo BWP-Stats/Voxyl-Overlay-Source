@@ -1,8 +1,11 @@
+@file:Suppress("HasPlatformType")
+
 package com.voxyl.overlay.ui.entitystats.stats
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -13,31 +16,39 @@ import com.voxyl.overlay.business.settings.config.ShowRankPrefix
 import com.voxyl.overlay.business.statsfetching.enitities.Entity
 import com.voxyl.overlay.business.statsfetching.enitities.types.Bot
 import com.voxyl.overlay.controllers.common.ui.am
-import com.voxyl.overlay.ui.entitystats.colors.mcColors
 import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.DefaultStatCell
 import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
 import com.voxyl.overlay.ui.entitystats.stats.util.*
 import com.voxyl.overlay.ui.entitystats.toAnnotatedString
 
 class Name(override val entity: Entity) : Statistic {
-    override val prettyName = "Name"
-    override val actualName = "Name"
-    override val dataString = "name"
-
     private val name: AnnotatedString
 
     init {
         name = getRank() + getName()
-        CellWeights.put<Name>(entity, weight = name.length * 1.1)
+        CellWeights.put(dataString, entity, weight = name.length * .675)
     }
 
     @Composable
     override fun RowScope.display(entity: Entity) = DefaultStatCell(
         name,
         Modifier
-            .weight(CellWeights.get<Name>(default = 4f))
+            .weight(cellWeight)
             .selectableStat(entity)
     )
+
+    companion object : Statistic.Metadata {
+        override val prettyName = "Name"
+        override val actualName = this::class.java.simpleName
+        override val dataString = "name"
+
+        override val isSortable = true
+
+        override val hasAdditionalSettings = true
+
+        override val cellWeight: Float
+            get() = CellWeights.get(dataString, default = 2f)
+    }
 
     private fun getName(): AnnotatedString {
         return when {
@@ -66,7 +77,7 @@ class Name(override val entity: Entity) : Statistic {
     private fun getBotRank() = darkGrayAnnotatedString("[Bot] ")
 
     private fun darkGrayAnnotatedString(str: String) = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = mcColors["dark-gray"]!!.am)) {
+        withStyle(style = SpanStyle(color = Color(0xFF888888).am)) {
             append(str)
         }
     }

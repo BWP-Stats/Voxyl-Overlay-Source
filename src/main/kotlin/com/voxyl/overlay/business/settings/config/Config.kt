@@ -6,6 +6,4 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
-object Config : Settings<Config>() {
-    override val FILE_NAME = "config.properties"
-}
+object Config : Settings<Config>("config.properties")

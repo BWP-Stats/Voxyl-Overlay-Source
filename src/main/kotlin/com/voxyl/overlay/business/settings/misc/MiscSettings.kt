@@ -7,6 +7,4 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
-object MiscSettings : Settings<MiscSettings>() {
-    override val FILE_NAME = "misc.properties"
-}
+object MiscSettings : Settings<MiscSettings>("misc.properties")

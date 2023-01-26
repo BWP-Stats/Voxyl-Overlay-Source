@@ -18,7 +18,7 @@ import com.voxyl.overlay.ui.settings.columns.ColumnSettingsMenuState
 
 @Composable
 fun NameSettings() {
-    if (ColumnSettingsMenuState.stat != "name") return
+    if (ColumnSettingsMenuState.dataString != "name") return
 
     showRankPrefixSetting()
     whichRankPrefixSetting()

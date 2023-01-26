@@ -23,6 +23,8 @@ import com.voxyl.overlay.controllers.playerstats.StatsToShow
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
+import com.voxyl.overlay.ui.entitystats.stats.Statistic
+import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.prettyName
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -31,8 +33,6 @@ fun ColumnsList() {
 
     var offset by remember { mutableStateOf(DpOffset.Zero) }
     var show by remember { mutableStateOf(false) }
-
-    val addableStats = StatsToShow.addableStats
 
     Box(
         modifier = Modifier
@@ -72,9 +72,9 @@ fun ColumnsList() {
 
                 DropdownMenuItem({}, enabled = false) {
                     LazyColumn(
-                        modifier = Modifier.size(175.dp, 40.dp + (addableStats.size * 20).dp)
+                        modifier = Modifier.size(175.dp, 40.dp + (Statistic.implementations.size * 20).dp)
                     ) {
-                        for (stat in addableStats) {
+                        for (stat in Statistic.implementations.keys) {
                             stat(stat)
                         }
                     }
@@ -84,21 +84,17 @@ fun ColumnsList() {
     }
 }
 
-val statsWithAdditionalSettings = listOf(
-    "name"
-)
-
-private fun LazyListScope.stat(item: StatsToShow.Stat) {
+private fun LazyListScope.stat(dataString: String) {
     item {
         Box(
             modifier = Modifier.fillMaxSize()
                 .clickable {
-                    StatsToShow.add(item.raw)
+                    StatsToShow.add(dataString)
                 }
         ) {
             Spacer(modifier = Modifier.size(2.dp))
             VText(
-                item.clean + (if (item.raw in statsWithAdditionalSettings) "*" else ""),
+                dataString.prettyName() + (if (Statistic.getMetadataForDataString(dataString).hasAdditionalSettings) "*" else ""),
                 fontSize = TextUnit.Unspecified
             )
         }

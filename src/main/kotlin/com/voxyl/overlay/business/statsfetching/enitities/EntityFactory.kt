@@ -25,28 +25,13 @@ import java.io.IOException
 typealias DR = Deferred<Response<JsonObject>>
 
 object EntityFactory {
-    fun create(name: String): Flow<ResponseStatus<out RawEntity>> {
-        val state = preprocessPlayer(name)
-
-        return when (state) {
-            is DontMake -> emptyFlow()
-            is IsBot -> makeBot(state.name)
-            is IsPlayer -> makePlayer(state.name)
-        }
-    }
-
-    private sealed class State(val name: String)
-    private object DontMake               : State("N/A")
-    private class  IsBot   (name: String) : State(name)
-    private class  IsPlayer(name: String) : State(name)
-
-    private fun preprocessPlayer(rawName: String): State {
+    fun create(rawName: String): Flow<ResponseStatus<out RawEntity>> {
         val isBot = rawName.startsWith("Bot-")
 
         if (Config[AddBotsToOverlay] != "true" && isBot)
-            return DontMake
+            return emptyFlow()
 
-        if (isBot) return IsBot(rawName)
+        if (isBot) return makeBot(rawName)
 
         val name = if (
             Config[Aliases]
@@ -56,7 +41,7 @@ object EntityFactory {
             && Config[ShowYourStatsInsteadOfAliases] == "true"
         ) Config[PlayerName] else rawName
 
-        return IsPlayer(name)
+        return makePlayer(name)
     }
 
     private fun makePlayer(name: String) = flow {
@@ -101,7 +86,6 @@ object EntityFactory {
                 ?: throw IOException("UUID null or invalid for $name; HTTP ${response.code()}").also { Napier.e(it.localizedMessage) }
         }
 
-        Napier.e("Failed to get UUID for $name; ${NetworkingUtils.formattedError(response)}}")
         throw IOException("Failed to get UUID for $name; ${NetworkingUtils.formattedError(response)}")
     }
 
@@ -123,14 +107,11 @@ object EntityFactory {
 
         if (response.isSuccessful) {
             if (response.body()?.get("player")?.isJsonNull == true) {
-                Napier.e("Failed to get Hypixel stats for $name; Player was null")
                 return null
             }
 
             return response.body()?.let { HypixelStatsJson(it) }
         }
-
-        Napier.e("Failed to get Hypixel stats for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 
@@ -140,8 +121,6 @@ object EntityFactory {
         if (response.isSuccessful) {
             return response.body()?.let { OverallStatsJson(it) }
         }
-
-        Napier.e("Failed to get BWP overall stats for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 
@@ -151,8 +130,6 @@ object EntityFactory {
         if (response.isSuccessful) {
             return response.body()?.let { GameStatsJson(it) }
         }
-
-        Napier.e("Failed to get BWP game stats for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 
@@ -162,8 +139,6 @@ object EntityFactory {
         if (response.isSuccessful) {
             return response.body()?.let { PlayerInfoJson(it) }
         }
-
-        Napier.e("Failed to get BWP player info for $name; ${NetworkingUtils.formattedError(response)}")
         return null
     }
 }

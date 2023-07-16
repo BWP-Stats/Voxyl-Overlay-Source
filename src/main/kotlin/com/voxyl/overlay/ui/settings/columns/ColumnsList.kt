@@ -23,8 +23,8 @@ import com.voxyl.overlay.controllers.playerstats.StatsToShow
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
-import com.voxyl.overlay.ui.entitystats.stats.Statistic
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.prettyName
+import com.voxyl.overlay.ui.entitystats.columns.Column
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.prettyName
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -72,9 +72,9 @@ fun ColumnsList() {
 
                 DropdownMenuItem({}, enabled = false) {
                     LazyColumn(
-                        modifier = Modifier.size(175.dp, 40.dp + (Statistic.implementations.size * 20).dp)
+                        modifier = Modifier.size(175.dp, 40.dp + (Column.implementations.size * 20).dp)
                     ) {
-                        for (stat in Statistic.implementations.keys) {
+                        for (stat in Column.implementations.keys) {
                             stat(stat)
                         }
                     }
@@ -94,7 +94,7 @@ private fun LazyListScope.stat(dataString: String) {
         ) {
             Spacer(modifier = Modifier.size(2.dp))
             VText(
-                dataString.prettyName() + (if (Statistic.getMetadataForDataString(dataString).hasAdditionalSettings) "*" else ""),
+                dataString.prettyName() + (if (Column.getMetadataForDataString(dataString).hasAdditionalSettings) "*" else ""),
                 fontSize = TextUnit.Unspecified
             )
         }

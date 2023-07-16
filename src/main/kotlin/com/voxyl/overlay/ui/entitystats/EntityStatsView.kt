@@ -22,7 +22,7 @@ import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.controllers.playerstats.Entities
 import com.voxyl.overlay.controllers.playerstats.StatsSort
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.entitystats.stats.Statistic
+import com.voxyl.overlay.ui.entitystats.columns.Column
 
 @Composable
 fun EntityStatsView(dataStrings: List<String>) {
@@ -97,7 +97,7 @@ fun EntitiesStatsBar(
 fun RowScope.DisplayStat(
     entity: Entity,
     dataString: String,
-) = Statistic.getStatisticForDataString(dataString, entity)(rs = this)
+) = Column.getStatisticForDataString(dataString, entity)(rs = this)
 
 fun String.toAnnotatedString(): AnnotatedString {
     return buildAnnotatedString { append(this@toAnnotatedString) }

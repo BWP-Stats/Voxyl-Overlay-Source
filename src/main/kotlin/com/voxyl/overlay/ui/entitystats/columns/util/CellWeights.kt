@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.entitystats.stats.util
+package com.voxyl.overlay.ui.entitystats.columns.util
 
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.snapshots.SnapshotStateMap

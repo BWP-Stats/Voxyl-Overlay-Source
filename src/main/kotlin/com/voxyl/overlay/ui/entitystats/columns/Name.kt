@@ -1,6 +1,6 @@
 @file:Suppress("HasPlatformType")
 
-package com.voxyl.overlay.ui.entitystats.stats
+package com.voxyl.overlay.ui.entitystats.columns
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
@@ -16,12 +16,12 @@ import com.voxyl.overlay.business.settings.config.ShowRankPrefix
 import com.voxyl.overlay.business.stats.enitities.Entity
 import com.voxyl.overlay.business.stats.enitities.types.Bot
 import com.voxyl.overlay.controllers.common.ui.am
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.DefaultStatCell
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
-import com.voxyl.overlay.ui.entitystats.stats.util.*
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.DefaultStatCell
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.selectableStat
+import com.voxyl.overlay.ui.entitystats.columns.util.*
 import com.voxyl.overlay.ui.entitystats.toAnnotatedString
 
-class Name(override val entity: Entity) : Statistic {
+class Name(override val entity: Entity) : Column {
     private val name: AnnotatedString
 
     init {
@@ -37,7 +37,7 @@ class Name(override val entity: Entity) : Statistic {
             .selectableStat(entity)
     )
 
-    companion object : Statistic.Metadata {
+    companion object : Column.Metadata {
         override val prettyName = "Name"
         override val actualName = this::class.java.simpleName
         override val dataString = "name"

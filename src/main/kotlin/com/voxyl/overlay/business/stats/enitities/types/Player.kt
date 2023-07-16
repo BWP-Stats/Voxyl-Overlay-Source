@@ -9,7 +9,7 @@ import com.voxyl.overlay.business.utils.contains
 import com.voxyl.overlay.business.utils.get
 import com.voxyl.overlay.business.utils.getStr
 import com.voxyl.overlay.business.utils.ERROR_PLACEHOLDER
-import com.voxyl.overlay.ui.entitystats.stats.BwpMainMode
+import com.voxyl.overlay.ui.entitystats.columns.BwpMainMode
 import io.github.aakira.napier.Napier
 import kotlin.math.ceil
 import kotlin.math.min

@@ -1,4 +1,4 @@
-package com.voxyl.overlay.ui.entitystats.stats
+package com.voxyl.overlay.ui.entitystats.columns
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -25,7 +25,7 @@ import org.reflections.Reflections
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.primaryConstructor
 
-interface Statistic {
+interface Column {
     val entity: Entity
 
     @Composable
@@ -44,9 +44,9 @@ interface Statistic {
     }
 
     companion object {
-        val implementations: Map<String, Class<out Statistic>>
+        val implementations: Map<String, Class<out Column>>
 
-        fun getStatisticForDataString(dataString: String, entity: Entity): Statistic {
+        fun getStatisticForDataString(dataString: String, entity: Entity): Column {
             val clazz = implementations[dataString]!!
             val constructor = clazz.kotlin.primaryConstructor!!
 
@@ -102,9 +102,9 @@ interface Statistic {
 
         init {
             val impls = Reflections(this::class.java.packageName)
-                .getSubTypesOf(Statistic::class.java)
+                .getSubTypesOf(Column::class.java)
 
-            val toPopulate = mutableMapOf<String, Class<out Statistic>>()
+            val toPopulate = mutableMapOf<String, Class<out Column>>()
 
             implementations = impls.associateByTo(toPopulate) {
                 (it.kotlin.companionObjectInstance as? Metadata)?.dataString

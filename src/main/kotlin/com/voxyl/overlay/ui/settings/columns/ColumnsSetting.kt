@@ -28,8 +28,8 @@ import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.am
 import com.voxyl.overlay.controllers.playerstats.StatsToShow
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.entitystats.stats.Statistic
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.prettyName
+import com.voxyl.overlay.ui.entitystats.columns.Column
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.prettyName
 import org.burnoutcrew.reorderable.*
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -81,7 +81,7 @@ fun ColumnsSettings() {
                     contentAlignment = Alignment.Center
                 ) {
                     VText(
-                        text = it.prettyName() + (if (Statistic.getMetadataForDataString(it).hasAdditionalSettings) "*" else ""),
+                        text = it.prettyName() + (if (Column.getMetadataForDataString(it).hasAdditionalSettings) "*" else ""),
                         textAlign = TextAlign.Center,
                         fontSize = 16.sp
                     )

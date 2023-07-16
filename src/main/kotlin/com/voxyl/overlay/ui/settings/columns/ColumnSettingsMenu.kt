@@ -23,7 +23,7 @@ import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
 import com.voxyl.overlay.controllers.playerstats.StatsToShow
 import com.voxyl.overlay.ui.elements.VText
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.prettyName
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.prettyName
 import com.voxyl.overlay.ui.settings.columns.settings.NameSettings
 
 @OptIn(ExperimentalComposeUiApi::class)

@@ -1,6 +1,6 @@
 @file:Suppress("HasPlatformType", "JoinDeclarationAndAssignment")
 
-package com.voxyl.overlay.ui.entitystats.stats
+package com.voxyl.overlay.ui.entitystats.columns
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
@@ -10,42 +10,39 @@ import com.voxyl.overlay.business.stats.enitities.Entity
 import com.voxyl.overlay.business.stats.enitities.types.Bot
 import com.voxyl.overlay.business.utils.COLORED_ERROR_PLACEHOLDER
 import com.voxyl.overlay.business.utils.DASH_STRING
-import com.voxyl.overlay.business.utils.ERROR_PLACEHOLDER
 import com.voxyl.overlay.business.utils.LOADING_STRING
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
-import com.voxyl.overlay.ui.entitystats.stats.util.*
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.selectableStat
+import com.voxyl.overlay.ui.entitystats.columns.util.CellWeights
 import com.voxyl.overlay.ui.entitystats.toAnnotatedString
 
-class BedwarsFkdr(override val entity: Entity) : Statistic {
-    private val fkdr: AnnotatedString
+class BwpBeds(override val entity: Entity) : Column {
+    private val beds: AnnotatedString
 
     init {
-        fkdr = when {
+        beds = when {
             entity.isLoading -> LOADING_STRING
 
             entity.raw is Bot -> DASH_STRING
-
-            entity[dataString] == ERROR_PLACEHOLDER -> COLORED_ERROR_PLACEHOLDER
 
             else -> entity[dataString]?.toAnnotatedString()
                 ?: COLORED_ERROR_PLACEHOLDER
         }
 
-        CellWeights.put(dataString, entity, weight = fkdr.length * .85)
+        CellWeights.put(dataString, entity, weight = beds.length * .85)
     }
 
     @Composable
-    override fun RowScope.display(entity: Entity) = Statistic.DefaultStatCell(
-        fkdr,
+    override fun RowScope.display(entity: Entity) = Column.DefaultStatCell(
+        beds,
         Modifier
             .weight(cellWeight)
             .selectableStat(entity)
     )
 
-    companion object : Statistic.Metadata {
-        override val prettyName = "Fkdrᴴ"
+    companion object : Column.Metadata {
+        override val prettyName = "Bedsᴮ"
         override val actualName = this::class.java.simpleName
-        override val dataString = "bedwars.fkdr"
+        override val dataString = "bwp.beds"
 
         override val isSortable = true
 

@@ -1,6 +1,6 @@
 @file:Suppress("HasPlatformType", "JoinDeclarationAndAssignment")
 
-package com.voxyl.overlay.ui.entitystats.stats
+package com.voxyl.overlay.ui.entitystats.columns
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
@@ -11,15 +11,15 @@ import com.voxyl.overlay.business.stats.enitities.types.Bot
 import com.voxyl.overlay.business.utils.COLORED_ERROR_PLACEHOLDER
 import com.voxyl.overlay.business.utils.DASH_STRING
 import com.voxyl.overlay.business.utils.LOADING_STRING
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
-import com.voxyl.overlay.ui.entitystats.stats.util.CellWeights
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.selectableStat
+import com.voxyl.overlay.ui.entitystats.columns.util.CellWeights
 import com.voxyl.overlay.ui.entitystats.toAnnotatedString
 
-class BwpKills(override val entity: Entity) : Statistic {
-    private val kills: AnnotatedString
+class BedwarsFinalKills(override val entity: Entity) : Column {
+    private val finals: AnnotatedString
 
     init {
-        kills = when {
+        finals = when {
             entity.isLoading -> LOADING_STRING
 
             entity.raw is Bot -> DASH_STRING
@@ -28,21 +28,21 @@ class BwpKills(override val entity: Entity) : Statistic {
                 ?: COLORED_ERROR_PLACEHOLDER
         }
 
-        CellWeights.put(dataString, entity, weight = kills.length * .85)
+        CellWeights.put(dataString, entity, weight = finals.length * .85)
     }
 
     @Composable
-    override fun RowScope.display(entity: Entity) = Statistic.DefaultStatCell(
-        kills,
+    override fun RowScope.display(entity: Entity) = Column.DefaultStatCell(
+        finals,
         Modifier
             .weight(cellWeight)
             .selectableStat(entity)
     )
 
-    companion object : Statistic.Metadata {
-        override val prettyName = "Killsᴮ"
+    companion object : Column.Metadata {
+        override val prettyName = "Finalsᴴ"
         override val actualName = this::class.java.simpleName
-        override val dataString = "bwp.kills"
+        override val dataString = "bedwars.final_kills_bedwars"
 
         override val isSortable = true
 

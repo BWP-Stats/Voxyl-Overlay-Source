@@ -1,6 +1,6 @@
 @file:Suppress("HasPlatformType", "JoinDeclarationAndAssignment")
 
-package com.voxyl.overlay.ui.entitystats.stats
+package com.voxyl.overlay.ui.entitystats.columns
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
@@ -11,10 +11,10 @@ import com.voxyl.overlay.business.stats.enitities.types.Bot
 import com.voxyl.overlay.business.utils.COLORED_ERROR_PLACEHOLDER
 import com.voxyl.overlay.business.utils.DASH_STRING
 import com.voxyl.overlay.business.utils.LOADING_STRING
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
-import com.voxyl.overlay.ui.entitystats.stats.util.*
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.selectableStat
+import com.voxyl.overlay.ui.entitystats.columns.util.*
 
-class BedwarsLevel(override val entity: Entity) : Statistic {
+class BedwarsLevel(override val entity: Entity) : Column {
     private val level: AnnotatedString
 
     init {
@@ -31,14 +31,14 @@ class BedwarsLevel(override val entity: Entity) : Statistic {
     }
 
     @Composable
-    override fun RowScope.display(entity: Entity) = Statistic.DefaultStatCell(
+    override fun RowScope.display(entity: Entity) = Column.DefaultStatCell(
         level,
         Modifier
             .weight(cellWeight)
             .selectableStat(entity)
     )
 
-    companion object : Statistic.Metadata {
+    companion object : Column.Metadata {
         override val prettyName = "Levelᴴ"
         override val actualName = this::class.java.simpleName
         override val dataString = "bedwars.level"

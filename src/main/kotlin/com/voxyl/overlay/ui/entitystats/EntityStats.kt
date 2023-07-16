@@ -20,8 +20,8 @@ import com.voxyl.overlay.controllers.playerstats.StatsSort
 import com.voxyl.overlay.controllers.playerstats.StatsToShow
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
-import com.voxyl.overlay.ui.entitystats.stats.Statistic
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.prettyName
+import com.voxyl.overlay.ui.entitystats.columns.Column
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.prettyName
 
 @Composable
 fun EntityStats() {
@@ -74,4 +74,4 @@ private fun RowScope.Header(dataString: String) = Row(
     }
 }
 
-private fun headerWeight(dataString: String) = Statistic.getMetadataForDataString(dataString).cellWeight
+private fun headerWeight(dataString: String) = Column.getMetadataForDataString(dataString).cellWeight

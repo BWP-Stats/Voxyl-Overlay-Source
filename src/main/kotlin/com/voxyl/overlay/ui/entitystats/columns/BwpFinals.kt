@@ -1,6 +1,6 @@
 @file:Suppress("HasPlatformType", "JoinDeclarationAndAssignment")
 
-package com.voxyl.overlay.ui.entitystats.stats
+package com.voxyl.overlay.ui.entitystats.columns
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
@@ -11,15 +11,15 @@ import com.voxyl.overlay.business.stats.enitities.types.Bot
 import com.voxyl.overlay.business.utils.COLORED_ERROR_PLACEHOLDER
 import com.voxyl.overlay.business.utils.DASH_STRING
 import com.voxyl.overlay.business.utils.LOADING_STRING
-import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
-import com.voxyl.overlay.ui.entitystats.stats.util.CellWeights
+import com.voxyl.overlay.ui.entitystats.columns.Column.Companion.selectableStat
+import com.voxyl.overlay.ui.entitystats.columns.util.CellWeights
 import com.voxyl.overlay.ui.entitystats.toAnnotatedString
 
-class BwpWeightedWins(override val entity: Entity) : Statistic {
-    private val wwins: AnnotatedString
+class BwpFinals(override val entity: Entity) : Column {
+    private val finals: AnnotatedString
 
     init {
-        wwins = when {
+        finals  = when {
             entity.isLoading -> LOADING_STRING
 
             entity.raw is Bot -> DASH_STRING
@@ -28,21 +28,21 @@ class BwpWeightedWins(override val entity: Entity) : Statistic {
                 ?: COLORED_ERROR_PLACEHOLDER
         }
 
-        CellWeights.put(dataString, entity, weight = wwins.length * .85)
+        CellWeights.put(dataString, entity, weight = finals.length * .85)
     }
 
     @Composable
-    override fun RowScope.display(entity: Entity) = Statistic.DefaultStatCell(
-        wwins,
+    override fun RowScope.display(entity: Entity) = Column.DefaultStatCell(
+        finals,
         Modifier
             .weight(cellWeight)
             .selectableStat(entity)
     )
 
-    companion object : Statistic.Metadata {
-        override val prettyName = "W-Winsᴮ"
+    companion object : Column.Metadata {
+        override val prettyName = "Finalsᴮ"
         override val actualName = this::class.java.simpleName
-        override val dataString = "bwp.weightedwins"
+        override val dataString = "bwp.finals"
 
         override val isSortable = true
 

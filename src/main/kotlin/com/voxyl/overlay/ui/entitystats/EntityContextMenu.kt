@@ -16,7 +16,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.Entity
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.alphaMultiplier
 import com.voxyl.overlay.controllers.playerstats.Entities

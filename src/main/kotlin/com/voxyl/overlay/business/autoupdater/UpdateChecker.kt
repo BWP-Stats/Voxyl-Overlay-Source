@@ -7,9 +7,7 @@ import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.business.validation.popups.Info
 import com.voxyl.overlay.controllers.common.PopUpQueue
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.File
 import kotlin.math.max
 
@@ -21,7 +19,7 @@ object UpdateChecker {
             val latestRelease = GitHubApiProvider.getApi().getReleases().get(0).asJsonObject
             val latestVersion = latestRelease.get("tag_name").asString.trim('v')
 
-            if (compareVersions(latestVersion, AppInfo.VERSION) > 0) {
+            if (compareVersions(latestVersion) > 0) {
                 queryUpdate(latestVersion, cs)
             } else if (manuallyChecked) {
                 PopUpQueue.add(Info("No new releases found (Current version ${AppInfo.VERSION})"))
@@ -43,13 +41,17 @@ object UpdateChecker {
     private fun queryUpdate(tag: String, cs: CoroutineScope) {
         PopUpQueue.add(Confirmation("New version available: v$tag. Update?", 15000) {
             AutoUpdater.installUpdate(tag, cs)
-            PopUpQueue.Current.cancel()
+            PopUpQueue.endCurrent()
+
+            cs.launch {
+                PopUpQueue.add(Info("You'll just need to reopen the overlay once it's done", 3000))
+            }
         })
     }
 
-    private fun compareVersions(version1: String, version2: String): Int {
+    private fun compareVersions(version1: String): Int {
         val v1 = version1.split(".")
-        val v2 = version2.split(".")
+        val v2 = AppInfo.VERSION.split(".")
         val maxLength = max(v1.size, v2.size)
 
         for (i in 0 until maxLength) {

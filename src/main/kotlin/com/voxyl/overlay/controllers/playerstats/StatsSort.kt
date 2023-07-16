@@ -1,7 +1,7 @@
 package com.voxyl.overlay.controllers.playerstats
 
 import androidx.compose.runtime.mutableStateOf
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.Entity
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.SortAsc
 import com.voxyl.overlay.business.settings.config.SortBy

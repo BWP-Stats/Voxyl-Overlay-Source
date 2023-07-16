@@ -20,7 +20,7 @@ import com.voxyl.overlay.business.settings.window.*
 import com.voxyl.overlay.controllers.common.ui.*
 import com.voxyl.overlay.controllers.playerstats.Entities
 import com.voxyl.overlay.ui.elements.ShapeThatIdkTheNameOf
-import com.voxyl.overlay.ui.elements.Tooltip
+import com.voxyl.overlay.ui.elements.VTooltip
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import kotlinx.coroutines.launch
 import androidx.compose.ui.input.pointer.pointerMoveFilter as hoverable
@@ -78,7 +78,7 @@ fun AdditionalSettings(
 
                 Spacer(modifier = Modifier.size(3.dp))
 
-                Tooltip(
+                VTooltip(
                     "Presets (coming soon)"
                 ) {
                     Icon(Icons.Filled.ArrowDropDown, contentDescription = null, tint = MainWhite)
@@ -90,7 +90,7 @@ fun AdditionalSettings(
 
                 Spacer(modifier = Modifier.size(3.dp))
 
-                Tooltip(
+                VTooltip(
                     "Join the Discord for help: .gg/fBnfWXSDpu"
                 ) {
                     Icon(Icons.Filled.Info, contentDescription = null, tint = MainWhite)
@@ -115,7 +115,7 @@ fun AlwaysOnTopButton() {
     )
 
     var windowOnTop by remember { mutableStateOf(AppWindow.isAlwaysOnTop) }
-    Tooltip(
+    VTooltip(
         "Toggles the overlay being always on top of all other windows"
     ) {
         Icon(
@@ -135,7 +135,7 @@ fun AlwaysOnTopButton() {
 
 @Composable
 fun ClearPlayersButton() {
-    Tooltip(
+    VTooltip(
         "Deletes all players"
     ) {
         Icon(
@@ -151,7 +151,7 @@ fun ClearPlayersButton() {
 fun RefreshAllButton() {
     val cs = rememberCoroutineScope()
 
-    Tooltip(
+    VTooltip(
         "Refreshes all players"
     ) {
         Icon(

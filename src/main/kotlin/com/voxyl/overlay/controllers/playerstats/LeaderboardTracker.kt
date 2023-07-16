@@ -1,47 +1,54 @@
 package com.voxyl.overlay.controllers.playerstats
 
 import com.google.gson.JsonObject
-import com.voxyl.overlay.business.statsfetching.apis.ApiProvider
-import com.voxyl.overlay.business.statsfetching.models.LevelsLeaderboardJson
-import com.voxyl.overlay.business.statsfetching.models.WWinsLeaderboardJson
+import com.voxyl.overlay.business.settings.Settings
+import com.voxyl.overlay.business.stats.apis.ApiProvider
+import com.voxyl.overlay.business.stats.models.LevelsLeaderboardJson
+import com.voxyl.overlay.business.stats.models.WWinsLeaderboardJson
 import com.voxyl.overlay.business.settings.config.*
+import com.voxyl.overlay.business.utils.untrimUUID
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 
 object LeaderboardTracker {
+    @get:Synchronized @set:Synchronized
     private var _levelLB: LevelsLeaderboardJson? = null
+
+    @get:Synchronized @set:Synchronized
     private var _wwLB: WWinsLeaderboardJson? = null
 
-    var aboutToUpdate = false
-
     val levelLB: JsonObject?
-        get() = if (!aboutToUpdate) _levelLB?.json?.deepCopy() else null
+        get() = _levelLB?.json
 
     val wwLB: JsonObject?
-        get() = if (!aboutToUpdate) _wwLB?.json?.deepCopy() else null
+        get() = _wwLB?.json
 
+    @Synchronized
     fun updateLevelLB(cs: CoroutineScope) = cs.launch(Dispatchers.IO) {
-        _levelLB = LevelsLeaderboardJson(
-            ApiProvider.getActualBwpApi().getLevelLeaderboard(Config[BwpApiKey]).body()!!
-        )
+        _levelLB = ApiProvider.bwp.getLevelLeaderboard(Config[BwpApiKey]).body()
+            ?.let { LevelsLeaderboardJson(it) }
     }
 
+    @Synchronized
     fun updateWWinsLB(cs: CoroutineScope) = cs.launch(Dispatchers.IO) {
-        _wwLB = WWinsLeaderboardJson(
-            ApiProvider.getActualBwpApi().getWWLeaderboard(Config[BwpApiKey]).body()!!
-        )
+        _wwLB = ApiProvider.bwp.getWWLeaderboard(Config[BwpApiKey]).body()
+            ?.let { WWinsLeaderboardJson(it) }
     }
 
-    fun findInLevelLB(uuid: String): JsonObject? {
+    fun findInLevelLB(_uuid: String): JsonObject? {
         val json = levelLB ?: return null
+        val uuid = _uuid.untrimUUID()
+
         val found = json.getAsJsonArray("players").find {
             it.asJsonObject.get("uuid").asString == uuid
         }
         return found?.asJsonObject
     }
 
-    fun findInWWLB(uuid: String): JsonObject? {
+    fun findInWWLB(_uuid: String): JsonObject? {
         val json = wwLB ?: return null
+        val uuid = _uuid.untrimUUID()
+
         val found = json.getAsJsonArray("players").find {
             it.asJsonObject.get("uuid").asString == uuid
         }
@@ -60,10 +67,8 @@ object LeaderboardTracker {
     fun startTracking(cs: CoroutineScope = GlobalScope, delay: Long = 300000L) {
         cs.launch {
             while (true) {
-                aboutToUpdate = true
                 try { updateLevelLB(cs) } catch (e: Exception) { Napier.e("Failed to update level lb", e) }
-                try { updateWWinsLB(cs) } catch (e: Exception) { Napier.e("Failed to update w-wins lb", e) }
-                aboutToUpdate = false
+                try { updateWWinsLB(cs) } catch (e: Exception) { Napier.e("Failed to update wwins lb", e) }
                 delay(delay)
             }
         }

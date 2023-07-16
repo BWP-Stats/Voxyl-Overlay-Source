@@ -2,6 +2,7 @@ package com.voxyl.overlay
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalContext
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -22,27 +23,35 @@ import com.voxyl.overlay.business.settings.config.ShowDiscordRP
 import com.voxyl.overlay.business.settings.window.*
 import com.voxyl.overlay.business.settings.window.WindowState
 import com.voxyl.overlay.business.validation.ValidationChecks
+import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.controllers.common.PopUpQueue
 import com.voxyl.overlay.controllers.playerstats.LeaderboardTracker
 import com.voxyl.overlay.ui.common.MainScreen
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.reflections.Reflections
+import org.reflections.scanners.Scanners
+import org.reflections.util.ClasspathHelper
+import org.reflections.util.ConfigurationBuilder
 import java.awt.Dimension
 import java.io.File
 import java.util.logging.ConsoleHandler
 import java.util.logging.FileHandler
 import java.util.logging.Level
 import java.util.logging.SimpleFormatter
+import kotlin.system.measureTimeMillis
 import androidx.compose.ui.window.WindowState as AndroidWindowState
 
 lateinit var AppWindow: ComposeWindow
     private set
 
-@ExperimentalComposeUiApi
 @Preview
+@ExperimentalComposeUiApi
 fun main() = application {
     Settings.loadAll()
-    Settings.checkForAutoRestore()
 
     val windowState = rememberWindowState(
         position = getPreferredWindowPosition(),
@@ -68,10 +77,29 @@ fun main() = application {
         val cs = rememberCoroutineScope()
 
         LaunchedEffect(Unit) {
+            PopUpQueue.start()
+
+            val restoring = Settings.checkForAutoRestore()
+
+            if (restoring) {
+                PopUpQueue.add(Warning("Old settings found; restoring. (Trying to) restart overlay. Reopen if restart fails.", 3000L))
+
+                Settings.storeAll()
+
+                Runtime.getRuntime().addShutdownHook(Thread {
+                    try {
+                        Runtime.getRuntime().exec("VoxylOverlay", null, File("."))
+                    } catch (_: Exception) {}
+                })
+
+                delay(3150)
+
+                exitApplication()
+            }
+
             ValidationChecks.runAtStart()
             Napier.initialize()
             NativeListeners.initialize()
-            PopUpQueue.start()
             LogFileReader.start()
             UpdateChecker.check(cs)
             LeaderboardTracker.startTracking()

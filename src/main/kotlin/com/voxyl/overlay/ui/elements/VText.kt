@@ -38,7 +38,6 @@ fun VText(
     style: TextStyle = LocalTextStyle.current,
     alpha: Float = 1f
 ) {
-
     Text(
         text = text,
         modifier = modifier,

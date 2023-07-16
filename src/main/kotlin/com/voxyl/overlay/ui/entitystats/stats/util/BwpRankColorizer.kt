@@ -5,7 +5,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.Entity
+import com.voxyl.overlay.business.utils.ERROR_PLACEHOLDER
 import com.voxyl.overlay.controllers.common.ui.am
 
 private val colorsMap = mapOf(

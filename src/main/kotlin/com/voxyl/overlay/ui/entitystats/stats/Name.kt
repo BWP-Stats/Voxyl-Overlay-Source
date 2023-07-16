@@ -13,8 +13,8 @@ import androidx.compose.ui.text.withStyle
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.RankPrefix
 import com.voxyl.overlay.business.settings.config.ShowRankPrefix
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
-import com.voxyl.overlay.business.statsfetching.enitities.types.Bot
+import com.voxyl.overlay.business.stats.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.types.Bot
 import com.voxyl.overlay.controllers.common.ui.am
 import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.DefaultStatCell
 import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat

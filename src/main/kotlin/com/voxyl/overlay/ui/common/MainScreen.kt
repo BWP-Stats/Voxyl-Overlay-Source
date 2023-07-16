@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
-import com.voxyl.overlay.controllers.common.Screen
+import com.voxyl.overlay.controllers.common.CurrentScreen
 import com.voxyl.overlay.controllers.common.ui.bgam
 import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
@@ -28,7 +28,7 @@ fun FrameWindowScope.MainScreen() {
         TitleBox()
         TitleBar()
 
-        Screen()
+        CurrentScreen()
 
         PopUpBar()
         AdditionalSettings()

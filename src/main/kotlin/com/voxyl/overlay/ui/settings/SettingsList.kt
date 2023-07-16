@@ -26,6 +26,7 @@ import com.voxyl.overlay.ui.settings.keybinds.ClearPlayersKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.OpenCloseKeySetting
 import com.voxyl.overlay.ui.settings.keybinds.RefreshPlayersKeySetting
 import com.voxyl.overlay.ui.settings.qol.*
+import com.voxyl.overlay.ui.settings.regex.RegexTextField
 
 @Composable
 fun Settings(
@@ -95,6 +96,9 @@ fun SettingsList(
 
                 @Composable { Header("Columns") } to "columnsstatsshowrows",
                 @Composable { ColumnsSettings() } to "columnsstatsshowrows",
+
+                @Composable { Header("Custom matching & actions") } to "custommatchingandactions&regex",
+                @Composable { RegexTextField() } to "custommatchingandactions&regex",
 
                 @Composable { Header("Backup") } to "backupsettingsfileconfig",
                 @Composable { BackupButtons() } to "backupsettingsfileconfig",

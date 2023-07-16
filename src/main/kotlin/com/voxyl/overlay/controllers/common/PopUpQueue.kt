@@ -3,6 +3,8 @@ package com.voxyl.overlay.controllers.common
 import androidx.compose.runtime.*
 import com.voxyl.overlay.business.validation.popups.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 
 object PopUpQueue {
     object Current {
@@ -30,12 +32,10 @@ object PopUpQueue {
 
     private var job: Job? = null
 
-    var paused = false
-
     @OptIn(DelicateCoroutinesApi::class)
     fun start(cs: CoroutineScope = GlobalScope) = cs.launch {
         while (true) {
-            while (paused || _popups.isEmpty()) {
+            while (_popups.isEmpty()) {
                 delay(100)
                 continue
             }
@@ -74,23 +74,11 @@ object PopUpQueue {
         }
     }
 
-    private fun endCurrent() {
+    fun endCurrent() {
         job?.cancel()
         Current.cancel()
         if (_popups.isNotEmpty()) {
             _popups -= _popups[0]
-        }
-    }
-
-    init {
-        Screen.subscribeToChange { _, new ->
-            if (new == Screen.Settings) {
-                job?.cancel()
-                paused = true
-            } else {
-                popups.getOrNull(0)?.cancelled = false
-                paused = false
-            }
         }
     }
 }

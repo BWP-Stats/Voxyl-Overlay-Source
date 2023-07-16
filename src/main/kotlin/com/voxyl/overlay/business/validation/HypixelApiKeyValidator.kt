@@ -1,12 +1,12 @@
 package com.voxyl.overlay.business.validation
 
-import com.voxyl.overlay.business.statsfetching.apis.ApiProvider
+import com.voxyl.overlay.business.stats.apis.ApiProvider
 import com.voxyl.overlay.business.settings.config.Columns
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.HypixelApiKey
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.controllers.common.PopUpQueue
-import com.voxyl.overlay.controllers.common.Screen
+import com.voxyl.overlay.controllers.common.CurrentScreen
 import kotlinx.coroutines.*
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -14,8 +14,8 @@ object HypixelApiKeyValidator {
     private const val TAG = "HypixelApiKeyValidationPopup"
 
     init {
-        Screen.subscribeToChange { _, new ->
-            if (new == Screen.PlayerStats) {
+        CurrentScreen.subscribeToChange { _, new ->
+            if (new == CurrentScreen.PlayerStats) {
                 validate()
             }
         }
@@ -45,8 +45,7 @@ object HypixelApiKeyValidator {
             return false
         }
 
-        val response = ApiProvider
-            .getHypixelApi()
+        val response = ApiProvider.hypixel
             .getKeyInfo(Config[HypixelApiKey])
 
         if (response.isSuccessful) {

@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.Entity
 import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
 import com.voxyl.overlay.ui.entitystats.stats.util.CellWeights
 import java.util.*

@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.voxyl.overlay.business.statsfetching.enitities.tags.ManuallySearched
+import com.voxyl.overlay.business.stats.enitities.tags.ManuallySearched
 import com.voxyl.overlay.controllers.common.ui.defaultTitleBarSizeMulti
 import com.voxyl.overlay.controllers.common.ui.tbsm
 import com.voxyl.overlay.controllers.common.ui.titleBarSizeMulti

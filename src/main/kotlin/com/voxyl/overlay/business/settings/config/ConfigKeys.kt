@@ -23,7 +23,7 @@ val TitleBarSizeMulti = ConfigKey(name = "title_bar_size_multi", default = "0.9"
 
 val CenterStats    = ConfigKey(name = "center_stats", default = "false")
 val RankPrefix     = ConfigKey(name = "rank_prefix",  default = "bwp")
-val ShowRankPrefix = ConfigKey(name = "rank_prefix",  default = "true")
+val ShowRankPrefix = ConfigKey(name = "show_rank_prefix",  default = "true")
 
 val PrimaryColorR = ConfigKey(name = "r", default = "130")
 val PrimaryColorG = ConfigKey(name = "g", default = "32")
@@ -38,9 +38,11 @@ val SortAsc = ConfigKey(name = "sort_asc", default = "false")
 
 val Columns = ConfigKey(name = "columns", default = "tags,bwp.level,name,bwp.wins,bwp.kills,bwp.finals")
 
-val Aliases                       = ConfigKey(name = "aliases",                            default = "")
+val PlayerAliases                 = ConfigKey(name = "aliases",                            default = "")
 val ShowYourStatsInsteadOfAliases = ConfigKey(name = "show_your_stats_instead_of_aliases", default = "false")
 
 val ShowDiscordRP = ConfigKey(name = "show_discord_rp", default = "true")
 
 val AddBotsToOverlay = ConfigKey(name = "add_bots_to_overlay", default = "true")
+
+val CustomRegex = ConfigKey(name="custom_regex_actions", default="")

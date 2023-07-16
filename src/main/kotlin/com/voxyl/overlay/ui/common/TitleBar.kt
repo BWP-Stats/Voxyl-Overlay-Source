@@ -21,7 +21,7 @@ import androidx.compose.ui.window.FrameWindowScope
 import com.voxyl.overlay.AppWindow
 import com.voxyl.overlay.business.logfilereader.LogFileReader
 import com.voxyl.overlay.business.settings.Settings
-import com.voxyl.overlay.controllers.common.Screen
+import com.voxyl.overlay.controllers.common.CurrentScreen
 import com.voxyl.overlay.controllers.common.ui.*
 import com.voxyl.overlay.ui.elements.util.requestFocusOnClick
 import com.voxyl.overlay.ui.entitystats.PlayerSearchBar
@@ -39,8 +39,8 @@ fun FrameWindowScope.TitleBar() {
     var currentSearchBar by remember { mutableStateOf<@Composable (Modifier) -> Unit>({ PlayerSearchBar(it) }) }
 
     LaunchedEffect(Unit) {
-        Screen.subscribeToChange { _, new ->
-            currentSearchBar = { if (new == Screen.PlayerStats) PlayerSearchBar(it) else SettingsSearchBar(it) }
+        CurrentScreen.subscribeToChange { _, new ->
+            currentSearchBar = { if (new == CurrentScreen.PlayerStats) PlayerSearchBar(it) else SettingsSearchBar(it) }
         }
     }
 
@@ -82,12 +82,12 @@ fun MainColorSettingsButton(modifier: Modifier = Modifier) {
         modifier = modifier.absolutePadding(left = 52.tbsm.dp),
         bgColor = mutableStateOf(MainColor.value),
         doOnClick = {
-            if (Screen.current == Screen.Settings) {
+            if (CurrentScreen.current == CurrentScreen.Settings) {
                 Settings.storeAll()
                 LogFileReader.start(cs)
             }
 
-            Screen.current = if (Screen.current == Screen.PlayerStats) Screen.Settings else Screen.PlayerStats
+            CurrentScreen.current = if (CurrentScreen.current == CurrentScreen.PlayerStats) CurrentScreen.Settings else CurrentScreen.PlayerStats
         },
     )
 }

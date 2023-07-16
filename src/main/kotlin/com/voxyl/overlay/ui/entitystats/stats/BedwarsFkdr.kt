@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
-import com.voxyl.overlay.business.statsfetching.enitities.types.Bot
+import com.voxyl.overlay.business.stats.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.types.Bot
+import com.voxyl.overlay.business.utils.COLORED_ERROR_PLACEHOLDER
+import com.voxyl.overlay.business.utils.DASH_STRING
+import com.voxyl.overlay.business.utils.ERROR_PLACEHOLDER
+import com.voxyl.overlay.business.utils.LOADING_STRING
 import com.voxyl.overlay.ui.entitystats.stats.Statistic.Companion.selectableStat
 import com.voxyl.overlay.ui.entitystats.stats.util.*
 import com.voxyl.overlay.ui.entitystats.toAnnotatedString

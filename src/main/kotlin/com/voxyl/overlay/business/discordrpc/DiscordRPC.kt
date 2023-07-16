@@ -1,8 +1,8 @@
 package com.voxyl.overlay.business.discordrpc
 
-import com.voxyl.overlay.business.statsfetching.enitities.EntityFactory
-import com.voxyl.overlay.business.statsfetching.enitities.ResponseStatus
-import com.voxyl.overlay.business.statsfetching.enitities.types.Player
+import com.voxyl.overlay.business.stats.enitities.EntityFactory
+import com.voxyl.overlay.business.stats.enitities.ResponseStatus
+import com.voxyl.overlay.business.stats.enitities.types.Player
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.PlayerName
 import com.voxyl.overlay.business.validation.popups.Error

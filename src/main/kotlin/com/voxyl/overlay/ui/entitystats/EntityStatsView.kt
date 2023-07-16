@@ -6,7 +6,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.PinYourselfToTop
 import com.voxyl.overlay.business.settings.config.PlayerName
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.Entity
 import com.voxyl.overlay.controllers.common.ui.MainWhite
 import com.voxyl.overlay.controllers.common.ui.am
 import com.voxyl.overlay.controllers.common.ui.tbsm
@@ -99,7 +98,6 @@ fun RowScope.DisplayStat(
     entity: Entity,
     dataString: String,
 ) = Statistic.getStatisticForDataString(dataString, entity)(rs = this)
-
 
 fun String.toAnnotatedString(): AnnotatedString {
     return buildAnnotatedString { append(this@toAnnotatedString) }

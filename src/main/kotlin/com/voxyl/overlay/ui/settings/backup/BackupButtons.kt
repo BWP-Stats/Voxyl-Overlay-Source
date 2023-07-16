@@ -66,7 +66,7 @@ private fun RowScope.BackupButton(
     val animSpec = TweenSpec<Float>(if (pressed) 875 else 175, easing = LinearEasing)
 
     val progress by animateFloatAsState(if (pressed && enabled) 1f else 0f, animSpec) {
-        if (enabled) {
+        if (enabled && it >= .95) {
             onPressed()
             pressed = false
         }

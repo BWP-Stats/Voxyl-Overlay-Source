@@ -2,7 +2,7 @@ package com.voxyl.overlay.ui.entitystats.stats.util
 
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.snapshots.SnapshotStateMap
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.Entity
 import com.voxyl.overlay.controllers.playerstats.Entities
 import kotlin.math.max
 

@@ -1,20 +1,20 @@
 package com.voxyl.overlay.business.validation
 
 import com.voxyl.overlay.business.utils.NetworkingUtils
-import com.voxyl.overlay.business.statsfetching.apis.ApiProvider
+import com.voxyl.overlay.business.stats.apis.ApiProvider
 import com.voxyl.overlay.business.settings.config.BwpApiKey
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.validation.popups.Error
 import com.voxyl.overlay.controllers.common.PopUpQueue
-import com.voxyl.overlay.controllers.common.Screen
+import com.voxyl.overlay.controllers.common.CurrentScreen
 import kotlinx.coroutines.*
 
 object BwpApiKeyValidator {
     private const val TAG = "BwpApiKeyValidationPopup"
 
     init {
-        Screen.subscribeToChange { _, new ->
-            if (new == Screen.PlayerStats) {
+        CurrentScreen.subscribeToChange { _, new ->
+            if (new == CurrentScreen.PlayerStats) {
                 validate()
             }
         }
@@ -36,8 +36,7 @@ object BwpApiKeyValidator {
             return false
         }
 
-        val response = ApiProvider
-            .getActualBwpApi()
+        val response = ApiProvider.bwp
             .getPlayerInfo("e21d44c5-c1fd-4119-b55c-5baced12fd6e", Config[BwpApiKey])
 
         if (response.isSuccessful) {

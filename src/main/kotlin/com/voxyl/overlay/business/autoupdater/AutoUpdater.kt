@@ -3,12 +3,11 @@ package com.voxyl.overlay.business.autoupdater
 import com.voxyl.overlay.business.autoupdater.apis.GitHubApiProvider
 import com.voxyl.overlay.business.settings.Settings
 import com.voxyl.overlay.business.validation.popups.Error
+import com.voxyl.overlay.business.validation.popups.Info
 import com.voxyl.overlay.business.validation.popups.Warning
 import com.voxyl.overlay.controllers.common.PopUpQueue
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import java.awt.Desktop
 import java.io.File
@@ -32,7 +31,7 @@ object AutoUpdater {
                 Settings.backupToTemp()
 
                 if (path.isNotBlank()) {
-                    openInstaller(File(path))
+                    install(path, cs)
                 }
             } catch (e: Exception) {
                 PopUpQueue.add(Error("Failed to download installation file"))
@@ -83,15 +82,20 @@ object AutoUpdater {
         }
     }
 
-    private fun openInstaller(file: File) {
-        if (Desktop.isDesktopSupported()) {
-            try {
-                Settings.storeAll()
-                Desktop.getDesktop().open(file)
+    private fun install(filePath: String, cs: CoroutineScope) {
+        Napier.i(filePath)
+
+        try {
+            cs.launch {
+                Runtime.getRuntime().addShutdownHook(Thread {
+                    Runtime.getRuntime().exec("cmd /c msiexec.exe /i \"${filePath}\" /passive > nul 2>&1")
+                })
+
+                delay(1350)
                 exitProcess(0)
-            } catch (e: IOException) {
-                PopUpQueue.add(Warning("Installed successfully, but failed to open installer. Please manually open the installer"))
             }
+        } catch (e: IOException) {
+            PopUpQueue.add(Warning("Downloaded successfully, but failed to install. Please manually open the backup settings then install."))
         }
     }
 }

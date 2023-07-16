@@ -2,9 +2,7 @@
 
 package com.voxyl.overlay.business.settings
 
-import com.voxyl.overlay.appinfo.AppInfo
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.settings.misc.CurrentVersion
 import com.voxyl.overlay.business.settings.misc.FirstTimeUsingOverlay
 import com.voxyl.overlay.business.settings.misc.MiscSettings
 import com.voxyl.overlay.business.settings.window.WindowState
@@ -17,6 +15,8 @@ import java.util.*
 
 abstract class Settings<Type : Settings<Type>>(val fileName: String) {
     private lateinit var state: Properties
+
+    val keys = mutableListOf<SettingsKey<Type>>()
     
     operator fun get(key: SettingsKey<Type>): String {
         return state[key.name].toString()
@@ -31,6 +31,8 @@ abstract class Settings<Type : Settings<Type>>(val fileName: String) {
     }
 
     fun register(key: SettingsKey<Type>) {
+        keys += key
+
         if (key.isInvalidProperty(state)) {
             state.setProperty(key.name, key.default)
         }
@@ -91,10 +93,11 @@ abstract class Settings<Type : Settings<Type>>(val fileName: String) {
             MiscSettings.load(basePath)
         }
 
-        fun checkForAutoRestore() {
-            if (MiscSettings[CurrentVersion] != AppInfo.VERSION) {
-                restoreFromTemp()
+        fun checkForAutoRestore(): Boolean {
+            if (Config.keys.all { Config[it] == it.default }) {
+                return restoreFromTemp()
             }
+            return false
         }
 
         fun backupToTemp() {
@@ -111,13 +114,14 @@ abstract class Settings<Type : Settings<Type>>(val fileName: String) {
                     && children.any { it.name.contains(WindowState.fileName) }
         }
         
-        fun restoreFromTemp() {
+        fun restoreFromTemp(): Boolean {
             if (!tempDir.exists()) {
                 Napier.i("No previous settings found")
-                return
+                return false
             }
 
             loadAll(tempDir.absolutePath)
+            return true
         }
 
         fun clearBackups() {

@@ -6,7 +6,7 @@ import com.voxyl.overlay.business.settings.config.Config
 import java.util.*
 
 object StatsToShow {
-    val _stats = Config[Columns].split(",").toMutableStateList()
+    val _stats = Config[Columns].split(",").filter { it != "" }.toMutableStateList()
 
     val stats: List<String>
         get() = _stats.toList()

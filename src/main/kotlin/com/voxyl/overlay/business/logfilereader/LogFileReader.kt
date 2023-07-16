@@ -17,6 +17,8 @@ object LogFileReader {
     fun start(cs: CoroutineScope = GlobalScope) = cs.launch(Dispatchers.IO) {
         job?.cancel()
 
+        LogFileInterpreter.reset()
+
         val reader = Config.getOrNullIfBlank(LogFilePath)?.let {
             try {
                 FileInputStream(it).bufferedReader(Charsets.UTF_8).also {

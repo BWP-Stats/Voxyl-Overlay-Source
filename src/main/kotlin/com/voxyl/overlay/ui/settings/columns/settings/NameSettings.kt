@@ -20,12 +20,12 @@ import com.voxyl.overlay.ui.settings.columns.ColumnSettingsMenuState
 fun NameSettings() {
     if (ColumnSettingsMenuState.dataString != "name") return
 
-    showRankPrefixSetting()
-    whichRankPrefixSetting()
+    ShowRankPrefixSetting()
+    WhichRankPrefixSetting()
 }
 
 @Composable
-private fun showRankPrefixSetting() {
+private fun ShowRankPrefixSetting() {
     var showRankPrefix by remember { mutableStateOf(Config[ShowRankPrefix] != "false") }
 
     DropdownMenuItem(onClick = {
@@ -60,7 +60,7 @@ private fun showRankPrefixSetting() {
 }
 
 @Composable
-private fun whichRankPrefixSetting() {
+private fun WhichRankPrefixSetting() {
     var prefix by mutableStateOf(Config[RankPrefix])
 
     DropdownMenuItem(onClick = {

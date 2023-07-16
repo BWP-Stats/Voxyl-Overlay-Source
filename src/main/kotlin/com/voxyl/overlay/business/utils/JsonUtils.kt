@@ -1,7 +1,8 @@
 package com.voxyl.overlay.business.utils
 
 import com.google.gson.JsonObject
-import com.voxyl.overlay.business.statsfetching.models.JsonValueClass
+import com.google.gson.JsonPrimitive
+import com.voxyl.overlay.business.stats.models.JsonValueClass
 
 operator fun JsonObject?.contains(key: String): Boolean {
     return this?.get(key) != null
@@ -23,4 +24,8 @@ fun JsonObject?.getStr(key: String): String? {
 
 fun JsonValueClass?.getStr(key: String): String? {
     return this?.json.getStr(key)
+}
+
+fun JsonObject?.getStrOrNull(key: String): String? {
+    return (this?.get(key) as? JsonPrimitive)?.asString
 }

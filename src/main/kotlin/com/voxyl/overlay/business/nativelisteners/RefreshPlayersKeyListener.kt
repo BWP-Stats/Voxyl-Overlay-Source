@@ -8,6 +8,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener
 import com.voxyl.overlay.business.settings.config.Config
 import com.voxyl.overlay.business.settings.config.RefreshPlayersKeybind
 import com.voxyl.overlay.controllers.playerstats.Entities
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 
 object RefreshPlayersKeyListener : NativeKeyListener {
@@ -15,6 +16,7 @@ object RefreshPlayersKeyListener : NativeKeyListener {
         Config[RefreshPlayersKeybind]
     )
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun nativeKeyReleased(e: NativeKeyEvent) {
         if (e.paramString() == paramString) {
             Entities.refreshAll(GlobalScope)

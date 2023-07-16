@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.voxyl.overlay.business.settings.config.CenterStats
 import com.voxyl.overlay.business.settings.config.Config
-import com.voxyl.overlay.business.statsfetching.enitities.Entity
+import com.voxyl.overlay.business.stats.enitities.Entity
 import com.voxyl.overlay.ui.elements.VText
 import com.voxyl.overlay.ui.entitystats.EntityContextMenuState
 import org.reflections.Reflections

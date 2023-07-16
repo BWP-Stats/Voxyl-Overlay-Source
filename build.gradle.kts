@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.voxyl"
-version = "1.2.1"
+version = "1.3.0"
 
 repositories {
     google()
@@ -64,7 +64,7 @@ compose.desktop {
         mainClass = "$group.overlay.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Msi)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "VoxylOverlay"
             packageVersion = version as String
 
@@ -76,26 +76,15 @@ compose.desktop {
                 iconFile.set(project.file("src/main/resources/logos/VoxylLogoIcon.ico"))
                 perUserInstall = true
             }
+
+            linux {
+                shortcut = true
+                iconFile.set(project.file("src/main/resources/logos/VoxylLogoIcon.png"))
+            }
+
+            macOS {
+                iconFile.set(project.file("src/main/resources/logos/VoxylLogoIcon.icns"))
+            }
         }
     }
 }
-
-/*
-tasks.withType<Jar> {
-    manifest {
-        attributes["Main-Class"] = "com.voxyl.overlay.MainKt"
-    }
-}
-
-tasks.register<Jar>("uberJar") {
-    archiveClassifier.set("uber")
-
-    from(sourceSets.main.get().output)
-
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-    dependsOn(configurations.runtimeClasspath)
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
-}*/

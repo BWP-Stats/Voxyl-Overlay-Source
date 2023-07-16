@@ -42,8 +42,9 @@ object AutoUpdater {
 
     private fun getFileType() = when (OsCheck.getOs()) {
         OsType.Windows -> "msi"
-        OsType.MacOS -> "dmg"
-        OsType.Linux, OsType.Other -> {
+//        OsType.MacOS -> "dmg"
+//        OsType.Linux -> "deb"
+        else -> {
             PopUpQueue.add(Warning("Please manually download the latest version, or make a support ticket in the discord"))
             null
         }

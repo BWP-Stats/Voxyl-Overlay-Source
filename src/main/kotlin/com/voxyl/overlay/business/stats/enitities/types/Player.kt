@@ -180,8 +180,6 @@ class Player(
                 entry.key to (entry.value.asJsonObject.get("wins")?.asInt ?: 0)
             }
 
-        println(winsByMode)
-
         val groupByMode = winsByMode.keys.groupBy { key ->
             if (key.startsWith("compBridge")) "bridges" else generalKeys.firstOrNull { key.startsWith(it) } ?: "ERR"
         }

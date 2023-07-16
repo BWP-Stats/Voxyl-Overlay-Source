@@ -1,5 +1,5 @@
 # VoxylOverlayWithCompose
  
-## Don't read the code please, it is very messy and ugly because I'm a kotlin amatuer and this framework is niche
+## Don't read the code please, I made most of this when I was still bad at coding ty
 
 #### Will add usage info later
